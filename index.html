@@ -4,7 +4,7 @@
     <title>Irfan Nisar:Personal Portfolio</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="description" content="I'm Irfan Nisar Web Developer & Designer">
     <meta name="keywords" content="html, css, javascript, jquery">
     <meta name="author" content="Irfan">
@@ -453,7 +453,7 @@
           <div class="row justify-content-between">
             
             <div class="col-md-6">
-              <form method="post" action="https://script.google.com/macros/s/AKfycbyVZNK8-CKMOrkWMmjiTa7-7r-NxJ5N-_ZDHZpDqQFifSoxltcgDP51oP9AbF2tHqwQ4A/exec" class="form-outline-style-v1" id="gform">
+              <form method="post" class="form-outline-style-v1" id="gform" onsubmit="return validateEmail()">
                 <div class="form-group row mb-0">
 
                   <div class="col-lg-6 form-group gsap-reveal">
@@ -536,6 +536,49 @@
 
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
+    <script>
+      function validate() {
+        var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
+        var regName2 = /^[a-zA-Z]+$/;
+        var name = document.getElementById('name').value;
+        if (!regName.test(name) && !regName2.test(name)) {
+          document.getElementById('name').focus();
+          return false;
+        }
+        return true;
+      }
+      function validateEmail() {
+    var email = document.getElementById('email').value;
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address.');
+      document.getElementById('email').focus();
+      return false;
+    }
+
+    return true;
+  }
+      $("#gform").submit((e) => {
+        e.preventDefault();
+        if (validate()) {
+          $.ajax({
+            url: "https://script.google.com/macros/s/AKfycbwDdYaSOa_v928LU0Peig8derJn5MRysxbURa-XfT2sMFRjNdLdFhG8y2-b31--XVEF/exec",
+            data: $("#gform").serialize(),
+            method: "post",
+            success: function (response) {
+              // Handle success, e.g., show a success message
+              alert("Form submitted successfully");
+              window.location.reload();
+            },
+            error: function (err) {
+              // Handle error, e.g., show an error message
+              alert("Something went wrong");
+            },
+          });
+        }
+      });
+    </script>
+    
   </body>
 </html>
