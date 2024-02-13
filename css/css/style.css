@@ -587,7 +587,7 @@ a {
     bottom: -50px; }
   .mouse-wrap .mouse-label {
     top: 0;
-    color: #fff;
+    color: #000000;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: .05rem;
@@ -601,7 +601,7 @@ a {
     left: 50%;
     margin-left: -12px;
     border-radius: 15px;
-    border: 2px solid #fff;
+    border: 2px solid #000000;
     -webkit-animation: intro 2s;
     animation: intro 2s; }
     .mouse-wrap .mouse .scroll {
@@ -740,7 +740,7 @@ a {
       color: rgba(255, 255, 255, 0.5);
       font-family: "Arimo", sans-serif; }
   .portfolio-item:hover .overlay, .blog-item:hover .overlay {
-    opacity: 1;
+    opacity: 2;
     visibility: visible; }
 
 .blog-item {
