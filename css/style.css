@@ -471,7 +471,9 @@ a, a:hover {
   left: 0;
   top: 0;
   margin-top: -130px;
-  background: #fff !important;
+  background: rgba(0, 0, 0, 0.7) !important; /* Semi-transparent black */
+  backdrop-filter: blur(9px); /* Acrylic blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
   -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   padding-top: 5px;
@@ -487,7 +489,7 @@ a, a:hover {
 }
 
 .unslate_co--site-nav.scrolled .unslate_co--site-logo {
-  color: #000;
+  color: #ffffff;
 }
 
 .unslate_co--site-nav.scrolled .site-nav-ul, .unslate_co--site-nav.scrolled .site-nav-ul-none-onepage {
@@ -507,7 +509,7 @@ a, a:hover {
 
 .unslate_co--site-nav.scrolled .site-nav-ul > li > a, .unslate_co--site-nav.scrolled .site-nav-ul-none-onepage > li > a {
   display: block;
-  color: #000;
+  color: #ffffff;
 }
 
 .unslate_co--site-nav.scrolled .site-nav-ul > li > a:hover, .unslate_co--site-nav.scrolled .site-nav-ul-none-onepage > li > a:hover {
@@ -1986,7 +1988,6 @@ span.error {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
   overflow: hidden;
 }
 
@@ -2053,7 +2054,8 @@ span.error {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #d63447;
+  background: rgba(0, 0, 0, 0.2); /* Light transparent background */
+  backdrop-filter: blur(8px); /* Strong blur effect */
   margin-left: -100%;
   z-index: 2;
 }
@@ -2082,7 +2084,8 @@ span.error {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #d63447;
+  background: rgba(0, 0, 0, 0.2); /* Light transparent background */
+  backdrop-filter: blur(8px); /* Strong blur effect */
   margin-left: -100%;
   z-index: 9;
 }
