@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Arimo:400|Raleway:300,400,700&display=swap");
 body {
   font-family: "Raleway", sans-serif;
@@ -745,43 +746,82 @@ a, a:hover {
   min-height: 650px;
 }
 
+@keyframes appleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.apple-fade-in {
+  opacity: 0; /* Start hidden */
+  animation: appleFadeIn 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.apple-fade-in.delay-100 {
+  animation-delay: 0.3s;
+}
+
 .cover-v1 .heading {
-  font-size: 5rem;
-  font-weight: 900;
-  color: #fff;
-}
-
-@media (max-width: 991.98px) {
-  .cover-v1 .heading {
-    font-size: 3rem;
-  }
-}
-
-.cover-v1 .blog-heading {
-  font-weight: 900;
-  color: #fff;
+  font-family: "Poppins", sans-serif;
   font-size: 4rem;
-}
-
-@media (max-width: 991.98px) {
-  .cover-v1 .blog-heading {
-    font-size: 2rem;
-  }
-}
-
-.cover-v1 .post-meta {
-  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 15px;
+  letter-spacing: -0.03em;
+  /* Removed gradient for debugging */
 }
 
 .cover-v1 .subheading {
-  font-size: 33px;
-  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  color: #86868b; /* Apple grey */
+  line-height: 1.5;
+  font-weight: 400;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px;
+  /* Removed floatText animation from here to avoid conflict with fade-in */
 }
 
 @media (max-width: 991.98px) {
   .cover-v1 .subheading {
-    font-size: 24px;
+    font-size: 1.1rem;
   }
+}
+
+.btn-apple {
+  display: inline-block;
+  background-color: #0071e3;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  padding: 12px 24px;
+  border-radius: 980px; /* Pill shape */
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-apple:hover {
+  background-color: #0077ed;
+  transform: scale(1.02);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(0, 113, 227, 0.4);
+}
+
+@keyframes floatText {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
 .mouse-wrap {
@@ -793,6 +833,12 @@ a, a:hover {
   transform: translateX(-50%);
   bottom: 50px;
   z-index: 9;
+  opacity: 0.5; /* More subtle */
+  transition: opacity 0.3s;
+}
+
+.mouse-wrap:hover {
+  opacity: 1;
 }
 
 .mouse-wrap:active, .mouse-wrap:active > .mouse-label, .mouse-wrap:focus, .mouse-wrap:focus > .mouse-label {

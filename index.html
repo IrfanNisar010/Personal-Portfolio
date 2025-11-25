@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Irfan Nisar:Personal Portfolio</title>
+    <title>Irfan Nisar | Creative Web Developer & Designer</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -113,8 +113,16 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-md-7 mx-auto text-center">
-              <h1 class="heading gsap-reveal-hero">Irfan Nisar</h1>
-              <h2 class="subheading gsap-reveal-hero">I’m Irfan Nisar  Web Developer & Designer Based In Calicut,India</h2>
+              <div style="position: relative;">
+                <!-- Intro Text (Absolute to overlap) -->
+                <h1 class="heading" id="hero-intro" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; margin: 0; opacity: 0;">I'm Irfan</h1>
+
+                <!-- Final Text (Relative to hold space) -->
+                <h1 class="heading" id="hero-heading" style="margin-top: 0; opacity: 0;">
+                  <span style="display: inline-block;">I build digital experiences</span><br>
+                  <span style="display: inline-block;">that actually feel alive.</span>
+                </h1>
+              </div>
             </div>
           </div>
         </div>
@@ -164,8 +172,8 @@
                     <div class="overlay">
                       <span class="wrap-icon icon-link2"></span>
                       <div class="portfolio-item-content">
-                        <h3>Website Building</h3>
-                        <p>Web, Designing</p>
+                        <h3>Choco Heaven</h3>
+                        <p>E-Commerce, Website</p>
                       </div>
                     </div>
                     <img src="images/work_1_full.png" class="lazyload  img-fluid" alt="Images" />
@@ -176,7 +184,7 @@
                     <div class="overlay">
                       <span class="wrap-icon icon-link2"></span>
                       <div class="portfolio-item-content">
-                        <h3>Customization</h3>
+                        <h3>HomeScreen Customization</h3>
                         <p>UX/UI , Stock Android</p>
                       </div>
                     </div>
@@ -547,6 +555,31 @@
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
     <script>
+
+      // Custom GSAP Animation for Hero Section
+      $(document).ready(function() {
+        if (typeof TimelineMax !== 'undefined') {
+          var tl = new TimelineMax();
+
+          // 1. Intro "I'm Irfan" In
+          tl.fromTo("#hero-intro", 1.2, 
+            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", y: 30 },
+            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", y: 0, ease: Power3.easeOut }
+          )
+          // 2. Intro Out
+          .to("#hero-intro", 0.8, 
+            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", scale: 1.1, ease: Power3.easeIn, delay: 0.5 }
+          )
+          // 3. Main Heading In
+          .set("#hero-heading", { opacity: 1 }) // Make parent visible
+          .staggerFromTo("#hero-heading span", 1.5, 
+            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", y: 50, scale: 1.05 },
+            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", y: 0, scale: 1, ease: Power3.easeOut, force3D: true },
+            0.2
+          );
+        }
+      });
+
       function validate() {
         var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
         var regName2 = /^[a-zA-Z]+$/;
