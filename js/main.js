@@ -372,41 +372,122 @@ var counter = function() {
 
 
 var mobileToggleClick = function() {
-	$('.js-menu-toggle').click(function(e) {
+  var menu = $(".unslate_co--site-mobile-menu");
+  var menuItems = menu.find('.site-nav-wrap li');
 
-		e.preventDefault();
+  // Force Initial Hidden State (Fix for menu showing on load)
+  TweenMax.set(menu, { 
+      transformOrigin: "100% 0%",
+      scale: 0.1, 
+      x: 20, 
+      y: -20, 
+      autoAlpha: 0, /* Ensures opacity:0 and visibility:hidden */
+      borderRadius: "100px",
+      filter: "blur(30px)",
+      webkitFilter: "blur(30px)"
+  });
 
-  	if ( $('body').hasClass('offcanvas') ) {
-  		$('body').removeClass('offcanvas');
-  		$('.js-menu-toggle').removeClass('active');
-  		if ( $('.js-burger-toggle-menu').length ) {
-  			$('.js-burger-toggle-menu').removeClass('open');
-  		}
-  	} else {
-  		$('body').addClass('offcanvas');	
-  		$('.js-menu-toggle').addClass('active');
-  		if ( $('.js-burger-toggle-menu').length ) {
-  			$('.js-burger-toggle-menu').addClass('open');
-  		}
-  	}
+  var openMenu = function() {
+    $('body').addClass('offcanvas');
+    $('.js-menu-toggle').addClass('active');
+    if ( $('.js-burger-toggle-menu').length ) {
+      $('.js-burger-toggle-menu').addClass('open');
+    }
+    
+    // GSAP Open Animation - True Genie Effect
+    // Set initial state (tiny circle near button)
+    TweenMax.set(menu, { 
+        transformOrigin: "100% 0%", /* Top Right Corner */
+        scale: 0.1, 
+        x: 20, /* Offset to match button center */
+        y: -20, 
+        autoAlpha: 0, 
+        borderRadius: "100px", /* Start as circle */
+        filter: "blur(30px)",
+        webkitFilter: "blur(30px)"
+    });
 
+    // Animate to full rect
+    TweenMax.to(menu, 0.8, { 
+      scale: 1, 
+      x: 0, 
+      y: 0, 
+      autoAlpha: 1, 
+      borderRadius: "30px", /* Morph to rounded rect */
+      filter: "blur(0px)", 
+      webkitFilter: "blur(0px)",
+      ease: Elastic.easeOut.config(1, 0.75), /* Organic bounce */
+      force3D: true
+    });
+    
+    // Stagger items in with Blur Typewriter effect (Fast)
+    TweenMax.staggerFromTo(menuItems, 0.3, 
+      { 
+        opacity: 0, 
+        y: 15, 
+        scale: 1.05,
+        filter: "blur(10px)", 
+        webkitFilter: "blur(10px)" 
+      },
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+        filter: "blur(0px)", 
+        webkitFilter: "blur(0px)", 
+        ease: Power2.easeOut, 
+        delay: 0.1 
+      }, 
+      0.04
+    );
+  };
 
+  var closeMenu = function() {
+    $('body').removeClass('offcanvas');
+    $('.js-menu-toggle').removeClass('active');
+    if ( $('.js-burger-toggle-menu').length ) {
+      $('.js-burger-toggle-menu').removeClass('open');
+    }
+    
+    // GSAP Close Animation - Refined Liquid Genie (Suction)
+    // 1. Fade out content immediately so it doesn't bleed during morph
+    TweenMax.to(menuItems, 0.1, { opacity: 0 });
+
+    // 2. Suck menu into button with accelerating ease
+    TweenMax.to(menu, 0.5, { 
+      scale: 0.05, /* Shrink to a droplet */
+      x: 20, /* Move to button center */
+      y: -20, 
+      autoAlpha: 0, 
+      borderRadius: "50%", /* Turn into a circle */
+      filter: "blur(40px)", /* Blur out */
+      webkitFilter: "blur(40px)",
+      ease: Expo.easeIn, /* Accelerate into the button (Vacuum effect) */
+      force3D: true
+    });
+  };
+
+  $('.js-menu-toggle').click(function(e) {
+    e.preventDefault();
+    if ( $('body').hasClass('offcanvas') ) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
   // click outisde offcanvas
-	$(document).mouseup(function(e) {
+  $(document).mouseup(function(e) {
     var container = $(".unslate_co--site-mobile-menu");
     var toggle = $(".js-menu-toggle");
     var burger = $(".js-burger-toggle-menu");
 
     if (!container.is(e.target) && container.has(e.target).length === 0 && !toggle.is(e.target) && toggle.has(e.target).length === 0 && !burger.is(e.target) && burger.has(e.target).length === 0) {
       if ( $('body').hasClass('offcanvas') ) {
-				$('body').removeClass('offcanvas');
-				$('body').find('.js-menu-toggle').removeClass('active');
-				$('body').find('.js-burger-toggle-menu').removeClass('open');
-			}
+        closeMenu();
+      }
     }
-	}); 
+  }); 
 };
 
 

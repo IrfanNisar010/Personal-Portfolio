@@ -549,32 +549,82 @@ a, a:hover {
   top: 80px;
   right: 25px;
   left: auto;
-  width: 260px;
+  width: 230px;
   height: auto;
-  max-height: 65vh;
+  max-height: 60vh;
   overflow-y: auto;
   /* Hide Scrollbar */
   -ms-overflow-style: none;
   scrollbar-width: none;
   
   /* Advanced Liquid Glass Effect */
-  background: rgba(18, 18, 18, 0.55); /* Deep, transparent base */
-  backdrop-filter: blur(50px) saturate(190%) brightness(100%); /* Heavy blur & saturation */
-  -webkit-backdrop-filter: blur(50px) saturate(190%) brightness(100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 18, 18, 0.4);
+  backdrop-filter: blur(20px) saturate(180%) brightness(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
+  /* Border handled by ::after for animation */
+  border: none;
   box-shadow: 
     0 20px 50px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05), /* Inner rim */
-    inset 0 0 20px rgba(255, 255, 255, 0.02); /* Inner liquid glow */
-  border-radius: 30px; /* Super rounded */
+    inset 0 0 20px rgba(255, 255, 255, 0.02);
+  border-radius: 30px;
+  padding: 0; /* Remove padding from container */
+  overflow: hidden; /* Clip border */
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-scroll-content {
   padding: 24px 20px;
+  overflow-y: auto;
+  height: 100%;
+  max-height: 60vh;
+  /* Hide Scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.mobile-menu-scroll-content::-webkit-scrollbar {
+  display: none;
+}
   
-  /* Animation */
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.8) translateY(-20px);
-  transform-origin: top right;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy 'pop' effect */
+
+
+/* Animated Liquid Glass Border */
+.unslate_co--site-mobile-menu::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 30px;
+  padding: 1.5px; /* Border thickness */
+  background: linear-gradient(
+    110deg, 
+    rgba(255,255,255,0.05) 35%, 
+    rgba(255,255,255,0.4) 50%, 
+    rgba(255,255,255,0.05) 65%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-glass 10s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1010; /* Ensure on top */
+}
+
+.unslate_co--site-mobile-menu:hover::after {
+  animation-duration: 10s; /* Ensure it stays smooth on hover */
+}
+
+@keyframes shimmer-glass {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .unslate_co--site-mobile-menu .mobile-menu-logo {
@@ -602,11 +652,7 @@ a, a:hover {
   display: none;
 }
 
-.offcanvas .unslate_co--site-mobile-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
-}
+
 
 
 
@@ -2370,32 +2416,37 @@ span.error {
   }
 
   .hero-cta-pill {
-    padding: 8px 16px; /* Smaller padding */
-    font-size: 13px; /* Smaller text */
+    padding: 6px 14px; /* Compact padding */
+    font-size: 10px; /* Much smaller text to fit one line */
     margin-top: 20px;
-    width: 90%; /* Prevent overflow */
-    max-width: 300px;
-    flex-direction: column; /* Stack text if needed, or keep inline but smaller */
-    text-align: center;
+    width: auto; /* Allow it to shrink */
+    max-width: 95%;
+    flex-direction: row; /* Force row */
+    align-items: center;
+    white-space: nowrap; /* Prevent wrapping */
+    height: auto;
+    border-radius: 999px;
   }
   
   .hero-cta-pill .cta-separator {
-    display: none; /* Hide separator on very small screens if we stack */
-  }
-  
-  .hero-cta-pill {
-    flex-direction: row; /* Keep row but maybe wrap text if needed */
-    white-space: normal; /* Allow text wrapping */
-    height: auto;
+    display: inline-block; /* Show separator */
+    margin: 0 6px;
+    opacity: 0.5;
+    font-size: 10px;
   }
   
   .hero-cta-pill .cta-text {
-    display: block;
-    font-size: 12px;
+    display: inline-block;
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px; /* Limit width if needed */
   }
   
   .hero-cta-pill .cta-action {
-    font-size: 12px;
-    margin-left: 5px;
+    font-size: 10px;
+    margin-left: 0;
+    white-space: nowrap;
   }
 }
