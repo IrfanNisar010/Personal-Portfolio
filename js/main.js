@@ -396,11 +396,13 @@ var mobileToggleClick = function() {
   // click outisde offcanvas
 	$(document).mouseup(function(e) {
     var container = $(".unslate_co--site-mobile-menu");
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
+    var toggle = $(".js-menu-toggle");
+    var burger = $(".js-burger-toggle-menu");
+
+    if (!container.is(e.target) && container.has(e.target).length === 0 && !toggle.is(e.target) && toggle.has(e.target).length === 0 && !burger.is(e.target) && burger.has(e.target).length === 0) {
       if ( $('body').hasClass('offcanvas') ) {
 				$('body').removeClass('offcanvas');
 				$('body').find('.js-menu-toggle').removeClass('active');
-
 				$('body').find('.js-burger-toggle-menu').removeClass('open');
 			}
     }

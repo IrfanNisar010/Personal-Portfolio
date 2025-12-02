@@ -34,14 +34,8 @@
   <body data-spy="scroll" data-target=".site-nav-target" data-offset="200">
 
     <nav class="unslate_co--site-mobile-menu">
-      <div class="close-wrap d-flex">
-        <a href="#" class="d-flex ml-auto js-menu-toggle">
-          <span class="close-label">Close</span>
-          <div class="close-times">
-            <span class="bar1"></span>
-            <span class="bar2"></span>
-          </div>
-        </a>
+      <div class="mobile-menu-logo">
+        <a href="index.html">Irfan<span>.</span></a>
       </div>
       <div class="site-mobile-inner"></div>
     </nav>
@@ -76,12 +70,6 @@
                     </li>
                     <li>
                       <a href="#services-section" class="nav-link">Works</a>
-                    </li>
-                    <li>
-                      <a href="index-sidebar-menu.html">Sidebar Menu</a>
-                    </li>
-                    <li>
-                      <a href="index-right-menu.html">Right Menu</a>
                     </li>
                   </ul>
                 </li>
@@ -616,6 +604,7 @@
         var regName2 = /^[a-zA-Z]+$/;
         var name = document.getElementById('name').value;
         if (!regName.test(name) && !regName2.test(name)) {
+          alert('Please enter a valid name (letters only).');
           document.getElementById('name').focus();
           return false;
         }
@@ -656,6 +645,9 @@
           
           fetch("https://formsubmit.co/ajax/inzrwork020@gmail.com", {
             method: "POST",
+            headers: { 
+                'Accept': 'application/json'
+            },
             body: formData
           })
           .then(response => response.json())
