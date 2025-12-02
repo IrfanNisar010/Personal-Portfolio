@@ -890,7 +890,7 @@ a, a:hover {
   height: 3px;
   margin: 6px auto;
   border-radius: 4px;
-  background: #fff;
+  background: #D63447;
   -webkit-animation: finger 2s infinite;
   animation: finger 2s infinite;
 }
@@ -1587,20 +1587,94 @@ figure.dotted-bg:before {
 
 .form-outline-style-v1 .form-group .form-control {
   border: none;
-  background: none;
+  background: #000 !important;
   padding-left: 0;
   padding-right: 0;
   border-radius: 0;
-  color: #fff;
+  color: #fff !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Fix for Chrome/Safari Autofill background */
+.form-outline-style-v1 .form-group .form-control:-webkit-autofill,
+.form-outline-style-v1 .form-group .form-control:-webkit-autofill:hover, 
+.form-outline-style-v1 .form-group .form-control:-webkit-autofill:focus, 
+.form-outline-style-v1 .form-group .form-control:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #000 inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .form-outline-style-v1 .form-group .form-control:active, .form-outline-style-v1 .form-group .form-control:focus {
   outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-bottom: 1px solid white;
 }
+
+/* Custom Notification - Glassmorphism */
+.custom-notification {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 24px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 9999;
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  opacity: 0;
+  visibility: hidden;
+  min-width: 200px;
+}
+
+/* Green glow effect on top */
+.custom-notification::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: radial-gradient(circle at top, rgba(34, 197, 94, 0.15), transparent 70%);
+  border-radius: 99px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.custom-notification.show {
+  top: 40px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+.custom-notification .notif-icon {
+  width: 28px;
+  height: 28px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+.custom-notification .notif-text {
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
 
 .form-outline-style-v1 .form-group label {
   font-size: 12px;
@@ -2143,4 +2217,87 @@ span.error {
 
 .gsap-reveal-img .reveal-wrap .reveal-content .portfolio-item-content h3 {
   margin-bottom: 10px;
+}
+
+/* Hero CTA Pill */
+.hero-cta-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  background: transparent;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  text-decoration: none !important;
+  overflow: hidden;
+  margin-top: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  /* Ensure it's centered if parent is text-center */
+  vertical-align: middle;
+}
+
+/* The rotating glow */
+.hero-cta-pill::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    transparent, 
+    rgba(214, 52, 71, 0.1), 
+    rgba(214, 52, 71, 0.8), 
+    rgba(214, 52, 71, 0.1), 
+    transparent
+  );
+  animation: rotate-border 4s linear infinite;
+  z-index: -2;
+}
+
+/* The inner background */
+.hero-cta-pill::after {
+  content: "";
+  position: absolute;
+  inset: 1px; /* Border width */
+  background: #0a0a0a; /* Dark background */
+  border-radius: 9999px;
+  z-index: -1;
+}
+
+.hero-cta-pill:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(214, 52, 71, 0.3);
+}
+
+.hero-cta-pill .cta-text {
+  font-weight: 500;
+  color: #fff;
+  z-index: 1;
+}
+
+.hero-cta-pill .cta-separator {
+  margin: 0 12px;
+  color: #444;
+  z-index: 1;
+}
+
+.hero-cta-pill .cta-action {
+  color: #888;
+  font-weight: 400;
+  transition: color 0.2s;
+  z-index: 1;
+}
+
+.hero-cta-pill:hover .cta-action {
+  color: #fff;
+}
+
+@keyframes rotate-border {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

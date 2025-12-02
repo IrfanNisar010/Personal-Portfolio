@@ -18,6 +18,7 @@
     
     <!-- Theme Style -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/custom_logo.css">
     <style>
       body {
         overflow-x: hidden;
@@ -122,6 +123,13 @@
                   <span style="display: inline-block;">I build digital experiences</span><br>
                   <span style="display: inline-block;">that actually feel alive.</span>
                 </h1>
+
+                <!-- Raycast-style CTA -->
+                <a href="#contact-section" class="hero-cta-pill smoothscroll" id="hero-cta" style="opacity: 0; transform: translateY(20px);">
+                  <span class="cta-text">Designing Clean, Fast, Human-Focused Interfaces</span>
+                  <span class="cta-separator">|</span>
+                  <span class="cta-action">Let’s talk &rarr;</span>
+                </a>
               </div>
             </div>
           </div>
@@ -294,21 +302,7 @@
       </div>
 
 
-      <div class="unslate_co--section">
-        <div class="container">
-          <div class="owl-carousel logo-slider">
-            <div class="logo-v1 gsap-reveal">
-              <img src="images/logo-google.png" alt="Image" class="img-fluid">
-            </div>
-            <div class="logo-v1 gsap-reveal">
-              <img src="images/logo-paypal.png" alt="Image" class="img-fluid">
-            </div>
-            <div class="logo-v1 gsap-reveal">
-              <img src="images/logo-adobe.png" alt="Image" class="img-fluid">
-            </div>
-          </div>
-        </div>
-      </div>
+
 
 
       <div class="unslate_co--section" id="about-section">
@@ -334,6 +328,31 @@
               <p class="mb-4 gsap-reveal">I enjoy turning ideas into polished interfaces, building scalable systems, and experimenting with AI to push what’s possible inside the browser. Whether it’s designing a frictionless e-commerce flow, engineering reliable backend logic, or crafting smarter prompt-based interactions, I approach every project with detail, clarity, and a builder’s mindset.</p>
               <p class="mb-4 gsap-reveal">Right now, I’m sharpening my craft in MERN development, AI engineering, and product-focused design — aiming to create digital experiences that are not just well-built, but genuinely enjoyable to use.</p>
               <p class="gsap-reveal"><a href="https://drive.google.com/file/d/1GsusAY4BPNO3Yx33oMy_MtZtxw1A7xod/view?usp=sharing" class="btn btn-outline-pill btn-custom-light">Download my Resume</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="unslate_co--section">
+        <div class="container">
+          <div class="owl-carousel logo-slider">
+            <div class="logo-v1">
+              <img src="images/logo-figma.svg" alt="Figma" class="img-fluid">
+            </div>
+            <div class="logo-v1">
+              <img src="images/logo-framer.svg" alt="Framer" class="img-fluid">
+            </div>
+            <div class="logo-v1">
+              <img src="images/logo-google-white.svg" alt="Google" class="img-fluid">
+            </div>
+            <div class="logo-v1">
+              <img src="images/logo-figma.svg" alt="Figma" class="img-fluid">
+            </div>
+            <div class="logo-v1">
+              <img src="images/logo-framer.svg" alt="Framer" class="img-fluid">
+            </div>
+            <div class="logo-v1">
+              <img src="images/logo-google-white.svg" alt="Google" class="img-fluid">
             </div>
           </div>
         </div>
@@ -472,7 +491,12 @@
           <div class="row justify-content-between">
             
             <div class="col-md-6">
-              <form method="post" class="form-outline-style-v1" id="gform" onsubmit="return validateEmail()">
+              <form method="post" class="form-outline-style-v1" id="gform">
+                <input type="hidden" name="_subject" value="Personal Portfolio messages">
+                <input type="hidden" name="_from" value="Personal Portfolio messages">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="text" name="_honey" style="display:none">
                 <div class="form-group row mb-0">
 
                   <div class="col-lg-6 form-group gsap-reveal">
@@ -506,7 +530,7 @@
               <div class="contact-info-v1">
                 <div class="gsap-reveal d-block">
                   <span class="d-block contact-info-label">Email</span>
-                  <a href="#" class="contact-info-val">inzrWork020@gmail.com</a>
+                  <a href="#" class="contact-info-val">inzrwork020@gmail.com</a>
                 </div>
                 <div class="gsap-reveal d-block">
                   <span class="d-block contact-info-label">Phone</span>
@@ -577,6 +601,12 @@
             { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", y: 50, scale: 1.05 },
             { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", y: 0, scale: 1, ease: Power3.easeOut, force3D: true },
             0.2
+          )
+          // 4. CTA Pill In (After Heading)
+          .fromTo("#hero-cta", 1.8,
+            { opacity: 0, y: 30, filter: "blur(20px)", webkitFilter: "blur(20px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut },
+            "-=0.8"
           );
         }
       });
@@ -603,26 +633,69 @@
 
     return true;
   }
-      $("#gform").submit((e) => {
+      $("#gform").submit(function(e) {
         e.preventDefault();
-        if (validate()) {
-          $.ajax({
-            url: "https://script.google.com/macros/s/AKfycbwDdYaSOa_v928LU0Peig8derJn5MRysxbURa-XfT2sMFRjNdLdFhG8y2-b31--XVEF/exec",
-            data: $("#gform").serialize(),
-            method: "post",
-            success: function (response) {
-              // Handle success, e.g., show a success message
-              alert("Form submitted successfully");
-              window.location.reload();
-            },
-            error: function (err) {
-              // Handle error, e.g., show an error message
-              alert("Something went wrong");
-            },
+        
+        // Run both validations
+        if (validate() && validateEmail()) {
+          // Dynamic Subject Line to help avoid Spam folder
+          const name = document.getElementById('name').value;
+          const subjectInput = this.querySelector('input[name="_subject"]');
+          if (subjectInput) {
+            subjectInput.value = "Personal Portfolio messages - " + name;
+          }
+
+          const formData = new FormData(this);
+          const btn = this.querySelector('input[type="submit"]');
+          const originalText = btn.value;
+          
+          // Loading state
+          btn.value = "Sending...";
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+          
+          fetch("https://formsubmit.co/ajax/inzrwork020@gmail.com", {
+            method: "POST",
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            showNotification();
+            document.getElementById("gform").reset();
+            // Reset floating labels
+            document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert("Something went wrong. Please try again.");
+          })
+          .finally(() => {
+            // Restore button state
+            btn.value = originalText;
+            btn.disabled = false;
+            btn.style.opacity = "1";
           });
         }
       });
+
+      function showNotification() {
+        const notif = document.getElementById('custom-notification');
+        notif.classList.add('show');
+        
+        // Hide after 4 seconds
+        setTimeout(() => {
+          notif.classList.remove('show');
+        }, 4000);
+      }
     </script>
+    
+    <!-- Custom Notification -->
+    <div id="custom-notification" class="custom-notification">
+      <div class="notif-icon">
+        <span class="icon-check"></span>
+      </div>
+      <span class="notif-text">Message Sent</span>
+    </div>
     
   </body>
 </html>

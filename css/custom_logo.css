@@ -1,0 +1,36 @@
+/* Force the slider container to be visible and have height */
+.logo-slider {
+  min-height: 80px;
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: transparent;
+}
+
+.logo-slider.owl-carousel.owl-loaded {
+  display: block !important;
+}
+
+.logo-slider.owl-carousel {
+  display: flex !important; 
+}
+
+.logo-v1 {
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+/* Ensure images have dimension and are smaller as requested */
+.logo-v1 img {
+  width: 100px !important; /* Reduced from 150px to 100px */
+  height: auto !important;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+  opacity: 1 !important;
+}
