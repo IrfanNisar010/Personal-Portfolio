@@ -882,7 +882,8 @@ a, a:hover {
   color: #fff;
   line-height: 1.1;
   margin-bottom: 15px;
-  letter-spacing: -0.03em;
+  letter-spacing: -1px;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
   /* Removed gradient for debugging */
 }
 
@@ -940,8 +941,14 @@ a, a:hover {
   transform: translateX(-50%);
   bottom: 50px;
   z-index: 9;
-  opacity: 0.5; /* More subtle */
+  opacity: 0.4; /* More subtle */
   transition: opacity 0.3s;
+  animation: pulse-fade 3s infinite ease-in-out;
+}
+
+@keyframes pulse-fade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.2; }
 }
 
 .mouse-wrap:hover {
@@ -979,12 +986,12 @@ a, a:hover {
 
 .mouse-wrap .mouse {
   position: absolute;
-  width: 22px;
-  height: 42px;
+  width: 26px;
+  height: 46px;
   bottom: 30px;
   display: block;
   left: 50%;
-  margin-left: -12px;
+  margin-left: -13px;
   border-radius: 15px;
   border: 2px solid #fff;
   -webkit-animation: intro 2s;
@@ -2340,8 +2347,8 @@ span.error {
   font-size: 15px;
   text-decoration: none !important;
   overflow: hidden;
-  margin-top: 30px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 60px; /* Push down to center between title and scroll */
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   /* Ensure it's centered if parent is text-center */
   vertical-align: middle;
@@ -2377,8 +2384,10 @@ span.error {
 }
 
 .hero-cta-pill:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 30px rgba(214, 52, 71, 0.3);
+  transform: scale(1.04);
+  box-shadow: 
+    0 0 30px rgba(214, 52, 71, 0.25), /* Reduced spread and opacity */
+    0 0 10px rgba(214, 52, 71, 0.4); /* Tighter core glow */
 }
 
 .hero-cta-pill .cta-text {

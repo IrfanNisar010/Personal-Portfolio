@@ -488,6 +488,11 @@ var mobileToggleClick = function() {
       }
     }
   }); 
+
+  // Close menu when a link is clicked (Event Delegation)
+  $('body').on('click', '.unslate_co--site-mobile-menu a', function() {
+    closeMenu();
+  });
 };
 
 
