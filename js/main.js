@@ -449,12 +449,33 @@ var mobileToggleClick = function() {
       $('.js-burger-toggle-menu').removeClass('open');
     }
     
-    // GSAP Close Animation - Refined Liquid Genie (Suction)
-    // 1. Fade out content immediately so it doesn't bleed during morph
-    TweenMax.to(menuItems, 0.1, { opacity: 0 });
+    // GSAP Close Animation - Reverse Typewriter & Suction
+    
+    // 1. Stagger items out (Reverse Typewriter - Explicit)
+    // We use staggerFromTo to ensure the starting state is what we expect (visible) 
+    // and animate to the hidden state with a distinct motion.
+    TweenMax.staggerFromTo(menuItems, 0.3, 
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        filter: "blur(0px)", 
+        webkitFilter: "blur(0px)" 
+      },
+      { 
+        opacity: 0, 
+        y: -20, /* Move up more noticeably */
+        scale: 0.9, /* Shrink slightly */
+        filter: "blur(15px)", /* Stronger blur */
+        webkitFilter: "blur(15px)",
+        ease: Back.easeIn.config(1.7), /* Pull back effect */
+      }, 
+      0.05 /* Slower stagger for visibility */
+    );
 
-    // 2. Suck menu into button with accelerating ease
+    // 2. Suck menu into button (Delayed slightly to let items vanish)
     TweenMax.to(menu, 0.5, { 
+      delay: 0.15, /* Wait for items to start disappearing */
       scale: 0.05, /* Shrink to a droplet */
       x: 20, /* Move to button center */
       y: -20, 

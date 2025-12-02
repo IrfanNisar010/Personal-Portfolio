@@ -1,5 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Arimo:400|Raleway:300,400,700&display=swap");
+
+/* SF Pro Display Font Face */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../fonts/SFProDisplay-Regular.woff2') format('woff2'),
+       url('../fonts/SFProDisplay-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../fonts/SFProDisplay-Medium.woff2') format('woff2'),
+       url('../fonts/SFProDisplay-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../fonts/SFProDisplay-Bold.woff2') format('woff2'),
+       url('../fonts/SFProDisplay-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 body {
   font-family: "Raleway", sans-serif;
   color: #fff;
@@ -876,7 +904,7 @@ a, a:hover {
 }
 
 .cover-v1 .heading {
-  font-family: "Poppins", sans-serif;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 4rem;
   font-weight: 500;
   color: #fff;
@@ -1179,6 +1207,13 @@ a, a:hover {
 .portfolio-item:hover .overlay, .blog-item:hover .overlay {
   opacity: 1;
   visibility: visible;
+}
+
+@media (max-width: 991.98px) {
+  .portfolio-item .overlay {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .blog-item {
@@ -2373,6 +2408,7 @@ span.error {
   align-items: center;
   justify-content: center;
   padding: 10px 24px;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   border-radius: 9999px;
   background: transparent;
   color: #fff;
@@ -2498,5 +2534,10 @@ span.error {
     font-size: 10px;
     margin-left: 0;
     white-space: nowrap;
+  }
+
+  /* About Image Mobile Size */
+  #about-section figure.dotted-bg {
+    max-width: 250px !important;
   }
 }
