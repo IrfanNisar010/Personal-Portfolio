@@ -1746,6 +1746,39 @@ figure.dotted-bg:before {
   opacity: 0;
   visibility: hidden;
   min-width: 200px;
+  max-width: 90%; /* Ensure it doesn't overflow on mobile */
+  width: auto;
+  white-space: normal; /* Allow text to wrap */
+}
+
+.custom-notification .notif-text h4 {
+  font-size: 14px;
+  margin: 0;
+  color: #fff;
+  font-weight: 600;
+}
+
+.custom-notification .notif-text p {
+  font-size: 12px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.3;
+}
+
+@media (max-width: 576px) {
+  .custom-notification {
+    padding: 10px 16px;
+    gap: 10px;
+    border-radius: 16px; /* Less rounded on very small screens if needed, or keep pill */
+  }
+  .custom-notification .notif-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .custom-notification .notif-icon svg {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 /* Green glow effect on top */
@@ -2420,8 +2453,15 @@ span.error {
 /* Mobile Responsiveness for Hero */
 @media (max-width: 767.98px) {
   .cover-v1 .heading {
-    font-size: 2.5rem; /* Smaller font for mobile */
-    line-height: 1.2;
+    font-size: 2.2rem; /* Even smaller for better fit */
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  
+  .cover-v1 .subheading {
+    font-size: 1rem;
+    line-height: 1.4;
+    padding: 0 15px;
   }
 
   .hero-cta-pill {
@@ -2450,7 +2490,8 @@ span.error {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 220px; /* Limit width if needed */
+    text-overflow: ellipsis;
+    max-width: 180px; /* Tighter limit for small screens */
   }
   
   .hero-cta-pill .cta-action {
