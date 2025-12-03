@@ -148,6 +148,11 @@ var siteMenuClone = function() {
 
   }, 1000);
 
+  // Inject Icon for Journal in Mobile Menu
+  setTimeout(function() {
+    $('.unslate_co--site-mobile-menu .site-nav-wrap a:contains("Journal")').prepend('<span class="icon-book" style="margin-right: 10px;"></span>');
+  }, 1200);
+
 	$('body').on('click', '.arrow-collapse', function(e) {
     var $this = $(this);
     if ( $this.closest('li').find('.collapse').hasClass('show') ) {
@@ -781,7 +786,33 @@ var animateReveal = function() {
 
 			heroNum++;
 		});
-	}
+  }
+
+  // Mouse tracking for CTA button border (Global tracking with Proximity)
+  $(document).on('mousemove', function(e) {
+    var $btn = $('.hero-cta-pill');
+    if ($btn.length) {
+      var rect = $btn[0].getBoundingClientRect();
+      var btnCenterX = rect.left + rect.width / 2;
+      var btnCenterY = rect.top + rect.height / 2;
+      
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      
+      $btn[0].style.setProperty('--x', x + 'px');
+      $btn[0].style.setProperty('--y', y + 'px');
+
+      // Calculate distance from button center
+      var dist = Math.sqrt(Math.pow(e.clientX - btnCenterX, 2) + Math.pow(e.clientY - btnCenterY, 2));
+      
+      // Activation radius: 360px around the button center
+      if (dist < 360) {
+        $btn.addClass('interaction-active');
+      } else {
+        $btn.removeClass('interaction-active');
+      }
+    }
+  });
 
 }
 

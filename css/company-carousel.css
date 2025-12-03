@@ -1,0 +1,100 @@
+/* Company Carousel Styles */
+.company-carousel-section {
+  padding: 40px 0;
+  background-color: #000; /* Match body background */
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 700px; /* Further reduced width */
+  margin: 0 auto;   /* Center the carousel */
+  display: flex;
+  align-items: center;
+  z-index: 5; /* Ensure it sits above some elements but below overlays */
+}
+
+.company-carousel-track {
+  display: flex;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+}
+
+.company-logo-item {
+  margin: 0 40px; /* Slightly reduced margin to fit text */
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: row; /* Ensure side-by-side layout */
+  gap: 12px;           /* Space between icon and text */
+  align-items: center;
+  justify-content: center;
+  filter: grayscale(100%); /* Ensure monochrome look */
+  text-decoration: none; /* In case it's an anchor */
+}
+
+.company-name {
+  font-family: 'Inter', sans-serif; /* Use a clean font */
+  font-size: 16px; /* Reduced font size */
+  font-weight: 500; /* Slightly lighter weight */
+  color: #fff;
+  white-space: nowrap; /* Prevent text wrapping */
+  letter-spacing: -0.01em;
+}
+
+.company-logo-item:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  filter: grayscale(0%); /* Optional: show color on hover if desired, or keep monochrome */
+}
+
+.company-logo-item svg {
+  height: 24px; /* Reduced size for better balance with text */
+  width: auto;
+  fill: #fff; /* White logos */
+  display: block;
+}
+
+/* Infinite Scroll Animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Fade Masks */
+.company-carousel-section::before,
+.company-carousel-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 80px; /* Reduced fade width */
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.company-carousel-section::before {
+  left: 0;
+  background: linear-gradient(to right, #000 0%, transparent 100%);
+}
+
+.company-carousel-section::after {
+  right: 0;
+  background: linear-gradient(to left, #000 0%, transparent 100%);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .company-logo-item {
+    margin: 0 30px;
+  }
+  .company-logo-item svg {
+    height: 25px;
+  }
+  .company-carousel-section::before,
+  .company-carousel-section::after {
+    width: 80px;
+  }
+}

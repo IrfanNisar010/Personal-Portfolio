@@ -1,0 +1,109 @@
+/* About Page Redesign (Meet Meily Style) */
+
+/* Large Heading */
+.meet-heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 30px;
+  line-height: 1.1;
+}
+
+/* Description Text */
+.meet-desc {
+  font-size: 1.1rem;
+  color: #a0a0a0;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 90%;
+}
+
+/* Skill Pills */
+.skill-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 50px;
+}
+
+.skill-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.skill-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Experience List */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 30px;
+}
+
+.experience-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #888;
+}
+
+.experience-role {
+  color: #fff;
+  font-weight: 500;
+  width: 30%;
+}
+
+.experience-company {
+  width: 40%;
+}
+
+.experience-date {
+  text-align: right;
+  width: 30%;
+}
+
+/* Right Side Image */
+.meet-image-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px; /* Slight radius */
+}
+
+.meet-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%); /* Black and white look */
+  transition: filter 0.5s ease;
+}
+
+.meet-image:hover {
+  filter: grayscale(0%); /* Color on hover */
+}
+
+@media (max-width: 991px) {
+  .meet-heading {
+    font-size: 3rem;
+  }
+  .meet-image-wrap {
+    min-height: 400px;
+    margin-top: 40px;
+  }
+}

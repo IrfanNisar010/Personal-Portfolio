@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;900&family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Arimo:400|Raleway:300,400,700&display=swap");
 
 /* SF Pro Display Font Face */
@@ -35,6 +36,23 @@ body {
   line-height: 30px;
   font-weight: 300;
   position: relative;
+}
+
+/* Permanent Bottom Blur Overlay */
+.site-bottom-blur {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px; /* Taller to allow smooth fade */
+  /* No background color, just pure blur */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* Fade the blur itself using a mask */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  pointer-events: none;
+  z-index: 9999;
 }
 
 body:before {
@@ -904,9 +922,9 @@ a, a:hover {
 }
 
 .cover-v1 .heading {
-  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Manrope', 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 4rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #fff;
   line-height: 1.1;
   margin-bottom: 15px;
@@ -1130,19 +1148,25 @@ a, a:hover {
 }
 
 .portfolio-item img {
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
-  transition: .3s all ease;
+  -webkit-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  -o-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
+  /* Default Black & White */
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
 }
 
 .portfolio-item:hover img {
   -webkit-transform: scale(1.09);
   -ms-transform: scale(1.09);
   transform: scale(1.09);
+  /* Restore Color on Hover */
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
 }
 
 .portfolio-item, .blog-item {
@@ -1325,9 +1349,10 @@ a, a:hover {
 }
 
 .heading-h2 {
+  font-family: 'Manrope', sans-serif;
   font-size: 32px;
   color: #fff;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .heading-h2.divider:before {
@@ -1336,8 +1361,9 @@ a, a:hover {
 }
 
 .heading-h3 {
+  font-family: 'Manrope', sans-serif;
   font-size: 26px;
-  font-weight: 900;
+  font-weight: 800;
   color: #fff;
 }
 
@@ -1917,9 +1943,10 @@ figure.dotted-bg:before {
 }
 
 .portfolio-single-inner .heading-portfolio-single-h2 {
+  font-family: 'Manrope', sans-serif;
   margin-bottom: 40px;
   font-size: 50px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 @media (max-width: 991.98px) {
@@ -2415,7 +2442,7 @@ span.error {
   font-family: "Inter", sans-serif;
   font-size: 15px;
   text-decoration: none !important;
-  overflow: hidden;
+  /* overflow: hidden; Removed to allow outer glow */
   margin-top: 60px; /* Push down to center between title and scroll */
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
@@ -2423,23 +2450,98 @@ span.error {
   vertical-align: middle;
 }
 
-/* The rotating glow */
+/* The rotating glow (Mouse Tracking) */
+/* The rotating glow (Mouse Tracking - Outer) */
 .hero-cta-pill::before {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    transparent, 
-    rgba(214, 52, 71, 0.1), 
-    rgba(214, 52, 71, 0.8), 
-    rgba(214, 52, 71, 0.1), 
-    transparent
+  /* Extend outside to catch the mouse glow */
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 9999px;
+  padding: 2px; /* Border width */
+  background: radial-gradient(
+    150px circle at var(--x, 50%) var(--y, 50%), 
+    rgba(214, 52, 71, 1), 
+    transparent 50%
   );
-  animation: rotate-border 4s linear infinite;
-  z-index: -2;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  z-index: -1;
+  opacity: 0; /* Hidden by default, shown when interaction is active */
+  transition: opacity 0.3s;
+}
+
+/* Show spotlight when mouse is near (handled by JS) */
+.hero-cta-pill.interaction-active::before {
+  opacity: 1;
+}
+
+/* Hide idle animation when mouse is near */
+.hero-cta-pill.interaction-active .border-rotate {
+  opacity: 0;
+}
+
+/* Clockwise "Real Flash" Border (Idle State) */
+.hero-cta-pill .border-rotate {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 9999px;
+  padding: 2px; /* Border width */
+  /* Mask creates the border shape */
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  opacity: 1;
+  transition: opacity 0.3s;
+  overflow: hidden; /* Clip the rotating child */
+}
+
+/* The rotating gradient is now a child, so the pill shape doesn't rotate */
+.hero-cta-pill .border-rotate::after {
+  content: "";
+  position: absolute;
+  top: -100%; /* Larger coverage to ensure corners are hit smoothly */
+  left: -100%;
+  width: 300%; /* Massive size to reduce curvature distortion */
+  height: 300%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(214, 52, 71, 0.1) 10%,
+    rgba(214, 52, 71, 0.8) 20%,
+    #ffffff 25%, /* White Flash Core */
+    rgba(214, 52, 71, 0.8) 30%,
+    rgba(214, 52, 71, 0.1) 40%,
+    transparent 50%
+  );
+  animation: rotate-border 4s linear infinite; /* Slightly faster for smoother flow */
+  transform-origin: center;
+}
+
+
+
+@keyframes rotate-border {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* The inner background */
@@ -2447,9 +2549,25 @@ span.error {
   content: "";
   position: absolute;
   inset: 1px; /* Border width */
-  background: #0a0a0a; /* Dark background */
+  /* iOS 26 Liquid Glass Background + Inner Mouse Glow */
+  background: 
+    radial-gradient(
+      120px circle at var(--x, 50%) var(--y, 50%), 
+      rgba(214, 52, 71, 0.15), 
+      transparent 50%
+    ),
+    rgba(18, 18, 18, 0.4);
+  backdrop-filter: blur(20px) saturate(180%) brightness(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
   border-radius: 9999px;
   z-index: -1;
+  transition: background 0.3s, backdrop-filter 0.3s, -webkit-backdrop-filter 0.3s;
+}
+
+.hero-cta-pill:hover::after {
+  backdrop-filter: blur(30px) saturate(180%) brightness(110%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(110%);
 }
 
 .hero-cta-pill:hover {
@@ -2461,7 +2579,7 @@ span.error {
 
 .hero-cta-pill .cta-text {
   font-weight: 500;
-  color: #fff;
+  color: #fafafa;
   z-index: 1;
 }
 
@@ -2541,3 +2659,6 @@ span.error {
     max-width: 250px !important;
   }
 }
+
+
+

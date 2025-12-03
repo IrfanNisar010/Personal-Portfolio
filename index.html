@@ -18,7 +18,10 @@
     
     <!-- Theme Style -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/hero-bg.css">
+    <link rel="stylesheet" href="css/about-redesign.css">
     <link rel="stylesheet" href="css/custom_logo.css">
+    <link rel="stylesheet" href="css/company-carousel.css">
     <style>
       body {
         overflow-x: hidden;
@@ -118,6 +121,7 @@
 
                 <!-- Raycast-style CTA -->
                 <a href="#contact-section" class="hero-cta-pill smoothscroll" id="hero-cta" style="opacity: 0; transform: translateY(20px);">
+                  <span class="border-rotate"></span>
                   <span class="cta-text">Designing Clean, Fast, Human-Focused Interfaces</span>
                   <span class="cta-separator">|</span>
                   <span class="cta-action">Work with me &rarr;</span>
@@ -137,6 +141,39 @@
 
       </div>
       <!-- END .cover-v1 -->
+
+      <!-- Company Carousel -->
+      <div class="company-carousel-section">
+        <div class="company-carousel-track">
+          <!-- Set 1 -->
+          <div class="company-logo-item" title="Google">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+            <span class="company-name">Google</span>
+          </div>
+          <div class="company-logo-item" title="Shopify">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.337 23.979l7.216-1.561s-2.604-17.613-2.625-17.73c-.018-.116-.114-.192-.211-.192s-1.929-.136-1.929-.136-1.275-1.274-1.439-1.411c-.045-.037-.075-.057-.121-.074l-.914 21.104h.023zM11.71 11.305s-.81-.424-1.774-.424c-1.447 0-1.504.906-1.504 1.141 0 1.232 3.24 1.715 3.24 4.629 0 2.295-1.44 3.76-3.406 3.76-2.354 0-3.54-1.465-3.54-1.465l.646-2.086s1.245 1.066 2.28 1.066c.675 0 .975-.545.975-.932 0-1.619-2.654-1.694-2.654-4.359-.034-2.237 1.571-4.416 4.827-4.416 1.257 0 1.875.361 1.875.361l-.945 2.715-.02.01zM11.17.83c.136 0 .271.038.405.135-.984.465-2.064 1.639-2.508 3.992-.656.213-1.293.405-1.889.578C7.697 3.75 8.951.84 11.17.84V.83zm1.235 2.949v.135c-.754.232-1.583.484-2.394.736.466-1.777 1.333-2.645 2.085-2.971.193.501.309 1.176.309 2.1zm.539-2.234c.694.074 1.141.867 1.429 1.755-.349.114-.735.231-1.158.366v-.252c0-.752-.096-1.371-.271-1.871v.002zm2.992 1.289c-.02 0-.06.021-.078.021s-.289.075-.714.21c-.423-1.233-1.176-2.37-2.508-2.37h-.115C12.135.209 11.669 0 11.265 0 8.159 0 6.675 3.877 6.21 5.846c-1.194.365-2.063.636-2.16.674-.675.213-.694.232-.772.87-.075.462-1.83 14.063-1.83 14.063L15.009 24l.927-21.166z"/></svg>
+            <span class="company-name">Shopify</span>
+          </div>
+          <div class="company-logo-item" title="Framer">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z"/></svg>
+            <span class="company-name">Framer</span>
+          </div>
+          <div class="company-logo-item" title="Github">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <span class="company-name">Github</span>
+          </div>
+          <div class="company-logo-item" title="Canva">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zM6.962 7.68c.754 0 1.337.549 1.405 1.2.069.583-.171 1.097-.822 1.406-.343.171-.48.172-.549.069-.034-.069 0-.137.069-.206.617-.514.617-.926.548-1.508-.034-.378-.308-.618-.583-.618-1.2 0-2.914 2.674-2.674 4.629.103.754.549 1.646 1.509 1.646.308 0 .65-.103.96-.24.5-.264.799-.47 1.097-.8-.073-.885.704-2.046 1.851-2.046.515 0 .926.205.96.583.068.514-.377.582-.514.582s-.378-.034-.378-.17c-.034-.138.309-.07.275-.378-.035-.206-.24-.274-.446-.274-.72 0-1.131.994-1.029 1.611.035.275.172.549.447.549.205 0 .514-.31.617-.755.068-.308.343-.514.583-.514.102 0 .17.034.205.171v.138c-.034.137-.137.548-.102.651 0 .069.034.171.17.171.092 0 .436-.18.777-.459.117-.59.253-1.298.253-1.357.034-.24.137-.48.617-.48.103 0 .171.034.205.171v.138l-.136.617c.445-.583 1.097-.994 1.508-.994.172 0 .309.102.309.274 0 .103 0 .274-.069.446-.137.377-.309.96-.412 1.474 0 .137.035.274.207.274.171 0 .685-.206 1.096-.754l.007-.004c-.002-.068-.007-.134-.007-.202 0-.411.035-.754.104-.994.068-.274.411-.514.617-.514.103 0 .205.069.205.171 0 .035 0 .103-.034.137-.137.446-.24.857-.24 1.269 0 .24.034.582.102.788 0 .034.035.069.07.069.068 0 .548-.445.89-1.028-.308-.206-.48-.549-.48-.96 0-.72.446-1.097.858-1.097.343 0 .617.24.617.72 0 .308-.103.65-.274.96h.102a.77.77 0 0 0 .584-.24.293.293 0 0 1 .134-.117c.335-.425.83-.74 1.41-.74.48 0 .924.205.959.582.068.515-.378.618-.515.618l-.002-.002c-.138 0-.377-.035-.377-.172 0-.137.309-.068.274-.376-.034-.206-.24-.275-.446-.275-.686 0-1.13.891-1.028 1.611.034.275.171.583.445.583.206 0 .515-.308.652-.754.068-.274.343-.514.583-.514.103 0 .17.034.205.171 0 .069 0 .206-.137.652-.17.308-.171.48-.137.617.034.274.171.48.309.583.034.034.068.102.068.102 0 .069-.034.138-.137.138-.034 0-.068 0-.103-.035-.514-.205-.72-.548-.789-.891-.205.24-.445.377-.72.377-.445 0-.89-.411-.96-.926a1.609 1.609 0 0 1 .075-.649c-.203.13-.422.203-.623.203h-.17c-.447.652-.927 1.098-1.27 1.303a.896.896 0 0 1-.377.104c-.068 0-.171-.035-.205-.104-.095-.152-.156-.392-.193-.667-.481.527-1.145.805-1.453.805-.343 0-.548-.206-.582-.55v-.376c.102-.754.377-1.2.377-1.337a.074.074 0 0 0-.069-.07c-.24 0-1.028.824-1.166 1.373l-.103.445c-.068.309-.377.515-.582.515-.103 0-.172-.035-.206-.172v-.137l.046-.233c-.435.31-.87.508-1.075.508-.308 0-.48-.172-.514-.412-.206.274-.445.412-.754.412-.352 0-.696-.24-.862-.593-.244.275-.523.553-.852.764-.48.309-1.028.549-1.68.549-.582 0-1.097-.309-1.371-.583-.412-.377-.651-.96-.686-1.509-.205-1.68.823-3.84 2.4-4.8.378-.205.755-.343 1.132-.343zm9.77 3.291c-.104 0-.172.172-.172.343 0 .274.137.583.309.755a1.74 1.74 0 0 0 .102-.583c0-.343-.137-.515-.24-.515z"/></svg>
+            <span class="company-name">Canva</span>
+          </div>
+          <div class="company-logo-item" title="Figma">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg>
+            <span class="company-name">Figma</span>
+          </div>
+        </div>
+      </div>
+
+
 
 
       <div class="unslate_co--section" id="portfolio-section">
@@ -300,55 +337,57 @@
       <div class="unslate_co--section" id="about-section">
         <div class="container">
           
-          <div class="section-heading-wrap text-center mb-5">
-            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">About Me</span></h2>
-            <span class="gsap-reveal">
-            <img src="images/divider.png" alt="divider" width="76">
-            </span>
-          </div>
-          
+          <div class="row justify-content-between align-items-center">
+            
+            <!-- Left Column: Text Content -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+              <h2 class="meet-heading gsap-reveal">Meet Irfan</h2>
+              <p class="meet-desc gsap-reveal">
+                I'm Irfan, a passionate Full Stack Developer & Designer based in India. I specialize in crafting bold digital experiences that captivate and inspire, blending technical precision with creative strategy to elevate brands.
+              </p>
 
-          <div class="row mt-5 justify-content-between align-items-center">
-            <div class="col-lg-5 mb-5 mb-lg-0">
-              <figure class="dotted-bg gsap-reveal-img " style="max-width: 400px; margin: 0 auto;">
-                <img src="images/cover_bg_2.png" alt="Image" class="img-fluid">
-              </figure>
+              <!-- Skill Pills -->
+              <div class="skill-pills-container gsap-reveal">
+                <span class="skill-pill">Full Stack Dev</span>
+                <span class="skill-pill">UI/UX Design</span>
+                <span class="skill-pill">AI Engineering</span>
+                <span class="skill-pill">Webflow</span>
+                <span class="skill-pill">React.js</span>
+                <span class="skill-pill">Node.js</span>
+              </div>
+
+              <!-- Experience List -->
+              <div class="experience-list gsap-reveal">
+                <div class="experience-item">
+                  <span class="experience-role">Freelance</span>
+                  <span class="experience-company">Global Clients</span>
+                  <span class="experience-date">Currently</span>
+                </div>
+                <div class="experience-item">
+                  <span class="experience-role">Web Developer</span>
+                  <span class="experience-company">Tech Solutions</span>
+                  <span class="experience-date">2023-24</span>
+                </div>
+                <div class="experience-item">
+                  <span class="experience-role">UI Designer</span>
+                  <span class="experience-company">Creative Studio</span>
+                  <span class="experience-date">2021-23</span>
+                </div>
+              </div>
             </div>
-            <div class="col-lg-7 pl-lg-5">
-              <h3 class="mb-4 heading-h3"><span class="gsap-reveal">Full Stack Developer & AI-Driven Designer</span></h3>
-              <p class="lead gsap-reveal">I’m Irfan Nisar, a developer who loves building clean, functional, and visually sharp digital experiences. I work across full-stack development, UI/UX design, and AI-driven workflows, focusing on creating products that feel intuitive, fast, and thoughtfully engineered.</p>
-              <p class="mb-4 gsap-reveal">I enjoy turning ideas into polished interfaces, building scalable systems, and experimenting with AI to push what’s possible inside the browser. Whether it’s designing a frictionless e-commerce flow, engineering reliable backend logic, or crafting smarter prompt-based interactions, I approach every project with detail, clarity, and a builder’s mindset.</p>
-              <p class="mb-4 gsap-reveal">Right now, I’m sharpening my craft in MERN development, AI engineering, and product-focused design — aiming to create digital experiences that are not just well-built, but genuinely enjoyable to use.</p>
-              <p class="gsap-reveal"><a href="https://drive.google.com/file/d/1GsusAY4BPNO3Yx33oMy_MtZtxw1A7xod/view?usp=sharing" class="btn btn-outline-pill btn-custom-light">Download my Resume</a></p>
+
+            <!-- Right Column: Image -->
+            <div class="col-lg-5">
+              <div class="meet-image-wrap gsap-reveal-img">
+                <img src="images/cover_bg_2.png" alt="Irfan Nisar" class="meet-image">
+              </div>
             </div>
+
           </div>
         </div>
       </div>
 
-      <div class="unslate_co--section">
-        <div class="container">
-          <div class="owl-carousel logo-slider">
-            <div class="logo-v1">
-              <img src="images/logo-figma.svg" alt="Figma" class="img-fluid">
-            </div>
-            <div class="logo-v1">
-              <img src="images/logo-framer.svg" alt="Framer" class="img-fluid">
-            </div>
-            <div class="logo-v1">
-              <img src="images/logo-google-white.svg" alt="Google" class="img-fluid">
-            </div>
-            <div class="logo-v1">
-              <img src="images/logo-figma.svg" alt="Figma" class="img-fluid">
-            </div>
-            <div class="logo-v1">
-              <img src="images/logo-framer.svg" alt="Framer" class="img-fluid">
-            </div>
-            <div class="logo-v1">
-              <img src="images/logo-google-white.svg" alt="Google" class="img-fluid">
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <div class="unslate_co--section" id="services-section">
         <div class="container">
@@ -364,8 +403,8 @@
                 <div class="wrap-icon mb-3">
                   <img src="images/svg/001-options.svg" alt="Image" width="45">
                 </div>
-                <h3>Tech <br> Explorer</h3>
-                <p>In the realm of technology, Irfan Nisar navigates the digital landscape with a strategic mindset.As a Tech Explorer,weaving a narrative that combines curiosity and strategic thinking in the ever-evolving digital domain. </p>
+                <h3>Strategic <br> Development</h3>
+                <p>I build digital products that solve real problems. My approach combines technical precision with a clear understanding of business goals, ensuring every line of code serves a purpose.</p>
               </div> 
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
@@ -373,8 +412,8 @@
                 <div class="wrap-icon mb-3">
                   <img src="images/svg/002-chat.svg" alt="Icon" width="45">
                 </div>
-                <h3>Design <br> Maverick</h3>
-                <p>a trailblazer in web design, crafts digital experiences with finesse. I'm weaves seamless and visually captivating narratives in the digital realm, creating an aesthetic journey for users. </p>
+                <h3>Interface <br> Design</h3>
+                <p>I design interfaces that feel inevitable. By focusing on clarity, motion, and typography, I create visual systems that guide users naturally without unnecessary friction.</p>
               </div> 
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
@@ -383,7 +422,7 @@
                   <img src="images/svg/003-contact-book.svg" alt="Image" class="img-fluid" width="45">
                 </div>
                 <h3>User <br> Experience</h3>
-                <p>Irfan Nisar, a master of user experience, excels in crafting seamless and intuitive interfaces. He elevates digital interactions through thoughtful design, prioritizing user needs to enhance overall satisfaction. </p>
+                <p>Great UX is invisible. I obsess over the details—load times, transition speeds, and touch targets—to ensure the final product feels responsive, intuitive, and human.</p>
               </div> 
             </div>
 
@@ -392,8 +431,8 @@
                 <div class="wrap-icon mb-3">
                   <img src="images/svg/004-percentage.svg" alt="Image" width="45">
                 </div>
-                <h3>Web <br> Development</h3>
-                <p>Irfan Nisar is a skilled web developer, proficient in creating robust and scalable solutions. He implements cutting-edge technologies, optimizing websites for seamless performance across devices. Collaborating effectively on cross-functional teams, Irfan stays updated on industry trends, ensuring innovative approaches in his development work. </p>
+                <h3>Full Stack <br> Engineering</h3>
+                <p>From database architecture to the front-end pixel, I handle the entire stack. I build scalable, secure, and maintainable systems using modern frameworks and best practices.</p>
               </div> 
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
@@ -401,8 +440,8 @@
                 <div class="wrap-icon mb-3">
                   <img src="images/svg/006-goal.svg" alt="Image" width="45">
                 </div>
-                <h3>WebFlow <br> Designing</h3>
-                <p>Irfan Nisar, a Webflow enthusiast, excels in crafting visually stunning websites, utilizing dynamic features for interactivity. Meticulously optimizing designs, he ensures seamless functionality and stays updated with the latest trends for cutting-edge Webflow creations. </p>
+                <h3>Webflow <br> Development</h3>
+                <p>I leverage Webflow to build high-end marketing sites rapidly. It allows for complex interactions and animations without the overhead of a traditional custom build, perfect for speed and polish.</p>
               </div> 
             </div>
             <div class="col-md-6 col-lg-4 mb-4">
@@ -410,8 +449,8 @@
                 <div class="wrap-icon mb-3">
                   <img src="images/svg/005-line-chart.svg" alt="Image" width="45">
                 </div>
-                <h3>KWGT Widget <br> Customization</h3>
-                <p>Irfan Nisar, adept at KWGT widget customization, specializes in creating personalized and visually appealing designs. He utilizes KWGT's features for dynamic and interactive widgets, ensuring seamless integration with device interfaces. Irfan stays updated on KWGT trends, bringing innovation to widget styles and tailoring them to enhance both user experience and aesthetic appeal. </p>
+                <h3>Mobile <br> Customization</h3>
+                <p>I have a deep passion for mobile UI customization, creating personalized widgets and layouts that push the boundaries of what standard mobile interfaces can do.</p>
               </div> 
             </div>
 
@@ -475,7 +514,7 @@
       <div class="unslate_co--section" id="contact-section">
         <div class="container">
           <div class="section-heading-wrap text-center mb-5">
-            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Get In Touch</span></h2>
+            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Let's Connect</span></h2>
             <span class="gsap-reveal"><img src="images/divider.png" alt="divider" width="76"></span>
           </div>
 
@@ -530,7 +569,11 @@
                 </div>
                 <div class="gsap-reveal d-block">
                   <span class="d-block contact-info-label">Address</span>
-                  <address class="contact-info-val">Olavanna Chungam. <br> Calicut, Kerala 673019</address>
+                  <address class="contact-info-val">Calicut, Kerala, India</address>
+                </div>
+                <div class="gsap-reveal d-block">
+                  <span class="d-block contact-info-label">Find me on</span>
+                  <a href="https://linktr.ee/irfan_nzr" target="_blank" class="contact-info-val">Linktree</a>
                 </div>
               </div>
             </div>
@@ -568,6 +611,9 @@
     <div class="site-loader-wrap">
       <div class="site-loader"></div>
     </div>
+
+    <!-- Permanent Bottom Blur -->
+    <div class="site-bottom-blur"></div>
 
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
