@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/about-redesign.css">
     <link rel="stylesheet" href="css/custom_logo.css">
     <link rel="stylesheet" href="css/company-carousel.css">
+    <link rel="stylesheet" href="css/scroll-indicator.css">
     <style>
       body {
         overflow-x: hidden;
@@ -772,5 +773,52 @@
       <span class="notif-text">Message Sent</span>
     </div>
     
+    <!-- Scroll Indicator -->
+    <div class="scroll-progress-container">
+      <div class="scroll-progress-bar"></div>
+    </div>
+
+    <script>
+      // Scroll Indicator Animation
+      var scrollTimeout;
+      
+      $(window).scroll(function() {
+        var $container = $(".scroll-progress-container");
+        
+        // Show indicator with blur in animation
+        $container.addClass("visible");
+        
+        // Clear existing timeout
+        clearTimeout(scrollTimeout);
+        
+        // Set timeout to hide after scrolling stops (1 second delay)
+        scrollTimeout = setTimeout(function() {
+          $container.removeClass("visible");
+        }, 1000);
+
+        var scrollTop = $(window).scrollTop();
+        var docHeight = $(document).height();
+        var winHeight = $(window).height();
+        var scrollPercent = scrollTop / (docHeight - winHeight);
+        
+        var trackHeight = 200; // Height of container defined in CSS
+        var thumbHeight = 40;  // Height of thumb defined in CSS
+        var moveRange = trackHeight - thumbHeight;
+        
+        var moveDistance = scrollPercent * moveRange;
+        
+        // Use GSAP for smooth movement
+        if (typeof TweenMax !== 'undefined') {
+          // Increased duration to 1s and used Power3 for smoother inertia feel
+          TweenMax.to(".scroll-progress-bar", 1.0, {
+            top: moveDistance,
+            ease: Power3.easeOut,
+            overwrite: "all"
+          });
+        } else {
+          $(".scroll-progress-bar").css("top", moveDistance + "px");
+        }
+      });
+    </script>
   </body>
 </html>
