@@ -2685,3 +2685,46 @@ span.error {
 .portfolio-item .overlay {
   transition: none !important; /* Let GSAP handle it */
 }
+
+/* =========================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================= */
+
+/* Hardware Acceleration for Main Container - REMOVED to fix fixed positioning context */
+/* .unslate_co--site-wrap {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+} */
+
+/* Optimize Touch Interactions */
+body {
+  touch-action: manipulation; /* Removes 300ms tap delay */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  overscroll-behavior-y: none; /* Prevents pull-to-refresh if not needed, helps Lenis */
+}
+
+/* Optimize Sticky Header on Mobile */
+@media (max-width: 991.98px) {
+  .unslate_co--site-nav.scrolled {
+    /* Reduce blur load on mobile GPU */
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    /* Ensure it's on its own layer */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  
+  /* Disable heavy hover effects on mobile */
+  .portfolio-item .overlay {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+}
+
+/* Optimize Images - REMOVED to prevent layout shifts */
+/* img {
+  content-visibility: auto; 
+} */

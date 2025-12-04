@@ -790,16 +790,19 @@
           gestureDirection: 'vertical',
           smooth: true,
           mouseMultiplier: 1,
-          smoothTouch: false,
-          touchMultiplier: 2,
+          smoothTouch: true, // Enable smooth scrolling on mobile
+          touchMultiplier: 1.5, // Slightly reduced for better control
+          infinite: false,
         });
 
         function raf(time) {
           lenis.raf(time);
           requestAnimationFrame(raf);
         }
+
         requestAnimationFrame(raf);
       }
+
 
       // Scroll Indicator Logic
       var scrollTimeout;
