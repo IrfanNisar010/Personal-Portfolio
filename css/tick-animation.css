@@ -1,0 +1,120 @@
+/* 3D Animated Tick Icon */
+.tick-anim-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkmark-svg {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3; /* Thicker stroke for better visibility */
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #22c55e;
+  /* 3D-like shadow */
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #22c55e; /* Fallback */
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  /* Add a slight shadow to the check itself for depth */
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.1));
+}
+
+/* Error / Cross Animation */
+.cross-svg {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #dc3545;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+  animation: fill-error .4s ease-in-out .4s forwards, shake .3s ease-in-out .9s both;
+}
+
+.cross__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #dc3545;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.cross__path {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.1));
+}
+
+.cross__path--right {
+  animation-delay: 1.1s; /* Second stroke comes later */
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.2, 1.2, 1); /* Slightly larger bounce */
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #22c55e;
+  }
+}
+
+@keyframes fill-error {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #dc3545;
+  }
+}
+
+/* Override the default .notif-icon background when this is active */
+.custom-notification.success .notif-icon,
+.custom-notification.error .notif-icon {
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important; /* Allow bounce to go outside if needed */
+}

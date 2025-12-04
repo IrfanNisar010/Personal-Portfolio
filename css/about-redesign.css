@@ -139,8 +139,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 210px; /* Adjusted width */
-  height: 48px; /* Decreased height (smaller look) */
+  width: 220px; /* Reduced width */
+  height: 44px; /* Reduced height */
   background-color: #fff;
   border-radius: 24px;
   text-decoration: none;
@@ -148,10 +148,15 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Glass border */
+  backdrop-filter: blur(4px); /* Subtle blur */
+  background-clip: padding-box; /* Ensure border doesn't overlap bg */
 }
 
+
+
 .resume-btn:hover {
-  transform: translateY(-3px);
+  /* transform: translateY(-3px); Removed popup effect */
   box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
@@ -178,7 +183,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: color 0.3s ease, transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-  padding-left: 12px; /* Adjusted padding */
+  padding-left: 30px; /* Increased padding to prevent overlap with dot */
 }
 
 /* The Arrow */
@@ -204,13 +209,14 @@
 
 /* Hover Interactions */
 .resume-btn:hover .resume-btn-dot {
-  transform: scale(80); /* Increased scale to fully cover the button */
-  background-color: #D63447;
+  transform: scale(100); /* Increased scale to fully cover the button */
+  background: linear-gradient(135deg, #D63447 0%, #a01a2a 100%); /* 3D Red Gradient */
+  box-shadow: inset 0 2px 5px rgba(255,255,255,0.2), inset 0 -2px 5px rgba(0,0,0,0.2); /* Inner depth */
 }
 
 .resume-btn:hover .resume-btn-text {
   color: #fff;
-  transform: translateX(-12px); /* Adjusted slide distance */
+  transform: translateX(-15px); /* Reduced slide distance for smaller buttons */
   padding-left: 0;
 }
 
@@ -223,13 +229,13 @@
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .resume-btn {
-    width: 190px;
+    width: 300px; /* Increased width */
     height: 44px;
   }
   
   .resume-btn-text {
     font-size: 0.7rem;
-    padding-left: 8px;
+    padding-left: 30px; /* Increased to prevent overlap with dot */
   }
   
   .resume-btn-dot {
@@ -253,7 +259,24 @@
   }
   
   .resume-btn {
-    width: 100%; /* Full width on very small screens or keep fixed? Let's keep fixed but slightly smaller */
-    max-width: 200px;
+    width: 100%; 
+    max-width: 100%; /* Allow full width */
+    height: 48px; /* Restore desktop height for better touch target */
   }
+
+  /* Specific fix for the Send Message button container in mobile */
+  .form-group .resume-btn {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Specific style for Send Message button to match smaller process buttons */
+#gform .resume-btn {
+  width: 180px;
+  height: 40px;
+}
+
+#gform .resume-btn .resume-btn-text {
+  font-size: 11px;
 }

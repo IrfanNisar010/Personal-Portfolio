@@ -25,6 +25,7 @@ jQuery(function($) {
 	blurStaggerReveal();
 	liquidRippleEffect();
 	blurStaggerReveal();
+	luxuryButtonReveal();
 	liquidRippleEffect();
 	portfolioHoverEffect();
 	mobileImageReveal();
@@ -879,8 +880,8 @@ var blurStaggerReveal = function() {
 
 	$('.blur-stagger-reveal').each(function() {
 		var $this = $(this);
-		// Select children: .skill-pill for skills, .experience-item for experience list
-		var $children = $this.find('.skill-pill, .experience-item');
+		// Select children: .skill-pill for skills, .experience-item for experience list, .process-card for cards, .process-tag for pill
+		var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag');
 
 		// Initial State
 		TweenMax.set($children, { 
@@ -898,6 +899,47 @@ var blurStaggerReveal = function() {
 			webkitFilter: 'blur(0px)',
 			ease: Power3.easeOut
 		}, 0.1); // Stagger delay
+
+		new ScrollMagic.Scene({
+			triggerElement: this,
+			triggerHook: 0.85,
+			reverse: false
+		})
+		.setTween(tl)
+		.addTo(controller);
+	});
+};
+
+var luxuryButtonReveal = function() {
+	var controller = new ScrollMagic.Controller();
+
+	$('.luxury-button-wrapper').each(function() {
+		var $this = $(this);
+		var $btns = $this.find('.resume-btn');
+
+		// Initial State: Tilted, blurred, and pushed down
+		TweenMax.set($btns, {
+			y: 50,
+			autoAlpha: 0,
+			scale: 0.9,
+			rotationX: 30,
+			transformPerspective: 800,
+			transformOrigin: "center top",
+			filter: "blur(10px)",
+			webkitFilter: "blur(10px)"
+		});
+
+		var tl = new TimelineMax();
+		tl.staggerTo($btns, 1.2, {
+			y: 0,
+			autoAlpha: 1,
+			scale: 1,
+			rotationX: 0,
+			filter: "blur(0px)",
+			webkitFilter: "blur(0px)",
+			ease: Elastic.easeOut.config(1, 0.6), // Rich elastic bounce
+			force3D: true
+		}, 0.2); // Delay between buttons
 
 		new ScrollMagic.Scene({
 			triggerElement: this,
