@@ -55,6 +55,12 @@ body {
   z-index: 9999;
 }
 
+@media (max-width: 991.98px) {
+  .site-bottom-blur {
+    display: none;
+  }
+}
+
 body:before {
   content: "";
   position: absolute;
@@ -2663,6 +2669,26 @@ span.error {
   /* About Image Mobile Size */
   #about-section figure.dotted-bg {
     max-width: 250px !important;
+  }
+
+  .meet-image-mobile-wrap {
+    text-align: left; /* Align with text for editorial look */
+    margin-bottom: 25px;
+    margin-top: 15px;
+    padding-left: 2px; /* Slight optical adjustment */
+  }
+
+  .meet-image-mobile-wrap img {
+    max-width: 180px; /* Refined size */
+    border-radius: 20px; /* Smooth modern corners */
+    width: 100%;
+    height: auto;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3); /* Premium lift */
+    
+    /* Force initial state in CSS to avoid flash of color */
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    transform: scale(1.05);
   }
 }
 

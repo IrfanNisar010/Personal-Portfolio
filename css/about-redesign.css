@@ -17,6 +17,27 @@
   line-height: 1.6;
   margin-bottom: 40px;
   max-width: 90%;
+  text-align: justify; /* Editorial block alignment */
+  text-justify: inter-word; /* Cleaner spacing */
+  -webkit-hyphens: none; /* Prevent word splitting */
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  text-wrap: pretty; /* Modern browser optimization for better line breaks */
+  word-break: normal !important; /* Ensure words don't split mid-character */
+  overflow-wrap: normal !important; /* Only break if word is too long for container */
+  word-wrap: normal !important; /* Legacy support */
+}
+
+@media (max-width: 991px) {
+  .meet-desc {
+    max-width: 100%; /* Use full width on mobile */
+    font-size: 1rem; /* Slightly smaller for better density */
+    padding-right: 10px; /* Prevent edge touching */
+    text-align: left !important; /* FORCE left align on mobile */
+    text-justify: none !important;
+    white-space: normal !important;
+  }
 }
 
 /* Skill Pills */
@@ -226,8 +247,9 @@
 
 @media (max-width: 480px) {
   .resume-button-wrap {
-    text-align: center; /* Center button on mobile */
-    margin-top: 25px;
+    text-align: left; /* Align left to match editorial style */
+    margin-top: 30px; /* Increased spacing */
+    padding-left: 2px; /* Align with image */
   }
   
   .resume-btn {

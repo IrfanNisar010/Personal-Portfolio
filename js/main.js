@@ -25,7 +25,10 @@ jQuery(function($) {
 	blurTextReveal();
 	blurStaggerReveal();
 	liquidRippleEffect();
+	blurStaggerReveal();
+	liquidRippleEffect();
 	portfolioHoverEffect();
+	mobileImageReveal();
 
 });
 
@@ -56,6 +59,14 @@ var siteIstotope = function() {
     $container.isotope('layout');
   })
   .done(function() {
+		// Mobile Optimization: Skip ScrollMagic for images, use lightweight Observer
+		// IMPORTANT: Check BEFORE wrapping images, otherwise they get hidden by .reveal-content CSS
+		var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+		if (isMobile) {
+			mobileImageReveal();
+			return; 
+		}
+
   	$('.gsap-reveal-img').each(function() {
 			var html = $(this).html();
 			$(this).html('<div class="reveal-wrap"><span class="cover"></span><div class="reveal-content">'+html+'</div></div>');
@@ -702,6 +713,10 @@ var revealPortfolioDetails = function() {
 };
 
 var jarallaxPlugin = function() {
+	// Disable Jarallax on mobile for performance
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	if (isMobile) return;
+
 	$('.jarallax').jarallax({
     speed: 0.2
 	});
@@ -1065,4 +1080,77 @@ var portfolioHoverEffect = function() {
 			});
 		});
 	});
+};
+
+var mobileImageReveal = function() {
+	// Only run on mobile
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	if (!isMobile) return;
+
+	// Select portfolio images (both original and Isotope-wrapped) and about image
+	var $images = $('.portfolio-item img, .reveal-content img, .meet-image, .meet-image-mobile-wrap img');
+
+	// Filter out already initialized images to prevent double-binding
+	$images = $images.filter(function() {
+		return !$(this).data('mobile-reveal-init');
+	});
+
+	if ($images.length === 0) return;
+
+	// Mark as initialized
+	$images.data('mobile-reveal-init', true);
+
+	// Use GSAP to set initial state: Sharp Grayscale
+	TweenMax.set($images, {
+		filter: 'grayscale(100%) blur(0px)',
+		webkitFilter: 'grayscale(100%) blur(0px)',
+		scale: 1.05
+	});
+
+	// Intersection Observer for performance
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries, observer) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					var img = entry.target;
+					
+					// Create a Timeline for the "Refocus" Effect
+					var tl = new TimelineMax({ overwrite: 'all' });
+
+					// Step 1: Blur IN while starting to color (The "Transition Blur")
+					tl.to(img, 0.5, {
+						filter: 'grayscale(50%) blur(4px)',
+						webkitFilter: 'grayscale(50%) blur(4px)',
+						scale: 1.02,
+						ease: Power1.easeInOut
+					})
+					// Step 2: Blur OUT to sharp color
+					.to(img, 1.0, {
+						filter: 'grayscale(0%) blur(0px)',
+						webkitFilter: 'grayscale(0%) blur(0px)',
+						scale: 1,
+						ease: Power2.easeOut
+					});
+
+					// Stop observing this image (it stays colored)
+					observer.unobserve(img);
+				}
+			});
+		}, {
+			root: null,
+			rootMargin: "0px", 
+			threshold: 0.15 // Trigger slightly later to ensure user sees the start
+		});
+
+		$images.each(function() {
+			observer.observe(this);
+		});
+	} else {
+		// Fallback
+		TweenMax.set($images, {
+			filter: 'grayscale(0%) blur(0px)',
+			webkitFilter: 'grayscale(0%) blur(0px)',
+			scale: 1
+		});
+	}
 };
