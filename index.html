@@ -230,15 +230,15 @@
               </div>
 
               <div class="item branding packaging col-sm-6 col-md-6 col-lg-4 isotope-mb-2">
-                <a src="portfolio-single-4.html" class="portfolio-item isotope-item gsap-reveal-img ajax-load-page" data-id="4">
+                <a href="portfolio-single-guided-pro.html" class="portfolio-item isotope-item gsap-reveal-img ajax-load-page" data-id="guided-pro">
                     <div class="overlay">
                       <span class="wrap-icon icon-link2"></span>
                       <div class="portfolio-item-content">
-                        <h3>Louis Vuitton</h3>
-                        <p>Website, Building</p>
+                        <h3>Guided Pro Wallet</h3>
+                        <p>Fintech, Wallet App</p>
                       </div>
                     </div>
-                    <img src="images/work_3_md.png" class="lazyload  img-fluid" alt="Images" />
+                    <img src="images/guided_pro_dashboard.png" class="lazyload  img-fluid" alt="Guided Pro Wallet" />
                   </a>
               </div>
 
@@ -258,15 +258,15 @@
               </div>
 
               <div class="item illustration packaging col-sm-6 col-md-6 col-lg-4 isotope-mb-2">
-                <a href="images/work_5_md.jpg" class="portfolio-item isotope-item gsap-reveal-img" data-fancybox="gallery" data-caption="Bento designs">
+                <a href="portfolio-single-gemini-clone.html" class="portfolio-item isotope-item gsap-reveal-img ajax-load-page" data-id="gemini-clone">
                     <div class="overlay">
-                      <span class="wrap-icon icon-photo2"></span>
+                      <span class="wrap-icon icon-link2"></span>
                       <div class="portfolio-item-content">
-                        <h3>Bento designs</h3>
-                        <p>Inspired from, QClay</p>
+                        <h3>Gemini Clone</h3>
+                        <p>AI Chat App, React.js</p>
                       </div>
                     </div>
-                    <img src="images/work_5_md.jpg" class="lazyload  img-fluid" alt="Images" />
+                    <img src="images/gemini_clone_preview.png" class="lazyload  img-fluid" alt="Gemini Clone" />
                   </a>
               </div>
 
@@ -297,15 +297,15 @@
               </div>
 
               <div class="item web branding col-sm-6 col-md-6 col-lg-4 isotope-mb-2">
-                <a href="images/work_8_md.jpg" class="portfolio-item item-portrait isotope-item gsap-reveal-img " data-fancybox="gallery" data-caption="Homescreen Setup">
+                <a href="portfolio-single-revoult-health.html" class="portfolio-item item-portrait isotope-item gsap-reveal-img ajax-load-page" data-id="revoult-health">
                   <div class="overlay">
-                      <span class="wrap-icon icon-play_circle_filled"></span>
+                      <span class="wrap-icon icon-link2"></span>
                       <div class="portfolio-item-content">
-                        <h3>Homescreen Setup</h3>
-                        <p>Customization, Designing</p>
+                        <h3>Re.voult Health</h3>
+                        <p>UI/UX Design, Mental Health App</p>
                       </div>
                     </div>
-                    <img src="images/work_8_md.jpg" class="lazyload  img-fluid" alt="Images" />
+                    <img src="images/revoult_health_1.png" class="lazyload  img-fluid" alt="Re.voult Health" />
                   </a>
               </div>
 
@@ -341,13 +341,13 @@
             
             <!-- Left Column: Text Content -->
             <div class="col-lg-6 mb-5 mb-lg-0">
-              <h2 class="meet-heading gsap-reveal">Meet Irfan</h2>
-              <p class="meet-desc gsap-reveal">
+              <h2 class="meet-heading blur-reveal-text">Meet Irfan</h2>
+              <p class="meet-desc blur-reveal-text">
                 I'm Irfan, a passionate Full Stack Developer & Designer based in India. I specialize in crafting bold digital experiences that captivate and inspire, blending technical precision with creative strategy to elevate brands.
               </p>
 
               <!-- Skill Pills -->
-              <div class="skill-pills-container gsap-reveal">
+              <div class="skill-pills-container blur-stagger-reveal">
                 <span class="skill-pill">Full Stack Dev</span>
                 <span class="skill-pill">UI/UX Design</span>
                 <span class="skill-pill">AI Engineering</span>
@@ -357,7 +357,7 @@
               </div>
 
               <!-- Experience List -->
-              <div class="experience-list gsap-reveal">
+              <div class="experience-list blur-stagger-reveal">
                 <div class="experience-item">
                   <span class="experience-role">Freelance</span>
                   <span class="experience-company">Global Clients</span>
@@ -624,27 +624,48 @@
         if (typeof TimelineMax !== 'undefined') {
           var tl = new TimelineMax();
 
-          // 1. Intro "I'm Irfan" In
-          tl.fromTo("#hero-intro", 1.2, 
-            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", y: 30 },
-            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", y: 0, ease: Power3.easeOut }
+          // Helper: Split text into characters for granular animation
+          var splitText = function(selector) {
+            $(selector).each(function() {
+              var $this = $(this);
+              var text = $this.text().trim();
+              var newHtml = '';
+              for (var i = 0; i < text.length; i++) {
+                var char = text[i] === ' ' ? '&nbsp;' : text[i];
+                // Added text-shadow for the initial "inner glow" feel
+                newHtml += '<span style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter;">' + char + '</span>';
+              }
+              $this.html(newHtml);
+            });
+          };
+
+          // Prepare Text
+          splitText("#hero-intro");
+          $("#hero-heading > span").each(function() { splitText(this); });
+
+          // Ensure parents are visible (children are hidden by splitText styles)
+          TweenMax.set("#hero-intro, #hero-heading", { opacity: 1 });
+
+          // 1. Intro "I'm Irfan" Characters In (Slower, Luxury Feel)
+          tl.staggerTo("#hero-intro span", 1.5, 
+            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
+            0.06
           )
-          // 2. Intro Out
-          .to("#hero-intro", 0.8, 
-            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", scale: 1.1, ease: Power3.easeIn, delay: 0.5 }
+          // 2. Intro Out (Smooth Fade & Blur)
+          .to("#hero-intro", 1.2, 
+            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", textShadow: "0 0 30px rgba(255,255,255,0.8)", scale: 1.05, ease: Power2.easeInOut, delay: 0.4 }
           )
-          // 3. Main Heading In
-          .set("#hero-heading", { opacity: 1 }) // Make parent visible
-          .staggerFromTo("#hero-heading span", 1.5, 
-            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", y: 50, scale: 1.05 },
-            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", y: 0, scale: 1, ease: Power3.easeOut, force3D: true },
-            0.2
+          // 3. Main Heading Characters In (Deep Overlap for Flow)
+          .staggerTo("#hero-heading span span", 1.5, 
+            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
+            0.02,
+            "-=1.0" // Start 1s before Intro finishes
           )
-          // 4. CTA Pill In (After Heading)
-          .fromTo("#hero-cta", 1.8,
-            { opacity: 0, y: 30, filter: "blur(20px)", webkitFilter: "blur(20px)" },
-            { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut },
-            "-=0.8"
+          // 4. CTA Pill In
+          .fromTo("#hero-cta", 2.0,
+            { opacity: 0, y: 20, filter: "blur(15px)", webkitFilter: "blur(15px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power2.easeOut },
+            "-=1.0"
           );
         }
       });

@@ -22,6 +22,10 @@ jQuery(function($) {
 	contactForm();
 	stickyFillPlugin();
 	animateReveal();
+	blurTextReveal();
+	blurStaggerReveal();
+	liquidRippleEffect();
+	portfolioHoverEffect();
 
 });
 
@@ -75,15 +79,20 @@ var siteIstotope = function() {
 
 				setTimeout(function() {
 
-					tl2
-						tl2.set(img, {  scale: '2.0', autoAlpha: 1, })
-						.to(cover, 1, { marginLeft: '0', ease:Expo.easeInOut, onComplete() {
-							tl2.set(revealContent, { autoAlpha: 1 });
-							tl2.to(cover, 1, { marginLeft: '102%', ease:Expo.easeInOut });
-							tl2.to(img, 2, { scale: '1.0', ease:Expo.easeOut }, '-=1.5');
-						} } )
+					// Luxury Blur Reveal (No Zoom, No Wipe)
+					tl2.set(cover, { display: 'none' }); // Hide the wipe cover
+					tl2.set(img, { scale: 1 }); // Ensure no zoom
+					tl2.set(revealContent, { autoAlpha: 0, filter: 'blur(15px)', webkitFilter: 'blur(15px)', y: 20 });
 
-				}, i * 700);
+					tl2.to(revealContent, 0.8, { 
+						autoAlpha: 1, 
+						filter: 'blur(0px)', 
+						webkitFilter: 'blur(0px)', 
+						y: 0,
+						ease: Power3.easeOut 
+					});
+
+				}, i * 150);
 
 				
 
@@ -233,8 +242,9 @@ var owlCarouselPlugin = function() {
 	    loop: true,
 	    stagePadding: 0,
 	    margin: 0,
-	    smartSpeed: 1000,
+	    smartSpeed: 800,
 	    autoplay: true,
+	    autoplayTimeout: 2000,
 	    autoplayHoverPause: true,
 	    dots: false,
 	    nav: false,
@@ -574,20 +584,26 @@ var portfolioItemClick = function() {
 	});
 
 	// Close
+	// Close
 	$('body').on('click', '.js-close-portfolio', function() {
 
 		setTimeout(function(){
 			$('html, body').animate({
 	    	scrollTop: $('#portfolio-section').offset().top - 50
-			}, 700, 'easeInOutExpo');
+			}, 500, 'easeInOutExpo');
 		}, 200);
 
 		TweenMax.set('.portfolio-wrapper', { visibility: 'visible', height: 'auto' });
-		TweenMax.to('.portfolio-single-inner', 1, { marginTop: '50px', opacity: 0,  display: 'none', onComplete() {
-			TweenMax.to('.portfolio-wrapper', 1, { marginTop: '0px', autoAlpha: 1, position: 'relative' });
-
-		} });
-		
+		TweenMax.to('.portfolio-single-inner', 0.5, { 
+			marginTop: '50px', 
+			opacity: 0, 
+			display: 'none',
+			filter: 'blur(20px)',
+			webkitFilter: 'blur(20px)',
+			onComplete() {
+				TweenMax.to('.portfolio-wrapper', 0.5, { marginTop: '0px', autoAlpha: 1, position: 'relative' });
+			} 
+		});
 	});
 };
 
@@ -611,27 +627,77 @@ var loadPortfolioSinglePage = function(id, href) {
 	    	
 			var getHTMLContent = $(html).find('.portfolio-single-wrap').html();
 
+			// Append with inline styles to prevent FOUC (Flash of Unstyled Content)
 			pSingleHolder.append(
 				'<div id="portfolio-single-'+id+
-				'" class="portfolio-single-inner"><span class="unslate_co--close-portfolio js-close-portfolio d-flex align-items-center"><span class="close-portfolio-label">Back to Portfolio</span><span class="icon-close2 wrap-icon-close"></span></span>' + getHTMLContent + '</div>'
+				'" class="portfolio-single-inner" style="opacity: 0; display: none;"><span class="unslate_co--close-portfolio js-close-portfolio d-flex align-items-center"><span class="close-portfolio-label">Back to Portfolio</span><span class="icon-close2 wrap-icon-close"></span></span>' + getHTMLContent + '</div>'
 			);
+
+			// Prepare text/elements immediately (Split text, hide children)
+			preparePortfolioDetails();
 
 			setTimeout(function() {
 				owlSingleSlider();
 			}, 10);
 
 			setTimeout(function() {
-				TweenMax.set('.portfolio-single-inner', { marginTop: '100px', autoAlpha: 0, display: 'none' });
-				TweenMax.to('.portfolio-single-inner', .5, { marginTop: '0px', autoAlpha: 1, display: 'block', onComplete() {
-
-					TweenMax.to('.loader-portfolio-wrap', 1, { top: '0px', autoAlpha: 0, ease: Power4.easeOut });	
-				} });
-			}, 700 );
+				// Entrance Animation: Fade Parent In
+				TweenMax.to('.portfolio-single-inner', 0.6, { 
+					marginTop: '0px', 
+					autoAlpha: 1, 
+					display: 'block', 
+					ease: Power3.easeOut,
+					onComplete() {
+						TweenMax.to('.loader-portfolio-wrap', 1, { top: '0px', autoAlpha: 0, ease: Power4.easeOut });
+						// Trigger content animations
+						revealPortfolioDetails(); 
+					} 
+				});
+			}, 400 ); // Reduced delay for quicker feel
 		}
 	});
 
 	return false;
 
+};
+
+var preparePortfolioDetails = function() {
+	// 1. Prepare Heading (Split & Hide)
+	var $heading = $('.portfolio-single-inner h2');
+	if ($heading.length) {
+		var text = $heading.text();
+		var chars = text.split('');
+		$heading.empty();
+		$.each(chars, function(i, char) {
+			$heading.append('<span style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(10px);">' + (char === ' ' ? '&nbsp;' : char) + '</span>');
+		});
+	}
+
+	// 2. Prepare Content (Hide & Blur)
+	var $content = $('.portfolio-single-inner p, .portfolio-single-inner .detail-v1, .portfolio-single-inner figure, .portfolio-single-inner .owl-carousel');
+	TweenMax.set($content, { opacity: 0, y: 20, filter: 'blur(10px)' });
+};
+
+var revealPortfolioDetails = function() {
+	// 1. Animate Heading Characters
+	var $headingSpans = $('.portfolio-single-inner h2 span');
+	if ($headingSpans.length) {
+		TweenMax.staggerTo($headingSpans, 0.4, {
+			opacity: 1,
+			filter: 'blur(0px)',
+			y: 0,
+			ease: Back.easeOut.config(1.7)
+		}, 0.02);
+	}
+
+	// 2. Animate Content Elements
+	var $content = $('.portfolio-single-inner p, .portfolio-single-inner .detail-v1, .portfolio-single-inner figure, .portfolio-single-inner .owl-carousel');
+	TweenMax.staggerTo($content, 0.6, {
+		opacity: 1,
+		y: 0,
+		filter: 'blur(0px)',
+		ease: Power2.easeOut
+	}, 0.1);
 };
 
 var jarallaxPlugin = function() {
@@ -816,3 +882,178 @@ var animateReveal = function() {
 
 }
 
+
+var blurTextReveal = function() {
+	var controller = new ScrollMagic.Controller();
+
+	$('.blur-reveal-text').each(function() {
+		var $this = $(this);
+		var text = $this.text().trim(); // Trim to avoid weird spacing
+		$this.empty();
+		
+		// Split text into characters
+		var chars = text.split('');
+		$.each(chars, function(i, char) {
+			// Use non-breaking space for spaces to preserve layout
+			var content = char === ' ' ? '&nbsp;' : char;
+			$this.append('<span style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + content + '</span>');
+		});
+
+		var $chars = $this.find('span');
+
+		var tl = new TimelineMax();
+		tl.staggerTo($chars, 0.8, {
+			opacity: 1,
+			filter: 'blur(0px)',
+			y: 0,
+			ease: Back.easeOut.config(1.2) // Subtle bounce
+		}, 0.015); // Fast stagger for "no lag" feel
+
+		new ScrollMagic.Scene({
+			triggerElement: this,
+			triggerHook: 0.85, // Trigger slightly before it hits the bottom
+			reverse: false
+		})
+		.setTween(tl)
+		.addTo(controller);
+	});
+};
+
+var blurStaggerReveal = function() {
+	var controller = new ScrollMagic.Controller();
+
+	$('.blur-stagger-reveal').each(function() {
+		var $this = $(this);
+		// Select children: .skill-pill for skills, .experience-item for experience list
+		var $children = $this.find('.skill-pill, .experience-item');
+
+		// Initial State
+		TweenMax.set($children, { 
+			opacity: 0, 
+			y: 30, 
+			filter: 'blur(20px)',
+			webkitFilter: 'blur(20px)'
+		});
+
+		var tl = new TimelineMax();
+		tl.staggerTo($children, 0.8, {
+			opacity: 1,
+			y: 0,
+			filter: 'blur(0px)',
+			webkitFilter: 'blur(0px)',
+			ease: Power3.easeOut
+		}, 0.1); // Stagger delay
+
+		new ScrollMagic.Scene({
+			triggerElement: this,
+			triggerHook: 0.85,
+			reverse: false
+		})
+		.setTween(tl)
+		.addTo(controller);
+	});
+};
+
+var liquidRippleEffect = function() {
+	var lastTime = 0;
+	var throttle = 40; // Balanced for subtle glass trail
+
+	$(document).on('mousemove', function(e) {
+		var now = new Date().getTime();
+		if (now - lastTime < throttle) return;
+		lastTime = now;
+
+		var x = e.clientX;
+		var y = e.clientY;
+
+		var $ripple = $('<div class="liquid-ripple"></div>');
+		$ripple.css({
+			left: x + 'px',
+			top: y + 'px'
+		});
+
+		$('body').append($ripple);
+
+		// Remove after animation completes (1s matches CSS animation)
+		setTimeout(function() {
+			$ripple.remove();
+		}, 1000);
+	});
+};
+
+var portfolioHoverEffect = function() {
+	// Select all portfolio items
+	$('.portfolio-item').each(function() {
+		var $this = $(this);
+		var $img = $this.find('img');
+		var $overlay = $this.find('.overlay');
+
+		// Set initial perspective on container
+		TweenMax.set($this, { perspective: 1000, transformStyle: "preserve-3d" });
+		TweenMax.set($img, { transformOrigin: "center center", transformStyle: "preserve-3d" });
+
+		$this.on('mouseenter', function() {
+			// Colorize on hover (Smooth Luxury Fade)
+			TweenMax.to($img, 1.2, { // Slower duration for smoothness
+				filter: 'grayscale(0%)',
+				webkitFilter: 'grayscale(0%)',
+				scale: 1.2, 
+				ease: Power2.easeOut
+			});
+		});
+
+		$this.on('mousemove', function(e) {
+			var width = $this.outerWidth();
+			var height = $this.outerHeight();
+			var offset = $this.offset();
+			
+			// Calculate mouse position relative to center (-1 to 1)
+			var xPos = (e.pageX - offset.left) / width - 0.5;
+			var yPos = (e.pageY - offset.top) / height - 0.5;
+
+			// Tilt AND Move Animation (3D Tracking)
+			TweenMax.to($img, 0.5, {
+				rotationY: xPos * 30,  
+				rotationX: -yPos * 30, 
+				x: xPos * 50, 
+				y: yPos * 50,
+				ease: Power2.easeOut,
+				transformPerspective: 1000,
+				force3D: true
+			});
+
+			// Move Overlay slightly for parallax
+			TweenMax.to($overlay, 0.5, {
+				x: xPos * 60,
+				y: yPos * 60,
+				ease: Power2.easeOut,
+				force3D: true
+			});
+
+		}).on('mouseleave', function() {
+			// Smooth Grayscale Reset
+			TweenMax.to($img, 1.0, {
+				filter: 'grayscale(100%)',
+				webkitFilter: 'grayscale(100%)',
+				ease: Power2.easeInOut
+			});
+
+			// Physical Reset (Elastic)
+			TweenMax.to($img, 1.0, {
+				rotationY: 0,
+				rotationX: 0,
+				x: 0,
+				y: 0,
+				scale: 1,
+				ease: Elastic.easeOut.config(1.0, 0.8), // Softer elastic
+				clearProps: "transform" 
+			});
+
+			TweenMax.to($overlay, 0.8, {
+				x: 0,
+				y: 0,
+				ease: Power2.easeOut
+			});
+		});
+	});
+};

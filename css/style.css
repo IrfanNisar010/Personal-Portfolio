@@ -1171,8 +1171,14 @@ a, a:hover {
 
 .portfolio-item, .blog-item {
   display: block;
-  overflow: hidden;
+  overflow: hidden; /* Keep hidden for grid, but we will scale image up */
   position: relative;
+}
+
+/* Remove default hover effects as GSAP handles them */
+.portfolio-item:hover img {
+  /* transform: scale(1.09); Handled by GSAP */
+  /* filter: grayscale(0%); Handled by GSAP */
 }
 
 .portfolio-item .overlay, .blog-item .overlay {
@@ -2662,3 +2668,20 @@ span.error {
 
 
 
+
+/* Disable CSS transitions for portfolio images to allow GSAP to take over */
+.portfolio-item img {
+  transition: none !important;
+  transform-style: preserve-3d;
+  filter: grayscale(100%); /* Start Black & White */
+  -webkit-filter: grayscale(100%);
+}
+
+.portfolio-item {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.portfolio-item .overlay {
+  transition: none !important; /* Let GSAP handle it */
+}
