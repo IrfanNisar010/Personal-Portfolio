@@ -781,63 +781,79 @@
 
     <script>
       // Initialize Lenis for Smooth Scrolling
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
-      });
+      let lenis;
+      if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          direction: 'vertical',
+          gestureDirection: 'vertical',
+          smooth: true,
+          mouseMultiplier: 1,
+          smoothTouch: false,
+          touchMultiplier: 2,
+        });
 
-      function raf(time) {
-        lenis.raf(time);
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
         requestAnimationFrame(raf);
       }
 
-      requestAnimationFrame(raf);
-
-      // Scroll Indicator Animation (Updated for Lenis)
+      // Scroll Indicator Logic
       var scrollTimeout;
-      
-      // Use Lenis scroll event for smoother updates
-      lenis.on('scroll', (e) => {
-        var $container = $(".scroll-progress-container");
+      var $container = document.querySelector(".scroll-progress-container");
+      var $progressBar = document.querySelector(".scroll-progress-bar");
+
+      function updateScrollIndicator(scrollTop) {
+        if (!$container || !$progressBar) return;
+
+        // Show indicator
+        $container.classList.add("visible");
         
-        // Show indicator with blur in animation
-        $container.addClass("visible");
-        
-        // Clear existing timeout
+        // Clear timeout
         clearTimeout(scrollTimeout);
         
-        // Set timeout to hide after scrolling stops (1 second delay)
+        // Hide after 1s of no scroll
         scrollTimeout = setTimeout(function() {
-          $container.removeClass("visible");
+          $container.classList.remove("visible");
         }, 1000);
 
-        var scrollTop = e.scroll; // Use Lenis scroll value
         var docHeight = document.documentElement.scrollHeight;
         var winHeight = window.innerHeight;
         var scrollPercent = scrollTop / (docHeight - winHeight);
         
-        var trackHeight = 200; // Height of container defined in CSS
-        var thumbHeight = 40;  // Height of thumb defined in CSS
+        // Dynamic dimensions for responsiveness
+        var trackHeight = $container.offsetHeight;
+        var thumbHeight = $progressBar.offsetHeight;
         var moveRange = trackHeight - thumbHeight;
-        
         var moveDistance = scrollPercent * moveRange;
         
-        // Use GSAP for smooth movement
+        // GSAP or Fallback
         if (typeof TweenMax !== 'undefined') {
-          TweenMax.to(".scroll-progress-bar", 0.1, { // Faster update for direct sync
+          TweenMax.to($progressBar, 0.1, {
             top: moveDistance,
-            ease: Linear.easeNone, // Direct mapping
+            ease: Linear.easeNone,
             overwrite: "all"
           });
         } else {
-          $(".scroll-progress-bar").css("top", moveDistance + "px");
+          $progressBar.style.top = moveDistance + "px";
         }
+      }
+
+      // Hook into Lenis if available
+      if (lenis) {
+        lenis.on('scroll', (e) => {
+          updateScrollIndicator(e.scroll);
+        });
+      }
+
+      // Fallback to native scroll (for safety or if Lenis fails)
+      window.addEventListener('scroll', function() {
+        // If Lenis is active, it might suppress native scroll events or sync them.
+        // We use this as a backup or for the initial state.
+        updateScrollIndicator(window.scrollY || document.documentElement.scrollTop);
       });
     </script>
   </body>

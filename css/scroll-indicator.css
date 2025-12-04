@@ -35,3 +35,23 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+  .scroll-progress-container {
+    right: 15px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-progress-container {
+    right: 10px;
+    height: 140px;
+    width: 4px;
+  }
+  
+  .scroll-progress-bar {
+    height: 30px; /* Smaller thumb for mobile */
+  }
+}
