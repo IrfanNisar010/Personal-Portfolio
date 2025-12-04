@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/custom_logo.css">
     <link rel="stylesheet" href="css/company-carousel.css">
     <link rel="stylesheet" href="css/scroll-indicator.css">
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script> 
     <style>
       body {
         overflow-x: hidden;
@@ -779,10 +780,30 @@
     </div>
 
     <script>
-      // Scroll Indicator Animation
+      // Initialize Lenis for Smooth Scrolling
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        mouseMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+
+      // Scroll Indicator Animation (Updated for Lenis)
       var scrollTimeout;
       
-      $(window).scroll(function() {
+      // Use Lenis scroll event for smoother updates
+      lenis.on('scroll', (e) => {
         var $container = $(".scroll-progress-container");
         
         // Show indicator with blur in animation
@@ -796,9 +817,9 @@
           $container.removeClass("visible");
         }, 1000);
 
-        var scrollTop = $(window).scrollTop();
-        var docHeight = $(document).height();
-        var winHeight = $(window).height();
+        var scrollTop = e.scroll; // Use Lenis scroll value
+        var docHeight = document.documentElement.scrollHeight;
+        var winHeight = window.innerHeight;
         var scrollPercent = scrollTop / (docHeight - winHeight);
         
         var trackHeight = 200; // Height of container defined in CSS
@@ -809,10 +830,9 @@
         
         // Use GSAP for smooth movement
         if (typeof TweenMax !== 'undefined') {
-          // Increased duration to 1s and used Power3 for smoother inertia feel
-          TweenMax.to(".scroll-progress-bar", 1.0, {
+          TweenMax.to(".scroll-progress-bar", 0.1, { // Faster update for direct sync
             top: moveDistance,
-            ease: Power3.easeOut,
+            ease: Linear.easeNone, // Direct mapping
             overwrite: "all"
           });
         } else {
