@@ -548,11 +548,8 @@
             
             <div class="col-md-6">
               <form method="post" class="form-outline-style-v1" id="gform">
-                <input type="hidden" name="_subject" value="Personal Portfolio messages">
-                <input type="hidden" name="_from" value="Personal Portfolio messages">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-                <input type="text" name="_honey" style="display:none">
+                <!-- EmailJS Hidden Inputs (Optional, can be used in template) -->
+                <!-- <input type="hidden" name="contact_number"> -->
                 <div class="form-group row mb-0">
 
                   <div class="col-lg-6 form-group gsap-reveal">
@@ -640,6 +637,9 @@
     <!-- Permanent Bottom Blur -->
     <div class="site-bottom-blur"></div>
 
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
     <script>
@@ -696,6 +696,11 @@
         }
       });
 
+      // Initialize EmailJS (Replace with your actual keys)
+      (function(){
+          emailjs.init("0ClrYMOecNl2szYOj"); 
+      })();
+
       function validate() {
         var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
         var regName2 = /^[a-zA-Z]+$/;
@@ -707,68 +712,80 @@
         }
         return true;
       }
+
       function validateEmail() {
-    var email = document.getElementById('email').value;
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var email = document.getElementById('email').value;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(email)) {
-      alert('Please enter a valid email address.');
-      document.getElementById('email').focus();
-      return false;
-    }
+        if (!emailRegex.test(email)) {
+          alert('Please enter a valid email address.');
+          document.getElementById('email').focus();
+          return false;
+        }
+        return true;
+      }
 
-    return true;
-  }
       $("#gform").submit(function(e) {
         e.preventDefault();
         
         // Run both validations
         if (validate() && validateEmail()) {
-          // Dynamic Subject Line to help avoid Spam folder
-          const name = document.getElementById('name').value;
-          const subjectInput = this.querySelector('input[name="_subject"]');
-          if (subjectInput) {
-            subjectInput.value = "Personal Portfolio messages - " + name;
-          }
-
-          const formData = new FormData(this);
           const btn = this.querySelector('input[type="submit"]');
           const originalText = btn.value;
           
-          // Loading state
+          // Rich UI: Loading State
           btn.value = "Sending...";
           btn.disabled = true;
           btn.style.opacity = "0.7";
+          document.body.style.cursor = 'wait';
           
-          fetch("https://formsubmit.co/ajax/inzrwork020@gmail.com", {
-            method: "POST",
-            headers: { 
-                'Accept': 'application/json'
-            },
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            showNotification();
-            document.getElementById("gform").reset();
-            // Reset floating labels
-            document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert("Something went wrong. Please try again.");
-          })
-          .finally(() => {
-            // Restore button state
-            btn.value = originalText;
-            btn.disabled = false;
-            btn.style.opacity = "1";
-          });
+          // Send via EmailJS
+          emailjs.sendForm('service_blypt8l', 'template_n4j9usl', this)
+            .then(function() {
+                showNotification(true, "Message Sent Successfully!");
+                document.getElementById("gform").reset();
+                // Reset floating labels
+                document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
+            }, function(error) {
+                console.error('FAILED...', error);
+                let msg = "Failed to send. Please try again.";
+                if (error.text) {
+                    msg = "Failed: " + error.text;
+                }
+                showNotification(false, msg);
+            })
+            .finally(function() {
+                // Restore button state
+                btn.value = originalText;
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                document.body.style.cursor = 'default';
+            });
         }
       });
 
-      function showNotification() {
+      function showNotification(isSuccess, message) {
         const notif = document.getElementById('custom-notification');
+        const textEl = notif.querySelector('.notif-text');
+        const iconEl = notif.querySelector('.notif-icon');
+        
+        // Update text
+        if (message) textEl.textContent = message;
+        
+        // Update styling based on success/error
+        // Update styling based on success/error
+        if (isSuccess) {
+            iconEl.innerHTML = '<span class="icon-check"></span>';
+            iconEl.style.background = '#28a745'; // Green
+            notif.classList.add('success');
+            notif.classList.remove('error');
+        } else {
+            iconEl.innerHTML = '<span class="icon-close"></span>';
+            iconEl.style.background = '#dc3545'; // Red
+            notif.classList.add('error');
+            notif.classList.remove('success');
+        }
+
         notif.classList.add('show');
         
         // Hide after 4 seconds
