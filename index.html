@@ -374,6 +374,17 @@
                   <span class="experience-date">2021-23</span>
                 </div>
               </div>
+
+              <!-- Resume Button -->
+              <div class="resume-button-wrap blur-stagger-reveal">
+                <a href="https://drive.google.com/file/d/1GsusAY4BPNO3Yx33oMy_MtZtxw1A7xod/view?usp=sharing" class="resume-btn" target="_blank">
+                  <span class="resume-btn-dot"></span>
+                  <span class="resume-btn-text">Download Resume</span>
+                  <span class="resume-btn-arrow">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                  </span>
+                </a>
+              </div>
             </div>
 
             <!-- Right Column: Image -->
@@ -632,8 +643,9 @@
               var newHtml = '';
               for (var i = 0; i < text.length; i++) {
                 var char = text[i] === ' ' ? '&nbsp;' : text[i];
+                var colorStyle = (char === '.') ? 'color: #D63447;' : '';
                 // Added text-shadow for the initial "inner glow" feel
-                newHtml += '<span style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter;">' + char + '</span>';
+                newHtml += '<span style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter; ' + colorStyle + '">' + char + '</span>';
               }
               $this.html(newHtml);
             });
