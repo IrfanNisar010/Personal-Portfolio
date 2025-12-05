@@ -3226,3 +3226,32 @@ body {
     text-align: center !important;
   }
 }
+
+/* Section Indicators (Rounded Bottoms) */
+#portfolio-section,
+#about-section,
+#services-section,
+#process-section,
+#skills-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
+  background: #000;
+  margin-bottom: 20px;
+  padding-bottom: 6rem;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+@media (max-width: 991.98px) {
+  #portfolio-section,
+  #about-section,
+  #services-section,
+  #process-section,
+  #skills-section {
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    padding-bottom: 4rem;
+  }
+}
