@@ -638,7 +638,7 @@
       <div class="unslate_co--section" id="contact-section">
         <div class="container">
           <div class="section-heading-wrap text-center mb-5">
-            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Let's Connect</span></h2>
+            <h2 class="heading-h2 text-center divider" id="contact-heading">Let's Connect</h2>
             <span class="gsap-reveal"><img src="images/divider.png" alt="divider" width="76"></span>
           </div>
 
@@ -1218,6 +1218,41 @@
             }, { threshold: 0.1 });
 
             observer.observe($heading[0]);
+          }
+        }, 100);
+
+        // Same Animation for Let's Connect Heading
+        var $contactHeading = $("#contact-heading");
+        setTimeout(function(){
+          if ($contactHeading.length && typeof TimelineMax !== 'undefined') {
+            
+            // Split text
+            var text = $contactHeading.text().trim();
+            var newHtml = '';
+            for (var i = 0; i < text.length; i++) {
+              var char = text[i] === ' ' ? '&nbsp;' : text[i];
+              newHtml += '<span class="contact-char" style="display:inline-block; opacity:0; filter:blur(20px); transform:translateY(40px) scale(0.8); will-change:transform, opacity, filter;">' + char + '</span>';
+            }
+            $contactHeading.html(newHtml);
+            $contactHeading.css("opacity", 1); 
+
+            // Intersection Observer to trigger
+            var observerContact = new IntersectionObserver(function(entries) {
+              entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                  var tl = new TimelineMax();
+                  tl.staggerTo("#contact-heading .contact-char", 2.0, {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    transform: "translateY(0) scale(1)",
+                    ease: Power3.easeOut
+                  }, 0.1);
+                  observerContact.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.1 });
+
+            observerContact.observe($contactHeading[0]);
           }
         }, 100);
       });

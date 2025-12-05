@@ -67,7 +67,8 @@ body {
   font-weight: 400;
 }
 
-#projects-heading {
+#projects-heading,
+#contact-heading {
   font-family: 'Aeonik', sans-serif !important;
   font-weight: 300 !important; /* Slightly reduced (Light/Regular) */
 }
