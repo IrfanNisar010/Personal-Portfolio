@@ -146,9 +146,9 @@
   text-decoration: none;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Drop shadow instead of border */
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Glass border */
+  border: none; /* Removed border */
   backdrop-filter: blur(4px); /* Subtle blur */
   background-clip: padding-box; /* Ensure border doesn't overlap bg */
 }
@@ -162,9 +162,10 @@
 
 /* The Dot */
 .resume-btn-dot {
-  position: relative; /* Changed to relative for flex centering */
-  left: auto;
-  margin-right: 10px; /* Fixed gap between dot and text */
+  position: absolute; /* Reverted to absolute for strict left placement */
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%); /* Vertically center */
   width: 8px;
   height: 8px;
   background-color: #000;
@@ -179,11 +180,11 @@
   z-index: 10;
   color: #000;
   font-family: 'Aeonik', 'Manrope', sans-serif;
-  font-weight: 500;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 0;
+  font-weight: 400; /* Reverted to thinner weight */
+  font-size: 0.85rem; /* Reverted to smaller size for consistency */
+  text-transform: none; /* Respect HTML case (Download Resume) */
+  letter-spacing: 0.5px; /* Reduced letter spacing for title case */
+  padding-left: 15px; /* Added padding to clear the absolute dot */
   margin: 0;
   left: 0; 
   transition: left 0.3s cubic-bezier(0.23, 1, 0.32, 1), color 0.3s ease;
@@ -233,17 +234,17 @@
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .resume-btn {
-    width: 300px; /* Increased width */
+    width: 250px; /* Reduced from 300px to be less wide on tablets */
     height: 44px;
   }
   
   .resume-btn-text {
-    font-size: 0.7rem;
-    padding-left: 30px; /* Increased to prevent overlap with dot */
+    font-size: 0.8rem;
+    padding-left: 0; 
   }
   
   .resume-btn-dot {
-    left: 16px;
+    left: auto;
     width: 6px;
     height: 6px;
   }
@@ -257,15 +258,15 @@
 
 @media (max-width: 480px) {
   .resume-button-wrap {
-    text-align: left; /* Align left to match editorial style */
-    margin-top: 30px; /* Increased spacing */
-    padding-left: 2px; /* Align with image */
+    text-align: left;
+    margin-top: 30px;
+    padding-left: 2px;
   }
   
   .resume-btn {
     width: 100%; 
-    max-width: 100%; /* Allow full width */
-    height: 48px; /* Restore desktop height for better touch target */
+    max-width: 100%; 
+    height: 50px; /* Comfortable touch target */
   }
 
   /* Specific fix for the Send Message button container in mobile */
@@ -294,7 +295,12 @@
 }
 
 #gform .resume-btn .resume-btn-text {
-  font-size: 11px;
+  font-size: 0.78rem; /* Adjusted to 0.78rem as requested */
+}
+
+/* Increase size for Process buttons (Book Call, See Projects) */
+.process-buttons .resume-btn .resume-btn-text {
+  font-size: 0.78rem;
 }
 
 /* Hide Process Image on Mobile */
@@ -307,11 +313,42 @@
 /* Mobile Button Optimization */
 @media (max-width: 480px) {
   #gform .resume-btn {
-    width: 100% !important;
-    height: 50px !important; /* Larger touch target */
+    width: 100% !important; /* Keep full width for form button specifically */
+    height: 50px !important;
   }
   
   #gform .resume-btn .resume-btn-text {
-    font-size: 12px; /* Slightly larger text */
+    font-size: 0.9rem; /* Match desktop size for consistency */
+  }
+  
+  /* General Resume Button Mobile Styles */
+  .resume-btn {
+    width: 100% !important; /* Full width for better touch targets */
+    max-width: 320px; /* Cap width so it's not "too wide" on larger phones */
+    justify-content: center; /* Center content */
+  }
+  
+  .resume-btn-text {
+    font-size: 0.9rem;
+    padding-left: 0; /* Remove padding since we want centered text */
+    text-align: center;
+    width: 100%; /* Ensure text takes up space to center properly */
+  }
+
+  /* Force Dot to Left on Mobile */
+  .resume-btn-dot {
+    left: 20px !important; /* Force left position */
+    margin-right: 0;
+  }
+
+  /* Center the button wrapper */
+  .resume-button-wrap, 
+  .process-buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
   }
 }

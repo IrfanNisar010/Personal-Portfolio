@@ -912,6 +912,7 @@
           const btnArrow = btn.querySelector('.resume-btn-arrow');
           const btnDot = btn.querySelector('.resume-btn-dot');
           const check = btn.querySelector('.btn-check');
+          const loader = btn.querySelector('.btn-loader'); // Select loader explicitly
           
           // GSAP Timeline for Submit
           const tl = new TimelineMax();
@@ -921,17 +922,22 @@
             .set(btn, { className: "+=processing" }) // Add class for Red BG & White Loader
             .set(btn, { className: "+=loading" });   // Show Loader
             
-          // Send via EmailJS
+            // Send via EmailJS
           emailjs.sendForm('service_blypt8l', 'template_n4j9usl', this)
             .then(function() {
                 // Success Animation
                 setTimeout(() => {
                   const successTl = new TimelineMax();
-                  successTl.set(btn, { className: "-=loading" }) // Hide Loader
+                  
+                  // 1. Force Loader to Hide Immediately (Use display:none to be sure)
+                  successTl.set(btn, { className: "-=loading" }) // Stop spinner animation
+                           .set(loader, { opacity: 0, display: 'none' }) // Force hide loader element instantly
+                           
+                  // 2. Show Checkmark
                            .set(btn, { className: "+=success" }) // Show Checkmark container visibility
                            .to(check, 0.4, { scale: 1, opacity: 1, visibility: 'visible', ease: Elastic.easeOut.config(1, 0.5) })
                            .call(() => {
-                              showNotification(true, "Message sent successfully!");
+                              showNotification(true, "Message sent successfully");
                               document.getElementById("gform").reset();
                               document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
                            })
@@ -939,6 +945,7 @@
                            .to(check, 0.2, { scale: 0, opacity: 0, visibility: 'hidden', delay: 2 })
                            .set(btn, { className: "-=success" })
                            .set(btn, { className: "-=processing" }) // Remove Red BG
+                           .set(loader, { clearProps: "all" }) // Reset loader state for next time
                            .to([btnText, btnArrow, btnDot], 0.3, { opacity: 1, clearProps: "all" }); // Restore content
                 }, 1000);
             }, function(error) {
