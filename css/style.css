@@ -1485,6 +1485,11 @@ a, a:hover {
     opacity: 1;
     visibility: visible;
   }
+  
+  .portfolio-item .portfolio-item-content::before {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 .blog-item {
@@ -3254,4 +3259,52 @@ body {
     border-bottom-right-radius: 40px;
     padding-bottom: 4rem;
   }
+}
+
+/* Process Card - Remove Border Only */
+.process-card {
+  border: none !important;
+}
+
+/* Process Card Number Redesign */
+.process-card .card-number {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 50px;
+  height: 50px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* The gradient arc background */
+.process-card .card-number::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  padding: 1px; /* Thickness of the ring */
+  background: conic-gradient(
+    from 270deg, 
+    rgba(255, 255, 255, 0.4) 0%, 
+    rgba(255, 255, 255, 0) 60%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }

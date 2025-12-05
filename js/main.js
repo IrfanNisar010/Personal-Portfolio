@@ -27,6 +27,9 @@ jQuery(function($) {
 	blurStaggerReveal();
 	luxuryButtonReveal();
 	faqAccordion();
+	servicesCardReveal();
+	maskTextReveal();
+	servicesImageSlideshow();
 	liquidRippleEffect();
 	// portfolioHoverEffect(); // Moved to siteIstotope done callback
 	mobileImageReveal();
@@ -1203,4 +1206,98 @@ var mobileImageReveal = function() {
 			scale: 1
 		});
 	}
+};
+
+var servicesCardReveal = function() {
+	var controller = new ScrollMagic.Controller();
+
+	$('.services-grid').each(function() {
+		var $this = $(this);
+		var $cards = $this.find('.service-card');
+
+		// Initial State: Hidden, pushed down, scaled down, blurred
+		TweenMax.set($cards, {
+			autoAlpha: 0,
+			y: 60,
+			scale: 0.9,
+			filter: "blur(20px)",
+			webkitFilter: "blur(20px)",
+			transformOrigin: "center bottom"
+		});
+
+		var tl = new TimelineMax();
+		tl.staggerTo($cards, 1.2, {
+			autoAlpha: 1,
+			y: 0,
+			scale: 1,
+			filter: "blur(0px)",
+			webkitFilter: "blur(0px)",
+			ease: Power4.easeOut, // Premium smooth ease
+			force3D: true
+		}, 0.15); // Stagger delay
+
+		new ScrollMagic.Scene({
+			triggerElement: this,
+			triggerHook: 0.85, 
+			reverse: true // "Fade in Fade Out" effect enabled
+		})
+		.setTween(tl)
+		.addTo(controller);
+	});
+};
+
+var maskTextReveal = function() {
+	var controller = new ScrollMagic.Controller();
+
+	$('.mask-reveal-text').each(function() {
+		var $this = $(this);
+		var text = $this.text();
+		$this.empty();
+
+		// Split text into characters and wrap each
+		var chars = text.split('');
+		$.each(chars, function(i, char) {
+			var content = char === ' ' ? '&nbsp;' : char;
+			// Outer span handles masking, Inner span moves
+			$this.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:-0.05em;"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
+		});
+
+		var $chars = $this.find('.char-inner');
+
+		var tl = new TimelineMax();
+		// Stagger the characters in
+		tl.staggerTo($chars, 1, {
+			y: "0%",
+			ease: Power4.easeOut,
+			overwrite: "all"
+		}, 0.05);
+
+		new ScrollMagic.Scene({
+			triggerElement: this,
+			triggerHook: 0.9,
+			reverse: false
+		})
+		.setTween(tl)
+		.addTo(controller);
+	});
+};
+
+var servicesImageSlideshow = function() {
+	var $slides = $('.services-image-wrap .slide-item');
+	var currentIndex = 0;
+	var slideCount = $slides.length;
+
+	if (slideCount < 2) return;
+
+	setInterval(function() {
+		var nextIndex = (currentIndex + 1) % slideCount;
+		
+		// Fade out current
+		$($slides[currentIndex]).removeClass('active');
+		
+		// Fade in next
+		$($slides[nextIndex]).addClass('active');
+		
+		currentIndex = nextIndex;
+	}, 4000); // 4 seconds per slide
 };

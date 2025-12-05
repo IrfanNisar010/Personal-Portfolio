@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="css/scroll-indicator.css">
     <link rel="stylesheet" href="css/faq-section.css">
     <link rel="stylesheet" href="css/back-to-top.css">
+    <link rel="stylesheet" href="css/services-redesign.css">
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script> 
     
     <!-- Vercel Speed Insights -->
@@ -365,7 +366,7 @@
               <div class="process-tag">
                 <span>About Me</span>
               </div>
-              <h2 class="meet-heading blur-reveal-text">Meet Irfan</h2>
+              <h2 class="meet-heading mask-reveal-text">Meet Irfan</h2>
               
               <!-- Mobile Image (Inserted for Layout) -->
               <div class="meet-image-mobile-wrap d-lg-none">
@@ -432,70 +433,210 @@
 
       <div class="unslate_co--section" id="services-section">
         <div class="container">
+          
+          <!-- Heading & Intro Row -->
+          <div class="row services-header-row align-items-center">
+            <!-- Left: Text -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+               <div class="process-tag">
+                  Design services
+               </div>
+               <h2 class="services-heading mask-reveal-text">Services</h2>
+               <p class="services-desc blur-reveal-text">
+                  I care about the details most people never notice — micro-interactions, structure, spacing, loading states. That’s why everything I build feels cleaner, faster, and more intentional than the typical digital experience.
+               </p>
 
-          <div class="section-heading-wrap text-center mb-5">
-            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">My Works</span></h2>
-            <span class="gsap-reveal"><img src="images/divider.png" alt="divider" width="76"></span>
+               <!-- Mini Tags -->
+               <div class="services-tags-wrapper blur-stagger-reveal">
+                 <div class="service-mini-tag">Product Design</div>
+                 <div class="service-mini-tag">Brand Identity Design</div>
+                 <div class="service-mini-tag">Branding</div>
+                 <div class="service-mini-tag">Packaging Design</div>
+                 <div class="service-mini-tag">Mockup Design</div>
+               </div>
+               
+               <!-- Indicator -->
+               <div class="services-indicator-line mt-4 mb-4"></div>
+
+               <!-- Buttons -->
+               <div class="luxury-button-wrapper">
+                   <a href="https://cal.com/irfan-nisar-fxit6q/30min" class="resume-btn" target="_blank">
+                      <span class="resume-btn-dot"></span>
+                      <span class="resume-btn-text">Let's Talk</span>
+                      <span class="resume-btn-arrow">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                      </span>
+                   </a>
+                   <a href="#portfolio-section" class="resume-btn smoothscroll ml-3">
+                      <span class="resume-btn-dot"></span>
+                      <span class="resume-btn-text">See Projects</span>
+                      <span class="resume-btn-arrow">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                      </span>
+                   </a>
+               </div>
+            </div>
+
+            <!-- Right: Image -->
+            <div class="col-lg-6 pl-lg-5">
+               <div class="services-image-wrap">
+                 <img src="images/services-slide-1.png" alt="Services Slide 1" class="img-fluid slide-item active">
+                 <img src="images/services-slide-2.png" alt="Services Slide 2" class="img-fluid slide-item">
+               </div>
+            </div>
           </div>
 
-          <div class="row gutter-v3">
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="feature-v1" data-aos="fade-up" data-aos-delay="0">
-                <div class="wrap-icon mb-3">
-                  <img src="images/svg/001-options.svg" alt="Image" width="45">
-                </div>
-                <h3>Strategic <br> Development</h3>
-                <p>I build digital products that solve real problems. My approach combines technical precision with a clear understanding of business goals, ensuring every line of code serves a purpose.</p>
-              </div> 
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="feature-v1" data-aos="fade-up" data-aos-delay="100">
-                <div class="wrap-icon mb-3">
-                  <img src="images/svg/002-chat.svg" alt="Icon" width="45">
-                </div>
-                <h3>Interface <br> Design</h3>
-                <p>I design interfaces that feel inevitable. By focusing on clarity, motion, and typography, I create visual systems that guide users naturally without unnecessary friction.</p>
-              </div> 
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="feature-v1" data-aos="fade-up" data-aos-delay="200">
-                <div class="wrap-icon mb-3">
-                  <img src="images/svg/003-contact-book.svg" alt="Image" class="img-fluid" width="45">
-                </div>
-                <h3>User <br> Experience</h3>
-                <p>Great UX is invisible. I obsess over the details—load times, transition speeds, and touch targets—to ensure the final product feels responsive, intuitive, and human.</p>
-              </div> 
+          <!-- Services Grid (6 Cards) -->
+          <div class="services-grid blur-stagger-reveal">
+            
+            <!-- Card 1 -->
+            <div class="service-card">
+               <div class="service-card-header">
+                   <div class="service-icon-box">
+                     <span class="icon-layers"></span>
+                   </div>
+                   <h3 class="service-card-title">UI/UX Design</h3>
+               </div>
+               <div class="service-card-divider"></div>
+               <p class="service-card-desc">
+                 I design interfaces that feel natural the moment you use them.<br>
+                 Clean structure, smooth flow, and interactions that guide the user without making them think.
+               </p>
             </div>
 
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="feature-v1" data-aos="fade-up" data-aos-delay="0">
-                <div class="wrap-icon mb-3">
-                  <img src="images/svg/004-percentage.svg" alt="Image" width="45">
-                </div>
-                <h3>Full Stack <br> Engineering</h3>
-                <p>From database architecture to the front-end pixel, I handle the entire stack. I build scalable, secure, and maintainable systems using modern frameworks and best practices.</p>
-              </div> 
+            <!-- Card 2 -->
+            <div class="service-card">
+               <div class="service-card-header">
+                   <div class="service-icon-box">
+                     <span class="icon-laptop"></span>
+                   </div>
+                   <h3 class="service-card-title">Web Design</h3>
+               </div>
+               <div class="service-card-divider"></div>
+               <p class="service-card-desc">
+                 I create modern, minimal websites built with strong visual clarity.<br>
+                 Every layout, type choice, and spacing decision is intentional and built to make your brand look sharp.
+               </p>
             </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="feature-v1" data-aos="fade-up" data-aos-delay="100">
-                <div class="wrap-icon mb-3">
-                  <img src="images/svg/006-goal.svg" alt="Image" width="45">
-                </div>
-                <h3>Webflow <br> Development</h3>
-                <p>I leverage Webflow to build high-end marketing sites rapidly. It allows for complex interactions and animations without the overhead of a traditional custom build, perfect for speed and polish.</p>
-              </div> 
+
+            <!-- Card 3 -->
+            <div class="service-card">
+               <div class="service-card-header">
+                   <div class="service-icon-box">
+                     <span class="icon-code"></span>
+                   </div>
+                   <h3 class="service-card-title">Front-End Development</h3>
+               </div>
+               <div class="service-card-divider"></div>
+               <p class="service-card-desc">
+                 I turn designs into fast, responsive, pixel-precise interfaces.<br>
+                 Clean code, smooth animation, and performance that just feels right.
+               </p>
             </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="feature-v1" data-aos="fade-up" data-aos-delay="200">
-                <div class="wrap-icon mb-3">
-                  <img src="images/svg/005-line-chart.svg" alt="Image" width="45">
-                </div>
-                <h3>Mobile <br> Customization</h3>
-                <p>I have a deep passion for mobile UI customization, creating personalized widgets and layouts that push the boundaries of what standard mobile interfaces can do.</p>
-              </div> 
+
+            <!-- Card 4 -->
+            <div class="service-card">
+               <div class="service-card-header">
+                   <div class="service-icon-box">
+                     <span class="icon-database"></span>
+                   </div>
+                   <h3 class="service-card-title">Full-Stack Development</h3>
+               </div>
+               <div class="service-card-divider"></div>
+               <p class="service-card-desc">
+                 I build complete products from backend logic to polished UI.<br>
+                 Authentication, APIs, dashboards — everything engineered to scale and stay stable.
+               </p>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="service-card">
+               <div class="service-card-header">
+                   <div class="service-icon-box">
+                     <span class="icon-refresh"></span>
+                   </div>
+                   <h3 class="service-card-title">Product Improvement</h3>
+               </div>
+               <div class="service-card-divider"></div>
+               <p class="service-card-desc">
+                 I take existing products and make them feel brand new.<br>
+                 Better UX, tighter visuals, faster performance, and a more professional overall experience.
+               </p>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="service-card">
+               <div class="service-card-header">
+                   <div class="service-icon-box">
+                     <span class="icon-settings"></span>
+                   </div>
+                   <h3 class="service-card-title">AI Workflow Automation</h3>
+               </div>
+               <div class="service-card-divider"></div>
+               <p class="service-card-desc">
+                 I build smart, AI-driven features that enhance the way users interact with your product.<br>
+                 From prompt-driven systems to automation workflows, I integrate AI in a way that feels natural.
+               </p>
             </div>
 
           </div>
+
+          <!-- Carousel -->
+          <div class="services-carousel-wrap">
+             <div class="services-marquee">
+                <!-- Group 1 -->
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Interface Precision</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> Visual Logic</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Intentional Design</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg> Motion Intellect</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg> Pixel Discipline</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Structure Aesthetics</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path><path d="M13 13l6 6"></path></svg> Interaction Craft</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg> Flow Engineering</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg> Clarity Architecture</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Experience Discipline</div>
+                
+                <!-- Duplicate -->
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Interface Precision</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> Visual Logic</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Intentional Design</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg> Motion Intellect</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg> Pixel Discipline</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Structure Aesthetics</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path><path d="M13 13l6 6"></path></svg> Interaction Craft</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg> Flow Engineering</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg> Clarity Architecture</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Experience Discipline</div>
+             </div>
+
+             <!-- Row 2 -->
+             <div class="services-marquee" style="animation-direction: reverse; animation-duration: 35s;">
+                <!-- Group 1 -->
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg> Visual Engineering</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> Product Design</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Package Design</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Optimization</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Brand Graphics</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Copywriting</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Social Media</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> Slide Decks</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Brand Visibility</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Branding</div>
+
+                <!-- Duplicate -->
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg> Visual Engineering</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> Product Design</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Package Design</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Optimization</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Brand Graphics</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Copywriting</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Social Media</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> Slide Decks</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Brand Visibility</div>
+                <div class="marquee-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Branding</div>
+             </div>
+          </div>
+
         </div>
       </div>
 
@@ -517,7 +658,7 @@
                 <div class="blur-stagger-reveal">
                   <span class="process-tag">Design process</span>
                 </div>
-                <h2 class="process-heading blur-reveal-text">Process</h2>
+                <h2 class="process-heading mask-reveal-text">Process</h2>
                 <p class="process-desc blur-reveal-text">
                   crafting bold visuals that inspire and elevate brands with thought process.
                 </p>
@@ -597,7 +738,7 @@
                <div class="process-tag">
                   <span>FAQ'S</span>
                </div>
-               <h2 class="process-heading blur-reveal-text">Answers</h2>
+               <h2 class="process-heading mask-reveal-text">Answers</h2>
                <p class="process-desc blur-reveal-text">
                   Find answers to common questions about my design process, services etc...
                </p>
