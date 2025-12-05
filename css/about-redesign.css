@@ -104,7 +104,7 @@
   min-height: 500px;
   position: relative;
   overflow: hidden;
-  border-radius: 4px; /* Slight radius */
+  border-radius: 24px; /* Slight radius */
 }
 
 .meet-image {
@@ -285,6 +285,7 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important; /* Keep shadow, remove border */
   background-clip: padding-box !important;
   -webkit-appearance: none; /* Remove default button styling */
+  appearance: none;
 }
 
 #gform .resume-btn:focus,

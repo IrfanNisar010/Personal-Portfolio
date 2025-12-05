@@ -26,6 +26,7 @@ jQuery(function($) {
 	liquidRippleEffect();
 	blurStaggerReveal();
 	luxuryButtonReveal();
+	faqAccordion();
 	liquidRippleEffect();
 	// portfolioHoverEffect(); // Moved to siteIstotope done callback
 	mobileImageReveal();
@@ -173,7 +174,7 @@ var siteMenuClone = function() {
 
   // Inject Icon for Journal in Mobile Menu
   setTimeout(function() {
-    $('.unslate_co--site-mobile-menu .site-nav-wrap a:contains("Journal")').prepend('<span class="icon-book" style="margin-right: 10px;"></span>');
+    $('.unslate_co--site-mobile-menu .site-nav-wrap a:contains("Faq\'s")').prepend('<span class="icon-chat" style="margin-right: 10px;"></span>');
   }, 1200);
 
 	$('body').on('click', '.arrow-collapse', function(e) {
@@ -883,8 +884,11 @@ var blurStaggerReveal = function() {
 
 	$('.blur-stagger-reveal').each(function() {
 		var $this = $(this);
-		// Select children: .skill-pill for skills, .experience-item for experience list, .process-card for cards, .process-tag for pill
-		var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag');
+		// Select children: .skill-pill for skills, .experience-item for experience list, .process-card for cards, .process-tag for pill, .faq-item for FAQs, .faq-tag for tags
+		// Also include the button if it's inside the wrapper, or handle separate reveal.
+		// Since the button is outside the wrapper in HTML above, let's keep it simple here or add a wrapper.
+		// Actually, let's just target the specific elements we know are inside blur-stagger-reveal containers.
+		var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
 
 		// Initial State
 		TweenMax.set($children, { 
@@ -951,6 +955,33 @@ var luxuryButtonReveal = function() {
 		})
 		.setTween(tl)
 		.addTo(controller);
+	});
+};
+
+var faqAccordion = function() {
+	// Accordion Logic with GSAP for smoother animation
+	$('.faq-header').on('click', function() {
+		var $this = $(this);
+		var $item = $this.closest('.faq-item');
+		var $body = $item.find('.faq-body');
+		
+		if ($item.hasClass('active')) {
+			// Close
+			$item.removeClass('active');
+			TweenMax.to($body, 0.5, { height: 0, paddingBottom: 0, ease: Power3.easeInOut });
+		} else {
+			// Open
+			// Optional: Close others
+			$('.faq-item.active').removeClass('active').each(function() {
+				TweenMax.to($(this).find('.faq-body'), 0.5, { height: 0, paddingBottom: 0, ease: Power3.easeInOut });
+			});
+			
+			$item.addClass('active');
+			TweenMax.set($body, { height: "auto" }); // Get natural height
+			TweenMax.from($body, 0.5, { height: 0, paddingBottom: 0, ease: Power3.easeInOut });
+			// Ensure padding is correct after animation (or during if explicit)
+			TweenMax.to($body, 0.5, { paddingBottom: 25, ease: Power3.easeInOut });
+		}
 	});
 };
 
