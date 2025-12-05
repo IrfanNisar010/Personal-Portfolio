@@ -1,7 +1,7 @@
 /* Back to Top Button Styles */
 .back-to-top {
   position: fixed;
-  bottom: 30px;
+  bottom: 50px;
   right: 30px;
   width: 50px;
   height: 50px;
@@ -23,9 +23,10 @@
 }
 
 .back-to-top:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(214, 52, 71, 0.15); /* Subtle Red Tint */
   transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(214, 52, 71, 0.5);
+  box-shadow: 0 5px 20px rgba(214, 52, 71, 0.3);
 }
 
 .back-to-top svg {

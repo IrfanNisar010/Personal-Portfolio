@@ -603,7 +603,7 @@
                </p>
                
                <div class="faq-image-wrap gsap-reveal-img">
-                   <img src="images/process-image.png" alt="Answers" class="img-fluid">
+                   <img src="images/faq-answers.jpg" alt="Answers" class="img-fluid">
                </div>
 
                <!-- Tag Cards -->
@@ -952,7 +952,7 @@
 
     
     <!-- Back to Top Button -->
-    <a href="#hero-section" class="back-to-top smoothscroll" aria-label="Back to Top">
+    <a href="#home-section" class="back-to-top smoothscroll" aria-label="Back to Top">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
     </a>
 
@@ -1414,16 +1414,22 @@
 
       // Back to Top Visibility Logic
       $(window).scroll(function() {
-         var footer = $('footer');
+         var contactSection = $('#contact-section');
          var backToTop = $('.back-to-top');
          
-         if (footer.length) {
-             var footerTop = footer.offset().top;
-             var windowBottom = $(window).scrollTop() + $(window).height();
+         if (contactSection.length) {
+             var contactTop = contactSection.offset().top;
+             var contactHeight = contactSection.outerHeight();
+             var windowScroll = $(window).scrollTop();
+             var windowHeight = $(window).height();
              
-             // Show when user reaches the start of the footer (or slightly before/after)
-             // Let's trigger it when the footer is visible in the viewport
-             if (windowBottom >= footerTop + 100) { // +100 to trigger slightly after footer starts appearing
+             // Show when the user scrolls past the middle of the "Let's Connect" section
+             // or reaches the end of it.
+             // Let's set it to appear when the *bottom* of the contact section enters the viewport
+             // or simply when we've scrolled past the contact section start.
+             
+             // Trigger when we reach the contact section
+             if (windowScroll + windowHeight > contactTop + (contactHeight / 2)) {
                  backToTop.addClass('active');
              } else {
                  backToTop.removeClass('active');
