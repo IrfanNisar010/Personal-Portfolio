@@ -48,39 +48,31 @@
           <div class="row align-items-center justify-content-between text-left">
             <div class="col-md-5 text-right">
               <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
-                <li class="has-children">
+                <li>
                   <a href="index.html#home-section" class="nav-link">Home</a>
+                </li>
+                <li class="has-children">
+                  <a href="index.html#portfolio-section" class="nav-link">Projects</a>
                   <ul class="dropdown">
-                    <li>
-                      <a href="index.html">Hero Image BG</a>
-                    </li>
-                    <li>
-                      <a href="index-video.html">Video BG</a>
-                    </li>
-                    <li>
-                      <a href="index-hero-slider.html">Hero Slider</a>
-                    </li>
-                    <li>
-                      <a href="index-sidebar-menu.html">Sidebar Menu</a>
-                    </li>
-                    <li>
-                      <a href="index-right-menu.html">Right Menu</a>
-                    </li>
+                    <li><a href="portfolio-single-1.html">Choco Heaven</a></li>
+                    <li><a href="portfolio-single-3.html">Customization</a></li>
+                    <li><a href="portfolio-single-guided-pro.html">Guided Pro Wallet</a></li>
+                    <li><a href="portfolio-single-gemini-clone.html">Gemini Clone</a></li>
+                    <li><a href="portfolio-single-revoult-health.html">Re.voult Health</a></li>
+                    <li><a href="portfolio-single-4.html">Louis Vuitton Clone</a></li>
                   </ul>
                 </li>
-                <li><a href="index.html#portfolio-section" class="nav-link">Portfolio</a></li>
                 <li><a href="index.html#about-section" class="nav-link">About</a></li>
-                <li><a href="index.html#services-section" class="nav-link">Services</a></li>
+                <li><a href="index.html#services-section" class="nav-link">Works</a></li>
               </ul>
             </div>
             <div class="site-logo pos-absolute">
-              <a href="index.html" class="unslate_co--site-logo">Unfold<span>.</span></a>
+              <a href="index.html" class="unslate_co--site-logo">Irfan<span>.</span></a>
             </div>
             <div class="col-md-5 text-right text-lg-left">
               <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
                 <li><a href="index.html#skills-section" class="nav-link">Skills</a></li>
-                <li><a href="index.html#testimonial-section" class="nav-link">Testimonial</a></li>
-                <li><a href="index.html#journal-section" class="nav-link">Journal</a></li>
+                <li><a href="https://medium.com/@inzrwork020" class="nav-link" target="_blank">Journal</a></li>
                 <li><a href="index.html#contact-section" class="nav-link">Contact</a></li>
               </ul>
 
@@ -100,8 +92,10 @@
           <div class="row align-items-center">
 
             <div class="col-md-10 mx-auto text-center">
-              <h1 class="heading" data-aos="fade-up">Home ScreenCustomization</h1>
-              <h2 class="subheading" data-aos="fade-up" data-aos-delay="100">Explored custom Android home-screen design as a creative hobby, crafting fully personalized layouts that blend widgets, iconography, typography, and color theory into cohesive visual themes. Each setup focuses on rhythm, spacing, and usability — not just aesthetics. This project allowed me to experiment with shape language, depth, neumorphism, gradients, and functional widget flows while pushing the limits of what a clean, expressive phone interface can look like. A fun place where my design instincts and UI experimentation come alive.</h2>
+              <h1 class="heading" id="project-heading">Home Screen Customization</h1>
+              <h2 class="subheading" id="project-desc">
+                A curated exploration of digital aesthetics, transforming the Android homescreen into a canvas of functional art. By harmonizing widgets, typography, and color theory, each layout transcends mere utility to become a cohesive visual narrative. This collection represents a relentless pursuit of balance—experimenting with depth, neumorphism, and rhythm to redefine personal computing interfaces. It is where design instinct meets the cutting edge of mobile expression.
+              </h2>
             </div>
 
           </div>
@@ -137,7 +131,7 @@
                     <div class="col-md-12 mb-4">
                       <div class="detail-v1">
                         <span class="detail-label">Project Description</span>
-                        <p>Explored custom Android home-screen design as a creative hobby, crafting fully personalized layouts that blend widgets, iconography, typography, and color theory into cohesive visual themes. Each setup focuses on rhythm, spacing, and usability — not just aesthetics.This project allowed me to experiment with shape language, depth, neumorphism, gradients, and functional widget flows while pushing the limits of what a clean, expressive phone interface can look like. A fun place where my design instincts and UI experimentation come alive.</p>
+                        <p>A curated exploration of digital aesthetics, transforming the Android homescreen into a canvas of functional art. By harmonizing widgets, typography, and color theory, each layout transcends mere utility to become a cohesive visual narrative. This collection represents a relentless pursuit of balance—experimenting with depth, neumorphism, and rhythm to redefine personal computing interfaces. It is where design instinct meets the cutting edge of mobile expression.</p>
                       </div>
                     </div>
 
@@ -181,7 +175,7 @@
         <div class="row justify-content-center">
           <div class="col-md-7">
 
-            <div class="footer-site-logo"><a href="#">Unfold<span>.</span></a></div>
+            <div class="footer-site-logo"><a href="#">Irfan<span>.</span></a></div>
 
             <ul class="footer-site-social">
               <li><a href="https://www.linkedin.com/in/irfan-nisar-01774b299/">LinkedIn</a></li>
@@ -208,6 +202,52 @@
   <script src="js/main.js"></script>
 
 
+  <script>
+    // Custom GSAP Animation for Project Heading
+    $(document).ready(function() {
+      // Wait a moment for resources or other scripts
+      setTimeout(function() {
+        if (typeof TimelineMax !== 'undefined') {
+          var tl = new TimelineMax();
+
+          // Helper: Split text into characters
+          var splitText = function(selector) {
+            $(selector).each(function() {
+              var $this = $(this);
+              var text = $this.text().trim();
+              var newHtml = '';
+              for (var i = 0; i < text.length; i++) {
+                var char = text[i] === ' ' ? '&nbsp;' : text[i];
+                var colorStyle = (char === '.') ? 'color: #D63447;' : '';
+                newHtml += '<span style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter; ' + colorStyle + '">' + char + '</span>';
+              }
+              $this.html(newHtml);
+            });
+          };
+
+          // Prepare Text
+          splitText("#project-heading");
+
+          // Ensure parent is visible
+          TweenMax.set("#project-heading", { opacity: 1 });
+
+          // Animate Heading Characters In
+          tl.staggerTo("#project-heading span", 1.5, 
+            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
+            0.04
+          );
+
+          // Prepare Description Text (Split by words/sentences for better readability, or chars if simple)
+          // For a long paragraph, animating every char might be too heavy/distracting. 
+          // Let's use a smoother word/lines reveal or just a high-quality blur fade.
+          // Re-using GSAP for a smooth blur reveal on the whole block or words if possible.
+          
+          TweenMax.set("#project-desc", { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", y: 20 });
+          tl.to("#project-desc", 1.5, { opacity: 0.8, filter: "blur(0px)", webkitFilter: "blur(0px)", y: 0, ease: Power2.easeOut }, "-=1.0");
+        }
+      }, 100); // Small delay to play nice with loader
+    });
+  </script>
 </body>
 
 </html>

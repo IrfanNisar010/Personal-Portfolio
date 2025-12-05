@@ -81,7 +81,7 @@
                   <a href="#portfolio-section" class="nav-link">Projects</a>
                   <ul class="dropdown">
                     <li><a href="portfolio-single-1.html">Choco Heaven</a></li>
-                    <li><a href="portfolio-single-3.html">HomeScreen Customization</a></li>
+                    <li><a href="portfolio-single-3.html">Customization</a></li>
                     <li><a href="portfolio-single-guided-pro.html">Guided Pro Wallet</a></li>
                     <li><a href="portfolio-single-gemini-clone.html">Gemini Clone</a></li>
                     <li><a href="portfolio-single-revoult-health.html">Re.voult Health</a></li>
@@ -122,10 +122,18 @@
 
                 <!-- Final Text (Relative to hold space) -->
                 <h1 class="heading" id="hero-heading" style="margin-top: 0; opacity: 0;">
-                  <span style="display: block;">I build digital</span>
-                  <span style="display: block;">experiences that</span>
-                  <span style="display: block;">actually feel</span>
-                  <span style="display: block;">alive<span style="color: #D63447 !important;">.</span></span>
+                  <span style="display: block;">
+                    <span class="anim-text">I build</span> <span class="anim-text serif-highlight">digital</span>
+                  </span>
+                  <span style="display: block;">
+                    <span class="anim-text serif-highlight">experiences</span> <span class="anim-text">that</span>
+                  </span>
+                  <span style="display: block;">
+                    <span class="anim-text">actually feel</span>
+                  </span>
+                  <span style="display: block;">
+                    <span class="anim-text serif-highlight">alive</span><span class="anim-text" style="color: #D63447 !important;">.</span>
+                  </span>
                 </h1>
 
                 <!-- Raycast-style CTA -->
@@ -753,8 +761,8 @@
               for (var i = 0; i < text.length; i++) {
                 var char = text[i] === ' ' ? '&nbsp;' : text[i];
                 var colorStyle = (char === '.') ? 'color: #D63447;' : '';
-                // Added text-shadow for the initial "inner glow" feel
-                newHtml += '<span style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter; ' + colorStyle + '">' + char + '</span>';
+                // Added char-anim class for targeting
+                newHtml += '<span class="char-anim" style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter; ' + colorStyle + '">' + char + '</span>';
               }
               $this.html(newHtml);
             });
@@ -762,13 +770,14 @@
 
           // Prepare Text
           splitText("#hero-intro");
-          $("#hero-heading > span").each(function() { splitText(this); });
+          // Target the specific text segments now
+          $("#hero-heading .anim-text").each(function() { splitText(this); });
 
           // Ensure parents are visible (children are hidden by splitText styles)
           TweenMax.set("#hero-intro, #hero-heading", { opacity: 1 });
 
           // 1. Intro "I'm Irfan" Characters In (Slower, Luxury Feel)
-          tl.staggerTo("#hero-intro span", 1.5, 
+          tl.staggerTo("#hero-intro .char-anim", 1.5, 
             { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
             0.06
           )
@@ -777,7 +786,7 @@
             { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", textShadow: "0 0 30px rgba(255,255,255,0.8)", scale: 1.05, ease: Power2.easeInOut, delay: 0.4 }
           )
           // 3. Main Heading Characters In (Deep Overlap for Flow)
-          .staggerTo("#hero-heading span span", 1.5, 
+          .staggerTo("#hero-heading .char-anim", 1.5, 
             { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
             0.02,
             "-=1.0" // Start 1s before Intro finishes
