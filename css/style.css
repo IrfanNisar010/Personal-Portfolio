@@ -3508,3 +3508,37 @@ body {
     height: 40px;
     object-fit: contain;
 }
+
+/* --- Performance Optimizations --- */
+.hero-bg-wrap, 
+.portfolio-item, 
+.reveal-content,
+.skill-card,
+.service-card,
+.lux-btn,
+.service-icon-box {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure smooth scrolling container doesn't have overflow issues */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

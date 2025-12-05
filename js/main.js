@@ -34,7 +34,48 @@ jQuery(function($) {
 	// portfolioHoverEffect(); // Moved to siteIstotope done callback
 	mobileImageReveal();
 
+	smoothScrollEngine();
+
 });
+
+var smoothScrollEngine = function() {
+	// Initialize Lenis for luxury smooth scrolling
+	// Check if user prefers reduced motion
+	if (typeof Lenis === 'undefined') return; // Safety check
+	
+	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	if (prefersReducedMotion) return;
+
+	const lenis = new Lenis({
+		duration: 1.2,
+		easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Luxurious exponential ease
+		direction: 'vertical',
+		gestureDirection: 'vertical',
+		smooth: true,
+		mouseMultiplier: 1,
+		smoothTouch: false, // Default to native touch for performance
+		touchMultiplier: 2,
+	});
+
+	function raf(time) {
+		lenis.raf(time);
+		requestAnimationFrame(raf);
+	}
+
+	requestAnimationFrame(raf);
+
+	// Expose to window
+	window.lenis = lenis;
+
+	// Optimization: Pause on hidden tab
+	document.addEventListener("visibilitychange", function() {
+		if (document.hidden) {
+			lenis.stop();
+		} else {
+			lenis.start();
+		}
+	});
+};
 
 var siteIstotope = function() {
 	var $container = $('#posts').isotope({
