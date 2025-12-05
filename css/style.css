@@ -3309,3 +3309,202 @@ body {
   mask-composite: exclude;
   pointer-events: none;
 }
+
+/* Skills Redesign */
+/* Skills Redesign */
+.skills-grid {
+  /* gap: 30px; Removed to prevent wrapping with Bootstrap columns */
+}
+
+/* Centered Heading Style (Matching Meet Irfan/Services) */
+.expertise-heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 4rem;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 50px;
+  line-height: 1.1;
+  display: block;
+  text-align: center;
+}
+
+.skill-card {
+  background: rgba(10, 10, 10, 0.4); /* Darker transparent background */
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border initially */
+  border-radius: 24px;
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  /* Accent Glow Gradient Background - kept subtle as requested */
+  background-image: radial-gradient(circle at top right, rgba(255, 255, 255, 0.03), transparent 60%);
+}
+
+/* Glow Animation for Border */
+@keyframes borderGlow {
+  0% { border-color: rgba(255, 255, 255, 0.05); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+  50% { border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
+  100% { border-color: rgba(255, 255, 255, 0.05); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* Apply glow when the number animates (simulated on load/scroll view) */
+.section-counter.ftco-animated .skill-card {
+  animation: borderGlow 2s ease-out forwards;
+}
+
+.skill-card:hover {
+  transform: translateY(-5px);
+  /* Remove border color on hover, keep shadow glow */
+  border-color: transparent; 
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Inner Accent Glow */
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+.skill-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 50px; /* More space like in image */
+}
+
+.skill-icon {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.05); /* Slight box around icon */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.skill-card:hover .skill-icon {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.skill-percent {
+  font-family: 'Manrope', sans-serif;
+  font-size: 30px; /* Clean, bold number */
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.skill-percent span {
+  color: #fff;
+}
+
+.skill-card-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 2; /* Ensure above background glow */
+}
+
+.skill-name {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.skill-progress-track {
+  width: 100%;
+  height: 4px; /* Thinner line like image */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-progress-fill {
+  height: 100%;
+  background: #fff; /* Crisp white fill */
+  border-radius: 10px;
+  width: 0;
+  animation: fillProgress 2s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* Slower, smoother */
+  animation-delay: 0.3s;
+}
+
+@keyframes fillProgress {
+  from { width: 0; }
+}
+
+/* Icon Slideshow Styles */
+.skill-icon {
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-icon {
+  width: 24px;
+  height: 24px;
+  /* Ensure icon fits within the 50x50 box minus padding if any, 
+     but .skill-icon is 50x50 flex center. 
+     We can make SVGs specific size. */
+}
+
+/* If it is a slider, children are absolute */
+.skill-icon.icon-slider .brand-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; /* Increased size for images */
+  height: 40px;
+  object-fit: contain; /* Ensure images don't stretch */
+}
+
+/* Keyframes for 2-item slideshow */
+@keyframes iconFadeSlide {
+  0%, 45% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50%, 95% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes iconFadeSlideReverse {
+  0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  50%, 95% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+.skill-icon.icon-slider .slide-item:nth-child(1) {
+  animation: iconFadeSlide 4s infinite ease-in-out; /* Faster 4s loop */
+}
+
+.skill-icon.icon-slider .slide-item:nth-child(2) {
+  animation: iconFadeSlideReverse 4s infinite ease-in-out;
+}
+
+/* Base style for single image */
+.skill-icon img.brand-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}

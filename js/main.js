@@ -25,7 +25,7 @@ jQuery(function($) {
 	blurStaggerReveal();
 	liquidRippleEffect();
 	blurStaggerReveal();
-	luxuryButtonReveal();
+	universalButtonReveal();
 	faqAccordion();
 	servicesCardReveal();
 	maskTextReveal();
@@ -920,40 +920,99 @@ var blurStaggerReveal = function() {
 	});
 };
 
-var luxuryButtonReveal = function() {
+var universalButtonReveal = function() {
+	// Performance Check: Disable complex ScrollMagic scenes on mobile/tablet to ensure 60fps
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
+	var selectors = [
+		'.btn', 
+		'.btn-outline-pill', 
+		// '.hero-cta-pill', // Excluded as per user request
+		'.resume-btn',
+		'input[type="submit"]',
+		'button[type="submit"]'
+	];
+	var $btns = $(selectors.join(', '));
+
+	if (isMobile) {
+		// Lightweight Mobile Fallback: Use IntersectionObserver or simple Auto-Show
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var el = entry.target;
+						// Simple, high-performance CSS transition or GSAP set
+						TweenMax.to(el, 0.6, {
+							y: 0,
+							autoAlpha: 1,
+							filter: "blur(0px)",
+							scale: 1,
+							ease: Power2.easeOut,
+							force3D: true
+						});
+						observer.unobserve(el);
+					}
+				});
+			}, { threshold: 0.15 });
+
+			$btns.each(function() {
+				var $this = $(this);
+				if (!$this.hasClass('no-reveal')) {
+					// Set initial state
+					TweenMax.set($this, { 
+						y: 20, 
+						autoAlpha: 0, 
+						filter: "blur(5px)", 
+						scale: 0.98 
+					});
+					observer.observe(this);
+				}
+			});
+		} else {
+			// Fallback for very old devices: just show them
+			TweenMax.set($btns, { autoAlpha: 1, y: 0, filter: "none", scale: 1 });
+		}
+		return;
+	}
+
+	// Desktop: Luxury ScrollMagic Animation
 	var controller = new ScrollMagic.Controller();
 
-	$('.luxury-button-wrapper').each(function() {
+	$btns.each(function() {
 		var $this = $(this);
-		var $btns = $this.find('.resume-btn');
+		
+		if ($this.hasClass('no-reveal')) return;
 
-		// Initial State: Tilted, blurred, and pushed down
-		TweenMax.set($btns, {
-			y: 50,
+		// Initial State
+		TweenMax.set($this, {
+			y: 40,
 			autoAlpha: 0,
-			scale: 0.9,
-			rotationX: 30,
-			transformPerspective: 800,
-			transformOrigin: "center top",
+			scale: 0.95,
 			filter: "blur(10px)",
-			webkitFilter: "blur(10px)"
+			webkitFilter: "blur(10px)",
+			transformOrigin: "center center",
+			willChange: "transform, opacity, filter" // Hint browser for performance
 		});
 
 		var tl = new TimelineMax();
-		tl.staggerTo($btns, 1.2, {
+		tl.to($this, 1.0, {
 			y: 0,
 			autoAlpha: 1,
 			scale: 1,
-			rotationX: 0,
 			filter: "blur(0px)",
 			webkitFilter: "blur(0px)",
-			ease: Elastic.easeOut.config(1, 0.6), // Rich elastic bounce
-			force3D: true
-		}, 0.2); // Delay between buttons
+			ease: Power3.easeOut, // Premium smooth ease
+			force3D: true,
+			overwrite: "auto",
+			onComplete: function() {
+				// Clean up optimization hint to free memory
+				TweenMax.set($this, { willChange: "auto" });
+			}
+		});
 
 		new ScrollMagic.Scene({
 			triggerElement: this,
-			triggerHook: 0.85,
+			triggerHook: 0.9,
 			reverse: false
 		})
 		.setTween(tl)
