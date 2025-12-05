@@ -203,8 +203,8 @@
 
           <div class="portfolio-wrapper">
 
-            <div class="d-flex align-items-center mb-4 gsap-reveal gsap-reveal-filter">
-              <h2 class="mr-auto heading-h2"><span class="gsap-reveal">Projects</span></h2>
+            <div class="d-flex align-items-center mb-4">
+              <h2 class="mr-auto heading-h2" id="projects-heading" style="opacity:0;">My Projects</h2>
 
               <!-- <a href="#" class="text-white js-filter d-inline-block d-lg-none">Filter</a>
               
@@ -1112,6 +1112,45 @@
         // If Lenis is active, it might suppress native scroll events or sync them.
         // We use this as a backup or for the initial state.
         updateScrollIndicator(window.scrollY || document.documentElement.scrollTop);
+      });
+    </script>
+    <script>
+      // Custom Futuristic Blur Animation for PROJECTS Title
+      $(document).ready(function() {
+        var $heading = $("#projects-heading");
+        // Wait slightly to ensure fonts load for split
+        setTimeout(function(){
+          if ($heading.length && typeof TimelineMax !== 'undefined') {
+            
+            // Split text
+            var text = $heading.text().trim();
+            var newHtml = '';
+            for (var i = 0; i < text.length; i++) {
+              var char = text[i] === ' ' ? '&nbsp;' : text[i];
+              newHtml += '<span class="proj-char" style="display:inline-block; opacity:0; filter:blur(20px); transform:translateY(40px) scale(0.8); will-change:transform, opacity, filter;">' + char + '</span>';
+            }
+            $heading.html(newHtml);
+            $heading.css("opacity", 1); 
+
+            // Intersection Observer to trigger
+            var observer = new IntersectionObserver(function(entries) {
+              entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                  var tl = new TimelineMax();
+                  tl.staggerTo("#projects-heading .proj-char", 2.0, {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    transform: "translateY(0) scale(1)",
+                    ease: Power3.easeOut
+                  }, 0.1);
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.1 });
+
+            observer.observe($heading[0]);
+          }
+        }, 100);
       });
     </script>
   </body>
