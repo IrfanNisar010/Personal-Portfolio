@@ -797,12 +797,85 @@ a, a:hover {
   color: #D63447;
 }
 
-.unslate_co--site-mobile-menu ul > li > ul > li > a {
-  position: relative;
-  padding-left: 30px;
-  font-size: 14px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+/* Processing & Success States (Red Background, Seamless Border) */
+.resume-btn.processing,
+.resume-btn.success {
+  background-color: #D63447 !important;
+  border: none !important; /* No border to match base state */
+  background-clip: border-box !important; 
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.resume-btn.processing {
+  pointer-events: none;
+}
+
+.resume-btn.processing .resume-btn-dot,
+.resume-btn.processing .resume-btn-text,
+.resume-btn.processing .resume-btn-arrow {
+  opacity: 0;
+}
+
+.resume-btn.processing .btn-loader {
+  border-color: rgba(255, 255, 255, 0.3) !important; /* Semi-transparent white track */
+  border-top-color: #ffffff !important; /* Pure white spinner head */
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.resume-btn.success .btn-check {
+  stroke: #fff; /* White checkmark */
+}
+
+/* Luxury Button Loader & Success States */
+.resume-btn .btn-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(0,0,0,0.1); /* Thicker border */
+  border-top-color: #D63447;
+  border-radius: 50%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 20; /* Ensure on top */
+}
+
+.resume-btn.loading .btn-loader {
+  opacity: 1;
+  visibility: visible;
+  animation: btn-spin 0.8s linear infinite;
+}
+
+@keyframes btn-spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.resume-btn .btn-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #22c55e;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.resume-btn.success .btn-check {
+  opacity: 1;
+  visibility: visible;
+  /* Animation handled by GSAP */
 }
 
 .unslate_co--site-mobile-menu ul > li > ul > li > ul > li > a {

@@ -654,9 +654,9 @@
                     <textarea name="message" id="message" cols="30" rows="7" class="form-control"></textarea>
                   </div>
                 </div>
-                <div class="form-group row gsap-reveal">
-                    <div class="col-md-12 d-flex align-items-center mt-3 luxury-button-wrapper">
-                      <button type="submit" class="resume-btn" style="border: none; outline: none;">
+                <div class="form-group row">
+                    <div class="col-md-12 d-flex align-items-center mt-5 luxury-button-wrapper contact-button-reveal" style="min-height: 60px; padding: 10px;">
+                      <button type="submit" class="resume-btn">
                         <span class="resume-btn-dot"></span>
                         <span class="resume-btn-text">Send Message</span>
                         <span class="resume-btn-arrow">
@@ -789,6 +789,48 @@
             "-=1.0"
           );
         }
+
+        // Custom Entrance Animation for Contact Button
+        const contactBtnWrapper = document.querySelector('.contact-button-reveal');
+        if (contactBtnWrapper) {
+          const btn = contactBtnWrapper.querySelector('.resume-btn');
+          const btnText = btn.querySelector('.resume-btn-text');
+          const btnArrow = btn.querySelector('.resume-btn-arrow');
+          const btnDot = btn.querySelector('.resume-btn-dot');
+
+          // Initial State: Hidden, small circle
+          TweenMax.set(btn, { width: "44px", borderRadius: "50%", opacity: 0, scale: 0.5 });
+          TweenMax.set([btnText, btnArrow], { opacity: 0, x: -10 });
+          TweenMax.set(btnDot, { scale: 0 });
+
+          // Intersection Observer to trigger animation
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                // Check for mobile
+                const isMobile = window.matchMedia("(max-width: 480px)").matches;
+                const targetWidth = isMobile ? "100%" : "180px";
+
+                // Animate In
+                const tl = new TimelineMax({
+                  onComplete: function() {
+                    // CRITICAL: Clear inline styles so CSS :hover effects (exploding dot) work again
+                    TweenMax.set([btn, btnText, btnArrow, btnDot], { clearProps: "all" });
+                  }
+                });
+                
+                tl.to(btn, 0.5, { opacity: 1, scale: 1, ease: Back.easeOut.config(1.7) }) // Pop in as circle
+                  .to(btnDot, 0.3, { scale: 1, ease: Back.easeOut.config(1.7) }, "-=0.2") // Dot appears
+                  .to(btn, 0.6, { width: targetWidth, borderRadius: "24px", ease: Power3.easeOut }, "+=0.1") // Expand
+                  .to(btnText, 0.4, { opacity: 1, x: 0, ease: Power2.easeOut }, "-=0.3"); // Text fades in (Arrow stays hidden for hover)
+                
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.5 });
+
+          observer.observe(contactBtnWrapper);
+        }
       });
 
       // Initialize EmailJS (Replace with your actual keys)
@@ -830,6 +872,36 @@
         return true;
       }
 
+      // Magnetic Button Effect
+      $('.resume-btn').each(function() {
+        const btn = $(this);
+        btn.on('mousemove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const deltaX = (x - centerX) * 0.3;
+          const deltaY = (y - centerY) * 0.3;
+          
+          TweenMax.to(btn, 0.3, { x: deltaX, y: deltaY, ease: Power2.easeOut });
+          TweenMax.to(btn.find('.resume-btn-text, .resume-btn-arrow'), 0.3, { x: deltaX * 0.5, y: deltaY * 0.5, ease: Power2.easeOut });
+        });
+
+        btn.on('mouseleave', function() {
+          TweenMax.to(btn, 0.6, { x: 0, y: 0, ease: Elastic.easeOut.config(1.1, 0.4) });
+          TweenMax.to(btn.find('.resume-btn-text, .resume-btn-arrow'), 0.6, { x: 0, y: 0, ease: Elastic.easeOut.config(1.1, 0.4) });
+        });
+      });
+
+      // Inject Loader and Checkmark into Send Button (Ensure DOM is ready)
+      $(document).ready(function() {
+        const sendBtn = $('#gform .resume-btn');
+        if (sendBtn.length && sendBtn.find('.btn-loader').length === 0) {
+          sendBtn.append('<div class="btn-loader"></div><svg class="btn-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>');
+        }
+      });
+
       $("#gform").submit(function(e) {
         e.preventDefault();
         
@@ -837,35 +909,49 @@
         if (validate() && validateEmail() && validateMessage()) {
           const btn = this.querySelector('button[type="submit"]');
           const btnText = btn.querySelector('.resume-btn-text');
-          const originalText = btnText.textContent;
+          const btnArrow = btn.querySelector('.resume-btn-arrow');
+          const btnDot = btn.querySelector('.resume-btn-dot');
+          const check = btn.querySelector('.btn-check');
           
-          // Rich UI: Loading State
-          btnText.textContent = "Sending...";
-          btn.disabled = true;
-          btn.style.opacity = "0.7";
-          document.body.style.cursor = 'wait';
+          // GSAP Timeline for Submit
+          const tl = new TimelineMax();
           
+          // 1. Transition to Processing State (Red BG, No Shape Change)
+          tl.to([btnText, btnArrow, btnDot], 0.3, { opacity: 0 })
+            .set(btn, { className: "+=processing" }) // Add class for Red BG & White Loader
+            .set(btn, { className: "+=loading" });   // Show Loader
+            
           // Send via EmailJS
           emailjs.sendForm('service_blypt8l', 'template_n4j9usl', this)
             .then(function() {
-                showNotification(true, "Message sent");
-                document.getElementById("gform").reset();
-                // Reset floating labels
-                document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
+                // Success Animation
+                setTimeout(() => {
+                  const successTl = new TimelineMax();
+                  successTl.set(btn, { className: "-=loading" }) // Hide Loader
+                           .set(btn, { className: "+=success" }) // Show Checkmark container visibility
+                           .to(check, 0.4, { scale: 1, opacity: 1, visibility: 'visible', ease: Elastic.easeOut.config(1, 0.5) })
+                           .call(() => {
+                              showNotification(true, "Message sent successfully!");
+                              document.getElementById("gform").reset();
+                              document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
+                           })
+                           // Reset after delay
+                           .to(check, 0.2, { scale: 0, opacity: 0, visibility: 'hidden', delay: 2 })
+                           .set(btn, { className: "-=success" })
+                           .set(btn, { className: "-=processing" }) // Remove Red BG
+                           .to([btnText, btnArrow, btnDot], 0.3, { opacity: 1, clearProps: "all" }); // Restore content
+                }, 1000);
             }, function(error) {
                 console.error('FAILED...', error);
                 let msg = "Failed to send. Please try again.";
-                if (error.text) {
-                    msg = "Failed: " + error.text;
-                }
+                if (error.text) msg = "Failed: " + error.text;
                 showNotification(false, msg);
-            })
-            .finally(function() {
-                // Restore button state
-                btnText.textContent = originalText;
-                btn.disabled = false;
-                btn.style.opacity = "1";
-                document.body.style.cursor = 'default';
+                
+                // Revert Animation
+                const failTl = new TimelineMax();
+                failTl.set(btn, { className: "-=loading" })
+                      .set(btn, { className: "-=processing" })
+                      .to([btnText, btnArrow, btnDot], 0.3, { opacity: 1, clearProps: "all" });
             });
         }
       });
