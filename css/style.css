@@ -73,6 +73,7 @@ body {
 }
 
 /* Permanent Bottom Blur Overlay */
+/* Permanent Bottom Blur Overlay */
 .site-bottom-blur {
   position: fixed;
   bottom: 0;
@@ -80,8 +81,8 @@ body {
   width: 100%;
   height: 120px; /* Taller to allow smooth fade */
   /* No background color, just pure blur */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   /* Fade the blur itself using a mask */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
@@ -91,7 +92,10 @@ body {
 
 @media (max-width: 991.98px) {
   .site-bottom-blur {
-    display: none;
+    display: block; /* Force visible on mobile */
+    height: 100px; /* Adjust height for mobile if needed */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 }
 
@@ -145,7 +149,7 @@ a, a:hover {
 }
 
 .unslate_co--site-inner {
-  margin-bottom: 400px;
+  margin-bottom: 0;
   position: relative;
   width: 100%;
   z-index: 1;
@@ -158,15 +162,12 @@ a, a:hover {
 }
 
 .unslate_co--footer {
-  position: fixed !important;
+  position: relative !important;
   width: 100%;
   background-color: #191919;
   color: #fff;
-  left: 0;
-  right: 0;
-  bottom: 0px;
-  z-index: -1;
-  height: 400px;
+  z-index: 100;
+  height: auto;
 }
 
 @media (max-width: 991.98px) {
@@ -2994,7 +2995,12 @@ body {
    ========================================= */
 
 .glass-footer {
-  position: relative;
+  position: relative !important; /* Force separate layer flow */
+  z-index: 100 !important; /* Keep interactive but reasonable */
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  pointer-events: auto;
   background: rgba(10, 10, 10, 0.6);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -3086,7 +3092,7 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
-  transform: translateY(-3px);
+  transform: translateY(-3px) scale(1.1);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(214, 52, 71, 0.2);
 }
 
@@ -3121,11 +3127,12 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 4px;
+  background: #0D0D0D; /* Darker background as per image */
+  border: 1px solid #222;
+  border-radius: 16px; /* Slightly more rounded */
+  padding: 6px; /* Inner spacing for the floating button look */
   transition: border-color 0.3s;
+  height: 64px; /* Fixed height for consistency */
 }
 
 .glass-input-group:focus-within {
@@ -3137,10 +3144,12 @@ body {
   flex: 1;
   background: transparent;
   border: none;
-  padding: 12px 16px;
-  color: #fff;
-  font-size: 14px;
+  padding: 0 20px;
+  color: rgba(255, 255, 255, 0.5); /* Muted text color */
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
   outline: none;
+  height: 100%;
 }
 
 .glass-input::placeholder {
@@ -3148,17 +3157,18 @@ body {
 }
 
 .glass-submit-btn {
-  background: #D63447;
+  background: #C84B4B; /* Muted red from image */
   border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 52px; /* Square shape */
+  height: 52px;
+  border-radius: 12px; /* Matching rounded corners */
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .glass-submit-btn:hover {
