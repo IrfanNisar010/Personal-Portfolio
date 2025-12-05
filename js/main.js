@@ -27,7 +27,7 @@ jQuery(function($) {
 	blurStaggerReveal();
 	luxuryButtonReveal();
 	liquidRippleEffect();
-	portfolioHoverEffect();
+	// portfolioHoverEffect(); // Moved to siteIstotope done callback
 	mobileImageReveal();
 
 });
@@ -71,6 +71,9 @@ var siteIstotope = function() {
 			var html = $(this).html();
 			$(this).html('<div class="reveal-wrap"><span class="cover"></span><div class="reveal-content">'+html+'</div></div>');
 		});
+
+		// Call hover effect HERE, after DOM rewrite
+		portfolioHoverEffect();
 
   	var controller = new ScrollMagic.Controller();
 
@@ -992,6 +995,21 @@ var portfolioHoverEffect = function() {
 		var $this = $(this);
 		var $img = $this.find('img');
 		var $overlay = $this.find('.overlay');
+		var $textElements = $this.find('.portfolio-item-content h3, .portfolio-item-content p');
+
+		// 1. Prepare Text: Split into characters
+		$textElements.each(function() {
+			var $el = $(this);
+			var text = $el.text().trim();
+			var chars = text.split('');
+			$el.empty();
+			$.each(chars, function(i, char) {
+				var content = char === ' ' ? '&nbsp;' : char;
+				$el.append('<span class="char" style="display:inline-block; opacity:0; filter:blur(8px); transform:translateY(10px); will-change:transform, opacity, filter;">' + content + '</span>');
+			});
+		});
+
+		var $chars = $this.find('.char');
 
 		// Set initial perspective on container
 		TweenMax.set($this, { perspective: 1000, transformStyle: "preserve-3d" });
@@ -1005,6 +1023,15 @@ var portfolioHoverEffect = function() {
 				scale: 1.2, 
 				ease: Power2.easeOut
 			});
+
+			// Text Blur IN Animation
+			TweenMax.staggerTo($chars, 0.6, {
+				opacity: 1,
+				filter: 'blur(0px)',
+				y: 0,
+				ease: Power2.easeOut,
+				delay: 0.1 // Slight delay to wait for overlay fade
+			}, 0.015);
 		});
 
 		$this.on('mousemove', function(e) {
@@ -1016,7 +1043,7 @@ var portfolioHoverEffect = function() {
 			var xPos = (e.pageX - offset.left) / width - 0.5;
 			var yPos = (e.pageY - offset.top) / height - 0.5;
 
-			// Tilt AND Move Animation (3D Tracking)
+			// Tilt AND Move Animation (3D Tracking) for Image Only
 			TweenMax.to($img, 0.5, {
 				rotationY: xPos * 30,  
 				rotationX: -yPos * 30, 
@@ -1027,13 +1054,13 @@ var portfolioHoverEffect = function() {
 				force3D: true
 			});
 
-			// Move Overlay slightly for parallax
-			TweenMax.to($overlay, 0.5, {
+			// Overlay stays static to prevent gradient breaking
+			/* TweenMax.to($overlay, 0.5, {
 				x: xPos * 60,
 				y: yPos * 60,
 				ease: Power2.easeOut,
 				force3D: true
-			});
+			}); */
 
 		}).on('mouseleave', function() {
 			// Smooth Grayscale Reset
@@ -1054,12 +1081,23 @@ var portfolioHoverEffect = function() {
 				clearProps: "transform" 
 			});
 
+			// Reset overlay (ensure it's at 0,0)
 			TweenMax.to($overlay, 0.8, {
 				x: 0,
 				y: 0,
 				ease: Power2.easeOut
 			});
+
+			// Text Blur OUT Animation
+			TweenMax.staggerTo($chars, 0.4, {
+				opacity: 0,
+				filter: 'blur(8px)',
+				y: 10,
+				ease: Power2.easeIn
+			}, 0.01);
 		});
+
+
 	});
 };
 

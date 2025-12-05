@@ -1385,7 +1385,7 @@ a, a:hover {
 .portfolio-item .overlay, .blog-item .overlay {
   position: relative;
   z-index: 8;
-  opacity: 0;
+  opacity: 0; /* Hidden by default */
   visibility: hidden;
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
@@ -1401,8 +1401,9 @@ a, a:hover {
 }
 
 .portfolio-item .overlay:before, .blog-item .overlay:before {
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent; /* Remove full opaque cover */
   content: "";
+  display: none; /* remove completely */
 }
 
 .portfolio-item .wrap-icon, .blog-item .wrap-icon {
@@ -1410,13 +1411,45 @@ a, a:hover {
   right: 20px;
   color: #fff;
   top: 20px;
+  opacity: 0; /* Hide icon by default */
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.portfolio-item:hover .wrap-icon, .blog-item:hover .wrap-icon {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .portfolio-item .portfolio-item-content, .blog-item .portfolio-item-content {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 100px 30px 30px 30px; /* Considerably increased top padding for a longer, smoother gradient start */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none; /* Let clicks pass through if needed, though usually on item */
+}
+
+/* Gradient Blur Pseudo-element */
+.portfolio-item .portfolio-item-content::before, .blog-item .portfolio-item-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+  backdrop-filter: blur(12px); /* Slightly increased blur for premium feel */
+  -webkit-backdrop-filter: blur(12px);
+  /* Fade the blur/background in from top to bottom */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  transition: opacity 0.3s ease; /* Smooth transition for the blur too */
 }
 
 .portfolio-item .portfolio-item-content h3, .portfolio-item .portfolio-item-content p, .blog-item .portfolio-item-content h3, .blog-item .portfolio-item-content p {
@@ -1426,13 +1459,18 @@ a, a:hover {
 }
 
 .portfolio-item .portfolio-item-content h3, .blog-item .portfolio-item-content h3 {
-  font-size: 18px;
+  font-family: 'Aeonik', sans-serif;
+  font-size: 19px; /* Reduced from 22px */
+  margin-bottom: 6px;
+  font-weight: 400; /* Reduced from 600 */
+  letter-spacing: -0.2px;
 }
 
 .portfolio-item .portfolio-item-content p, .blog-item .portfolio-item-content p {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-  font-family: "Arimo", sans-serif;
+  font-family: 'Aeonik', sans-serif;
+  font-size: 14px; /* Reduced from 15px */
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
 }
 
 .portfolio-item:hover .overlay, .blog-item:hover .overlay {
@@ -2950,3 +2988,230 @@ body {
 /* img {
   content-visibility: auto; 
 } */
+
+/* =========================================
+   GLASS FOOTER STYLES
+   ========================================= */
+
+.glass-footer {
+  position: relative;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 80px 0 40px;
+  overflow: hidden;
+  text-align: left; /* Enforce left alignment */
+}
+
+.glass-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 1px;
+  background: radial-gradient(circle, rgba(214, 52, 71, 0.5) 0%, transparent 70%);
+  box-shadow: 0 0 15px rgba(214, 52, 71, 0.3);
+}
+
+.glass-footer::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(214, 52, 71, 0.08) 0%, transparent 70%);
+  filter: blur(60px);
+  z-index: -1;
+}
+
+.footer-brand-col {
+  padding-right: 40px;
+}
+
+.footer-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
+.footer-logo-text {
+  font-family: "Raleway", sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.footer-logo-text span {
+  color: #D63447;
+}
+
+.footer-desc {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-glass-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.social-glass-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(214, 52, 71, 0.2);
+}
+
+.footer-heading {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 24px;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease;
+  font-size: 15px;
+  display: inline-block;
+  text-decoration: none !important;
+}
+
+.footer-links a:hover {
+  color: #fff;
+  transform: translateX(4px);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.glass-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 4px;
+  transition: border-color 0.3s;
+}
+
+.glass-input-group:focus-within {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.glass-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.glass-submit-btn {
+  background: #D63447;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.glass-submit-btn:hover {
+  background: #ff4757;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(214, 52, 71, 0.5);
+}
+
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  margin: 60px 0 30px;
+}
+
+.copyright {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+}
+
+.footer-legal a {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-legal a:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .footer-brand-col, .footer-newsletter-col, .footer-links-col {
+    text-align: center;
+  }
+  
+  .footer-logo-wrap {
+    justify-content: center;
+  }
+  
+  .footer-social-icons {
+    justify-content: center;
+  }
+  
+  .footer-desc {
+    margin: 0 auto 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .text-md-right {
+    text-align: center !important;
+  }
+}
