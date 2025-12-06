@@ -1,0 +1,409 @@
+/* Contact Section Redesign - Reference Image Match */
+
+#contact-section {
+  background-color: #000 !important; /* Force black */
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* -----------------------------
+   Layout
+   ----------------------------- */
+.contact-split-layout {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* -----------------------------
+   Header Elements
+   ----------------------------- */
+.contact-header-wrap {
+  margin-bottom: 30px;
+}
+
+/* Floating Pill Tag */
+.contact-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: #0a0a0a; /* Darker bg */
+  border-radius: 100px;
+  /* Join the "Top Border Only" club */
+  border: none;
+  border-top: 1px solid #333; 
+  color: #eee;
+  font-size: 0.85rem;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+.contact-tag-pill svg {
+  color: #fff;
+  width: 14px; 
+  height: 14px;
+}
+
+/* Heading */
+.contact-heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2.8rem;
+  line-height: 1.2;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 25px;
+}
+
+.contact-heading .text-muted-custom {
+  color: #666;
+  font-weight: 400;
+}
+
+/* Divider Line */
+.contact-header-line {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 40px;
+}
+
+
+/* -----------------------------
+   Card Shared Styles
+   ----------------------------- */
+/* The "Top Border Only" / Bevel effect */
+.stat-card,
+.contact-testimonial-card,
+.contact-book-call-card,
+.contact-form-container {
+  background: #080808; /* Dark card bg */
+  border-radius: 16px;
+  
+  /* Glass-like top border only */
+  border: none; 
+  border-top: 1px solid rgba(160, 160, 160, 0.08);
+  
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+/* -----------------------------
+   Left Column Components
+   ----------------------------- */
+
+/* Stats Row */
+.contact-stats-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 20px 10px; /* Reduced padding */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Override shared borders */
+  border: none !important;
+  border-top: 1px solid rgba(160, 160, 160, 0.08) !important; /* Match others */
+  background: #0a0a0a;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  background: #0e0e0e;
+}
+
+.stat-card h3 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.5rem; /* Reduced font size */
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.stat-card p {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.75rem; /* Reduced font size */
+  color: #888;
+  margin: 0;
+}
+
+/* Testimonial Card */
+.contact-testimonial-card {
+  padding: 30px;
+  margin-bottom: 25px;
+  
+  /* Glass-like Dark Background */
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Top Border Only - Glass Edge */
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Bright glass edge */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Depth shadow */
+  
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Subtle Animated Glow Background */
+.contact-testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  /* Minimal color glow gradient */
+  background: radial-gradient(circle at 50% 50%, rgba(100, 100, 120, 0.06), transparent 60%);
+  animation: subtleGlowMove 10s infinite alternate ease-in-out;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes subtleGlowMove {
+  0% { transform: scale(1) translate(0,0); opacity: 0.6; }
+  100% { transform: scale(1.1) translate(10px, 10px); opacity: 1; }
+}
+
+.testimonial-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.testimonial-img {
+  width: 58px;
+  height: 58px;
+  border-radius: 10px; /* Squircle */
+  object-fit: cover;
+}
+
+.testimonial-info h4 {
+  font-size: 1.25rem; /* Larger match */
+  color: #fff;
+  margin: 0 0 5px 0; /* Add spacing below name */
+  font-weight: 600;
+  line-height: 1.2;
+  font-family: 'Manrope', sans-serif;
+}
+
+.testimonial-info p {
+  font-size: 0.8rem;
+  color: #888; /* Slightly lighter for better contrast */
+  margin: 0;
+  line-height: 1.2;
+  font-family: 'Manrope', sans-serif;
+}
+
+.testimonial-stars {
+  color: #F59E0B; /* Amber/Gold */
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.testimonial-stars .rating-val {
+  color: #888;
+  margin-right: 5px;
+}
+
+.testimonial-text {
+  font-size: 0.78rem;
+  color: #a0a0a0;
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Book Call Card */
+.contact-book-call-card {
+  padding: 20px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+
+  /* Remove shared borders and add glass top border */
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Status Indicator Logic */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4CAF50; /* Green */
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 0 rgba(76, 175, 80, 0.4);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+.contact-book-call-card h3 {
+  font-size: 0.95rem; /* Reduced from 1.1rem */
+  font-weight: 500; /* Reduced from 600 */
+  color: #fff;
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* -----------------------------
+   Right Column (Form)
+   ----------------------------- */
+.contact-form-container {
+  padding: 30px 40px;
+  height: calc(100% - 75px);
+  display: flex;
+  flex-direction: column;
+  margin-top: 75px; /* Align with "Let's Collaborate" title, below the pill */
+}
+
+.contact-form-new {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row-new {
+  display: flex;
+  flex-direction: column; /* Stacked layout */
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.form-group-new {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-form-new label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #666;
+  text-transform: uppercase;
+  margin-left: 2px;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Override WebKit Autofill to match dark background */
+.input-new:-webkit-autofill,
+.input-new:-webkit-autofill:hover, 
+.input-new:-webkit-autofill:focus, 
+.input-new:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #0f0f0f inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.input-new {
+  width: 100%;
+  background: #0f0f0f;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 0.78rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-new:focus {
+  background: #121212;
+  border: none;
+  border-color: transparent; /* Ensure no color applies */
+}
+
+.textarea-new {
+  resize: none;
+  flex-grow: 1; /* Make it fill available space */
+  min-height: 100px;
+}
+
+/* Button Wrapper specific for this section (form only) */
+.luxury-button-wrapper-contact {
+  margin-top: 25px;
+  width: 100%;
+}
+
+/* Button overrides removed to revert to default style */
+.luxury-button-wrapper-contact .resume-btn {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* -----------------------------
+   Responsive
+   ----------------------------- */
+@media (max-width: 991px) {
+  .contact-split-layout {
+    flex-direction: column;
+  }
+  .contact-header-wrap {
+    text-align: center;
+  }
+  .contact-heading {
+    font-size: 2.5rem;
+  }
+  .contact-stats-row {
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    min-width: 45%;
+  }
+  .contact-form-container {
+    margin-top: 30px;
+    height: auto;
+  }
+  .textarea-new {
+    min-height: 200px;
+  }
+}
+
+.contact-form-note {
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-family: 'Manrope', sans-serif;
+}

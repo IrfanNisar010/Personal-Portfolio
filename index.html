@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="css/faq-section.css">
     <link rel="stylesheet" href="css/back-to-top.css">
     <link rel="stylesheet" href="css/services-redesign.css">
+    <link rel="stylesheet" href="css/contact-redesign.css">
     <link rel="stylesheet" href="css/rating-popup.css">
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script> 
     
@@ -985,73 +986,113 @@
 
       <div class="unslate_co--section" id="contact-section">
         <div class="container">
-          <div class="section-heading-wrap text-center mb-5">
-            <h2 class="heading-h2 text-center divider" id="contact-heading">Let's Connect</h2>
-            <span class="gsap-reveal"><img src="images/divider.png" alt="divider" width="76"></span>
-          </div>
-
-
-          <div class="row justify-content-between">
+          <div class="row contact-split-layout">
             
-            <div class="col-md-6">
-              <form method="post" class="form-outline-style-v1" id="gform">
-                <!-- EmailJS Hidden Inputs (Optional, can be used in template) -->
-                <!-- <input type="hidden" name="contact_number"> -->
-                <div class="form-group row mb-0">
+            <!-- Left Column -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+              
+              <!-- Header -->
+              <div class="contact-header-wrap">
+                <div class="contact-tag-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="2" fill="currentColor"></circle></svg>
+                  Let's Connect
+                </div>
+                <h2 class="contact-heading">Let’s Collaborate <span class="text-muted-custom">and</span><br> <span class="text-muted-custom">Begin the work</span></h2>
+                <div class="contact-header-line"></div>
+              </div>
 
-                  <div class="col-lg-6 form-group gsap-reveal">
-                    <label for="name">Name</label>
-                    <input name="name" type="text" class="form-control" id="name">
-                  </div>
-                  <div class="col-lg-6 form-group gsap-reveal">
-                    <label for="email">Email</label>
-                    <input name="email" type="email" class="form-control" id="email">
-                  </div>
-                  <div class="col-lg-12 form-group gsap-reveal">
-                    <label for="message">Write your message...</label>
-                    <textarea name="message" id="message" cols="30" rows="7" class="form-control"></textarea>
+              <!-- Stats -->
+              <div class="contact-stats-row blur-stagger-reveal">
+                <div class="stat-card">
+                  <h3>10+</h3>
+                  <p>Happy Clients</p>
+                </div>
+                <!-- Note: Using template text as requested "same like image" -->
+                <div class="stat-card">
+                  <h3>40+</h3>
+                  <p>Interactions</p>
+                </div>
+                <div class="stat-card">
+                  <h3>4.5</h3>
+                  <p>Average Rating</p>
+                </div>
+              </div>
+
+              <!-- Testimonial -->
+              <div class="contact-testimonial-card gsap-reveal-img">
+                <div class="testimonial-profile">
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Arjun Mehta" class="testimonial-img">
+                  <div class="testimonial-info">
+                    <h4>Arjun Mehta</h4>
+                    <p>Founder, NovaLabs</p>
                   </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-md-12 d-flex align-items-center mt-5" style="min-height: 60px; padding: 10px;">
-                      <div class="luxury-button-wrapper" style="width: 100%;">
-                        <button type="submit" class="resume-btn">
-                          <span class="resume-btn-dot"></span>
-                          <span class="resume-btn-text">Send Message</span>
-                          <span class="resume-btn-arrow">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-                          </span>
-                        </button>
-                      </div>
-                      <span class="submitting"></span>
-                    </div>
-                  </div>
-              </form>
-              <div id="form-message-warning" class="mt-4"></div> 
-              <div id="form-message-success">
-                Your message was sent, thank you!
+                <div class="testimonial-stars">
+                   <span class="rating-val">5.0</span>
+                   ★★★★★
+                </div>
+                <p class="testimonial-text">
+                  Irfan doesn’t just build screens he builds experiences that actually feel alive. Every iteration was sharper than the last, and he always brought ideas that pushed the product forward. If you want someone who blends design sense with real engineering skills, he's the one.
+                </p>
+              </div>
+
+              <!-- Book A Call Card -->
+              <div class="contact-book-call-card gsap-reveal">
+                <div class="status-indicator">
+                   <div class="status-dot"></div>
+                   <h3>Available for Work</h3>
+                </div>
+                
+                <div class="luxury-button-wrapper">
+                    <a href="https://cal.com/irfan-nisar-fxit6q/30min" class="resume-btn" target="_blank">
+                       <span class="resume-btn-dot"></span>
+                       <span class="resume-btn-text">Let's Book A Call</span>
+                       <span class="resume-btn-arrow">
+                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                       </span>
+                    </a>
+                </div>
               </div>
 
             </div>
 
-            <div class="col-md-4">
-              <div class="contact-info-v1">
-                <div class="gsap-reveal d-block">
-                  <span class="d-block contact-info-label">Email</span>
-                  <a href="#" class="contact-info-val">inzrwork020@gmail.com</a>
-                </div>
-                <div class="gsap-reveal d-block">
-                  <span class="d-block contact-info-label">Phone</span>
-                  <a href="#" class="contact-info-val">+91 95446 75882</a>
-                </div>
-                <div class="gsap-reveal d-block">
-                  <span class="d-block contact-info-label">Address</span>
-                  <address class="contact-info-val">Calicut, Kerala, India</address>
-                </div>
-                <div class="gsap-reveal d-block">
-                  <span class="d-block contact-info-label">Find me on</span>
-                  <a href="https://linktr.ee/irfan_nzr" target="_blank" class="contact-info-val">Linktree</a>
-                </div>
+            <!-- Right Column -->
+            <div class="col-lg-6">
+              <div class="contact-form-container gsap-reveal">
+                <form method="post" class="contact-form-new" id="gform">
+                  
+                  <div class="form-row-new">
+                    <div class="form-group-new">
+                      <label for="name">NAME</label>
+                      <input type="text" name="name" id="name" placeholder="Your Name" class="input-new">
+                    </div>
+                    <div class="form-group-new">
+                      <label for="email">EMAIL</label>
+                      <input type="email" name="email" id="email" placeholder="Your Email" class="input-new">
+                    </div>
+                  </div>
+
+                  <div class="form-group-new" style="flex-grow: 1;">
+                    <label for="message">MESSAGE</label>
+                    <textarea name="message" id="message" placeholder="Your Message" class="input-new textarea-new"></textarea>
+                  </div>
+
+                  <div class="luxury-button-wrapper-contact">
+                    <button type="submit" class="resume-btn">
+                      <span class="resume-btn-dot"></span>
+                      <span class="resume-btn-text">Send Message</span>
+                      <span class="resume-btn-arrow">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                      </span>
+                    </button>
+                  </div>
+
+                  <p class="contact-form-note">(We will reach out to you within 48hrs )</p>
+                  
+                  <div id="form-message-success" style="display:none; margin-top:15px; color:#4caf50;">
+                    Your message was sent, thank you!
+                  </div>
+                </form>
               </div>
             </div>
 
