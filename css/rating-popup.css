@@ -6,7 +6,7 @@
   width: 100%;
   height: 100%;
   z-index: 9999;
-  display: flex; /* Flex but hidden via visibility/opacity for animation */
+  display: none; /* Hidden by default, toggled to flex by JS */
   justify-content: center;
   align-items: center;
   background: transparent;
@@ -14,7 +14,7 @@
   pointer-events: none; /* Allow clicks to pass through to website */
   justify-content: flex-end; /* Right alignment */
   align-items: flex-end; /* Bottom alignment */
-  padding: 20px; /* Spacing from screen edge */
+  padding: 20px 55px 20px 20px; /* Added 55px right padding to clear scrollbar */
 }
 /* CSS Animations removed for GSAP control */
 #rating-popup-overlay.show {
@@ -43,8 +43,9 @@
   /* Initial state handled by GSAP now */
   opacity: 0; 
   visibility: hidden;
-  margin-bottom: 20px; /* Lift slightly from very bottom */
-  margin-right: 10px;
+  /* Performance */
+  will-change: transform, opacity, filter;
+  transform: translateZ(0); /* Hardware Acceleration trigger */
 }
 
 /* Animated Liquid Glass Border Matching Mobile Menu */
@@ -539,7 +540,31 @@ textarea.rating-input {
 .desktop-hint { display: block; }
 .mobile-hint { display: none; }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
   .desktop-hint { display: none; }
   .mobile-hint { display: block; }
+  
+  /* Force Animation Consistency on Mobile/Tablet */
+  #rating-form .resume-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    animation: mobile-glass-pulse 3s ease-in-out infinite alternate !important;
+    transform: none !important; /* Ensure no stray transforms */
+    -webkit-transform: none !important;
+  }
+  
+  /* Ensure loader stays visible and animated */
+  .rating-btn-loader {
+    display: none; /* Default state, toggled by JS */
+  }
+  
+  /* When JS sets it to flex */
+  .rating-btn-loader[style*="flex"] {
+     display: flex !important;
+  }
+  
+  /* Success Tick Scaling Fix for Mobile */
+  .success-tick-wrapper {
+    transform: scale(1); /* Ensure no shrinking */
+  }
 }

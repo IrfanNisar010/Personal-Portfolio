@@ -25,38 +25,40 @@
     // ---------------------------------------------------------
     
     // Check if user has already successfully rated (Persistent)
-    // const hasRated = localStorage.getItem("hasRatedWebsite_v1");
-    // DEBUG MODE: FORCE POPUP TO SHOW (Comment out the line above and uncomment the line below)
-    const hasRated = false; 
+    const hasRated = localStorage.getItem("hasRatedWebsite_v1");
+    // const hasRated = false; // DEBUG MODE OFF
 
     // Session flag to track "Second Interval"
     let shownCount = 0;
 
-    if (!hasRated) {
-        // 1. First Interval: Show after 5 seconds
-        setTimeout(() => {
-            // DEBUG MODE: Ignore localStorage check
-            const shouldShow = true; // !localStorage.getItem("hasRatedWebsite_v1")
-            
-            if (shouldShow && shownCount === 0) {
-                showPopup();
-                shownCount++;
-                
-                // 2. Second Interval: Schedule next popup if they don't rate now
-                // "Show two time the popup in two intervals"
-                // We restart a timer for the second show after the first is potentially closed/ignored
-                setTimeout(() => {
-                    const isPopupVisible = popupOverlay.classList.contains("show");
-                    // DEBUG MODE: Ignore localStorage check
-                    const shouldShowAgain = !isPopupVisible; // !localStorage.getItem("hasRatedWebsite_v1") && !isPopupVisible
+    // ---------------------------------------------------------
+    // Time Trigger & Persistence - REMOVED PER USER REQUEST
+    // Only triggering via "Let's Connect" section now.
+    // ---------------------------------------------------------
+    
+    // Check if user has already successfully rated (Persistent) - Referenced by form submission logic mostly now
+    // const hasRated is defined above.
+
+    // ---------------------------------------------------------
+    // "Let's Connect" Intersection Trigger (Forced)
+    // "show review popup when the user reach the let's connect section even if they review already"
+    // ---------------------------------------------------------
+    const contactSection = document.getElementById("contact-section");
+    if (contactSection) {
+        const contactObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // FIX: Check computed style to correctly detect effective visibility (CSS display: none)
+                    const computedStyle = window.getComputedStyle(popupOverlay);
+                    const isVisible = computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.opacity !== "0";
                     
-                    if (shouldShowAgain) {
-                        showPopup();
-                        shownCount++;
+                    if (!isVisible) {
+                         showPopup();
                     }
-                }, 15000); // 5s (display) + 10s (gap) = 15s check
-            }
-        }, 5000);
+                }
+            });
+        }, { threshold: 0.1 }); 
+        contactObserver.observe(contactSection);
     }
 
     // ---------------------------------------------------------
@@ -91,20 +93,65 @@
       // Clear any previous state
       TweenMax.killTweensOf([popupOverlay, document.querySelector(".rating-card")]);
       
+      const card = document.querySelector(".rating-card");
+      // Select content elements for staggering
+      const cardContent = [
+        card.querySelector(".close-popup"), // Animate close button too
+        card.querySelector(".rating-header"),
+        card.querySelector(".star-rating-wrapper"),
+        ...card.querySelectorAll(".rating-form-group"),
+        card.querySelector(".luxury-button-wrapper"),
+        card.querySelector(".swipe-hint-text")
+      ];
+
+      // Prepare Initial States for Stagger (Ghost State)
+      // "Blend In" = Opacity 0 + Slight Offset + Blur
+      TweenMax.set(cardContent, { 
+          autoAlpha: 0, 
+          y: 15, 
+          filter: "blur(10px)" 
+      });
+
       // Ensure initial visibility constraints
       popupOverlay.style.display = "flex";
+      document.body.style.overflow = "hidden"; /* Hide Page Scrollbar */
       
-      // Animate Overlay Fade In
-      TweenMax.fromTo(popupOverlay, 0.4, 
+      // Master Timeline
+      const tl = new TimelineMax();
+
+      // 1. Overlay Fade In
+      tl.fromTo(popupOverlay, 0.5, 
         { autoAlpha: 0 }, 
         { autoAlpha: 1, ease: Power2.easeOut }
       );
 
-      // Animate Card Entrance (Slide Up)
-      const card = document.querySelector(".rating-card");
-      TweenMax.fromTo(card, 0.8, 
-        { y: 100, scale: 0.9, autoAlpha: 0 }, 
-        { y: 0, scale: 1, autoAlpha: 1, ease: Expo.easeOut, delay: 0.1 }
+      // 2. Card Entrance
+      if (isMobile()) {
+          // Mobile Sheet Up
+          tl.fromTo(card, 0.7, 
+            { y: "110%", scale: 0.95, autoAlpha: 1, filter: "blur(10px)" },
+            { y: "0%", scale: 1, autoAlpha: 1, filter: "blur(0px)", ease: Power4.easeOut, force3D: true }, 
+            "-=0.3"
+          );
+      } else {
+          // Desktop Pop
+          tl.fromTo(card, 0.8, 
+            { y: 40, scale: 0.9, rotationX: 8, autoAlpha: 0, filter: "blur(20px)", transformOrigin: "center center" }, 
+            { y: 0, scale: 1, rotationX: 0, autoAlpha: 1, filter: "blur(0px)", ease: Elastic.easeOut.config(1.1, 0.7), force3D: true }, 
+            "-=0.3"
+          );
+      }
+
+      // 3. Staggered Content "Blend In" Reveal
+      tl.staggerTo(cardContent, 0.6, 
+        { 
+            autoAlpha: 1, 
+            y: 0, 
+            filter: "blur(0px)", /* Cleans up the blur */
+            ease: Power2.easeOut 
+        }, 
+        0.06, /* Tight stagger delay */
+        "-=0.5" /* Overlapping with card entry */
       );
 
       // Start the timer
@@ -113,18 +160,54 @@
 
     function closePopup(reason = 'default') {
       const card = document.querySelector(".rating-card");
+      const cardContent = [
+        card.querySelector(".close-popup"), 
+        card.querySelector(".rating-header"),
+        card.querySelector(".star-rating-wrapper"),
+        ...card.querySelectorAll(".rating-form-group"),
+        card.querySelector(".luxury-button-wrapper"),
+        card.querySelector(".swipe-hint-text")
+      ];
       
-      if (reason !== 'drag') {
+      // Stop ongoing animations
+      TweenMax.killTweensOf([popupOverlay, card, ...cardContent]);
+
+      if (reason === 'drag') {
+          // If dragged, just fade overlay (card is handled by drag logic)
+      } else {
+          // 1. Animate Content OUT first (Reverse Blend)
+          TweenMax.staggerTo(cardContent.reverse(), 0.3, {
+              autoAlpha: 0,
+              y: -10, /* Float up slightly */
+              filter: "blur(5px)",
+              ease: Power2.easeIn
+          }, 0.03);
+
+          // 2. Animate Card OUT (with slight delay)
           if (isMobile()) {
-               TweenMax.to(card, 0.5, { y: "120vh", ease: Power2.easeIn });
+              TweenMax.to(card, 0.45, { 
+                  y: "110%", 
+                  ease: Power3.easeIn,
+                  force3D: true,
+                  delay: 0.1
+              });
           } else {
-               TweenMax.to(card, 0.5, { x: "120vw", ease: Power2.easeIn });
+              TweenMax.to(card, 0.4, { 
+                  scale: 0.92, 
+                  autoAlpha: 0, 
+                  filter: "blur(10px)",
+                  ease: Power2.easeInOut,
+                  force3D: true,
+                  delay: 0.1
+              });
           }
       }
 
-      TweenMax.to(popupOverlay, 0.5, { 
+      // 3. Overlay Fade Out
+      TweenMax.to(popupOverlay, 0.4, { 
           autoAlpha: 0, 
           delay: 0.2, 
+          ease: Power2.easeInOut,
           onComplete: () => {
              popupOverlay.style.display = "none";
              resetCardState();
