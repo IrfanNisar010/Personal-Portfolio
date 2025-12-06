@@ -54,32 +54,62 @@
 
 /* Service Tags (Cards) */
 .services-tags-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 30px;
-}
-
-.service-mini-tag {
-  background: #0d0d0d;
-  border: 1px solid transparent; /* Prepare for border transition */
-  padding: 6px 14px;
-  border-radius: 6px;
-  color: #ccc;
-  font-size: 0.75rem;
   font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  cursor: default;
-  backface-visibility: hidden;
-  transform: translateZ(0);
+  cursor: pointer;
+  
+  /* Layout & Position */
+  position: relative;
+  overflow: hidden; /* For shine effect */
+  transform: translateY(20px); /* Start low */
+  opacity: 0; /* Start invisible */
+  animation: tagFadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
+/* Staggered Entrance Delays */
+.service-mini-tag:nth-child(1) { animation-delay: 0.1s; }
+.service-mini-tag:nth-child(2) { animation-delay: 0.2s; }
+.service-mini-tag:nth-child(3) { animation-delay: 0.3s; }
+.service-mini-tag:nth-child(4) { animation-delay: 0.4s; }
+.service-mini-tag:nth-child(5) { animation-delay: 0.5s; }
+.service-mini-tag:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes tagFadeInUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Shine Effect Element */
+.service-mini-tag::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: none; /* Reset for instant return */
+}
+
+/* Hover State */
 .service-mini-tag:hover {
-  background: #1a1a1a;
-  border-color: rgba(255, 255, 255, 0.15);
+  background: #151515;
   color: #fff;
-  transform: translateY(-3px) scale(1.05); /* Rich lift and scale */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px); /* Slight lift */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.service-mini-tag:hover::after {
+  left: 200%;
+  transition: left 0.6s ease; /* Sweep duration */
 }
 
 /* Indicator Line */
@@ -129,7 +159,7 @@
 }
 
 .service-card {
-  background: #080808;
+  background: rgb(13, 13, 13);
   border: none; /* Removed border as requested */
   border-radius: 20px;
   padding: 25px;

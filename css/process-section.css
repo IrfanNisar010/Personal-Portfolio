@@ -114,8 +114,8 @@
 }
 
 .process-card {
-  background: #080808;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgb(13, 13, 13);
+  border: none;
   border-radius: 20px;
   padding: 15px 20px; /* Further reduced padding */
   position: relative;
@@ -124,7 +124,6 @@
 
 .process-card:hover {
   background: #0a0a0a;
-  border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-5px);
 }
 
@@ -175,5 +174,38 @@
   
   .process-heading {
     font-size: 3rem;
+  }
+}
+
+/* Mobile Process Card Redesign */
+@media (max-width: 480px) {
+  .process-card {
+    background: #050505 !important;
+    border: none !important;
+    border-radius: 24px !important;
+    padding: 30px 25px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .card-number {
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .card-title {
+    font-size: 1.5rem !important; /* Larger title for mobile */
+    margin-top: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Keep separator line */
+    padding-bottom: 15px;
+  }
+
+  .card-text {
+    font-size: 0.95rem !important;
+    color: #888;
+    line-height: 1.7;
   }
 }

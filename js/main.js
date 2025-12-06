@@ -858,31 +858,43 @@ var animateReveal = function() {
 		});
   }
 
-  // Mouse tracking for CTA button border (Global tracking with Proximity)
+  // Mouse tracking for CTA button border (Global tracking with Proximity) - Optimized
+  var rafId = null;
   $(document).on('mousemove', function(e) {
-    if (window.innerWidth < 992) return; // Disable on mobile to prevent layout breaking
-    var $btn = $('.hero-cta-pill');
-    if ($btn.length) {
-      var rect = $btn[0].getBoundingClientRect();
-      var btnCenterX = rect.left + rect.width / 2;
-      var btnCenterY = rect.top + rect.height / 2;
-      
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
-      
-      $btn[0].style.setProperty('--x', x + 'px');
-      $btn[0].style.setProperty('--y', y + 'px');
+    if (window.innerWidth < 992) return; // Disable on mobile
 
-      // Calculate distance from button center
-      var dist = Math.sqrt(Math.pow(e.clientX - btnCenterX, 2) + Math.pow(e.clientY - btnCenterY, 2));
-      
-      // Activation radius: 360px around the button center
-      if (dist < 360) {
-        $btn.addClass('interaction-active');
-      } else {
-        $btn.removeClass('interaction-active');
+    if (rafId) return; // Skip if a frame is already pending
+
+    rafId = requestAnimationFrame(function() {
+      var $btn = $('.hero-cta-pill');
+      if ($btn.length) {
+        var rect = $btn[0].getBoundingClientRect();
+        var btnCenterX = rect.left + rect.width / 2;
+        var btnCenterY = rect.top + rect.height / 2;
+        
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        
+        // Update CSS variables for glow position
+        $btn[0].style.setProperty('--x', x + 'px');
+        $btn[0].style.setProperty('--y', y + 'px');
+
+        // Calculate distance from button center
+        var dist = Math.sqrt(Math.pow(e.clientX - btnCenterX, 2) + Math.pow(e.clientY - btnCenterY, 2));
+        
+        // Activation radius: 360px around the button center
+        if (dist < 360) {
+          if (!$btn.hasClass('interaction-active')) {
+             $btn.addClass('interaction-active');
+          }
+        } else {
+          if ($btn.hasClass('interaction-active')) {
+             $btn.removeClass('interaction-active');
+          }
+        }
       }
-    }
+      rafId = null; // Reset flag
+    });
   });
 
 }
