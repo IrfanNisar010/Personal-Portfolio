@@ -15,11 +15,7 @@
   justify-content: flex-end; /* Right alignment */
   align-items: flex-end; /* Bottom alignment */
   padding: 20px; /* Spacing from screen edge */
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
+/* CSS Animations removed for GSAP control */
 #rating-popup-overlay.show {
   opacity: 1;
   visibility: visible;
@@ -43,9 +39,9 @@
   box-shadow: 
     0 30px 60px rgba(0, 0, 0, 0.6),
     inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-  transform: translateY(100px) scale(0.8); /* Start somewhat smaller */
-  transform-origin: bottom right;
-  opacity: 0;
+  /* Initial state handled by GSAP now */
+  opacity: 0; 
+  visibility: hidden;
   margin-bottom: 20px; /* Lift slightly from very bottom */
   margin-right: 10px;
 }
@@ -80,27 +76,13 @@
   z-index: 1010;
 }
 
-/* Show State (Slide Up from Bottom Right with Blur) */
+/* Animations handled by GSAP in JS */
 #rating-popup-overlay.show .rating-card {
-  animation: slideUpCorner 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* No CSS Animation */
 }
 
-/* Exit State (Slide Down with Blur) */
 #rating-popup-overlay.closing .rating-card {
-  animation: slideDownCorner 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideUpCorner {
-  0% {
-    opacity: 0;
-    transform: translateY(100px) scale(0.8);
-    filter: blur(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
+   /* No CSS Animation */
 }
 
 @keyframes slideDownCorner {
@@ -452,30 +434,66 @@ textarea.rating-input {
     margin-bottom: 10px; /* Slight float from bottom */
   }
 
-  /* Adjust Animation for Mobile center rise */
-  @keyframes slideUpCorner {
-    0% {
-      opacity: 0;
-      transform: translateY(100%) scale(0.9);
-      filter: blur(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-    }
+  /* Adjust Animation for Mobile center rise - GSAP Handled */
+  #rating-popup-overlay.closing .rating-card {
+     /* No CSS Animation */
   }
+}
 
-  @keyframes slideDownCorner {
-    0% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(100%) scale(0.9);
-      filter: blur(10px);
-    }
-  }
+/* =========================================
+   Swipe Instruction Text
+   ========================================= */
+.swipe-hint-text {
+  font-family: 'Aeonik', sans-serif;
+  text-transform: uppercase;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 15px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  
+  /* Shimmer Gradient Text Animation */
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.2) 0%, 
+    rgba(255,255,255,0.9) 50%, 
+    rgba(255,255,255,0.2) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  
+  animation: hint-shimmer 3s linear infinite;
+  pointer-events: none; /* Let drag pass through */
+}
+
+@keyframes hint-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.desktop-hint { display: block; }
+.mobile-hint { display: none; }
+
+@media (max-width: 768px) {
+  .desktop-hint { display: none; }
+  .mobile-hint { display: block; }
+}
+
+/* =========================================
+   Rating Button Loader
+   ========================================= */
+.rating-btn-loader {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: ratingSpin 0.8s linear infinite;
+  display: none; /* Hidden by default */
+}
+
+@keyframes ratingSpin {
+  to { transform: rotate(360deg); }
 }

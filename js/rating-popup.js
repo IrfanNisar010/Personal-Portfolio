@@ -54,7 +54,7 @@
                         showPopup();
                         shownCount++;
                     }
-                }, 25000); // 15s (duration) + 10s (gap) = 25s check
+                }, 15000); // 5s (display) + 10s (gap) = 15s check
             }
         }, 5000);
     }
@@ -62,69 +62,214 @@
     // ---------------------------------------------------------
     // Popup Functions
     // ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // Popup Functions (GSAP Powered)
+    // ---------------------------------------------------------
     let autoCloseTimer = null;
+    const isMobile = () => window.innerWidth <= 768;
 
-    function showPopup() {
-      popupOverlay.style.display = "flex"; 
-      setTimeout(() => {
-        popupOverlay.classList.add("show");
-      }, 10);
-      
-      // Removed scroll lock to allow website interaction
-      // document.body.style.overflow = "hidden"; 
-
-      // Auto-close after 15 seconds
-      if (autoCloseTimer) clearTimeout(autoCloseTimer);
-      autoCloseTimer = setTimeout(() => {
-          // Verify it's still open before closing
-          if (popupOverlay.classList.contains("show")) {
-            closePopup();
-          }
-      }, 15000);
+    // ---------------------------------------------------------
+    // Auto-Close Logic with Hover Pause
+    // ---------------------------------------------------------
+    function startAutoClose() {
+        if (autoCloseTimer) clearTimeout(autoCloseTimer);
+        autoCloseTimer = setTimeout(() => {
+            if (popupOverlay.style.display !== "none" && popupOverlay.style.opacity !== "0") {
+                closePopup('auto');
+            }
+        }, 5000);
     }
 
-    function closePopup() {
-      popupOverlay.classList.add("closing");
-      popupOverlay.classList.remove("show");
+    function stopAutoClose() {
+        if (autoCloseTimer) {
+            clearTimeout(autoCloseTimer);
+            autoCloseTimer = null;
+        }
+    }
+
+    function showPopup() {
+      // Clear any previous state
+      TweenMax.killTweensOf([popupOverlay, document.querySelector(".rating-card")]);
       
-      // Wait for animation to finish before hiding
-      setTimeout(() => {
-        popupOverlay.style.display = "none";
-        popupOverlay.classList.remove("closing");
-        // Reset form state if needed, or leave it if closed post-success
-        document.body.style.overflow = ""; // Restore scrolling
-      }, 600); // Matches CSS animation duration
+      // Ensure initial visibility constraints
+      popupOverlay.style.display = "flex";
+      
+      // Animate Overlay Fade In
+      TweenMax.fromTo(popupOverlay, 0.4, 
+        { autoAlpha: 0 }, 
+        { autoAlpha: 1, ease: Power2.easeOut }
+      );
+
+      // Animate Card Entrance (Slide Up)
+      const card = document.querySelector(".rating-card");
+      TweenMax.fromTo(card, 0.8, 
+        { y: 100, scale: 0.9, autoAlpha: 0 }, 
+        { y: 0, scale: 1, autoAlpha: 1, ease: Expo.easeOut, delay: 0.1 }
+      );
+
+      // Start the timer
+      startAutoClose();
+    }
+
+    function closePopup(reason = 'default') {
+      const card = document.querySelector(".rating-card");
+      
+      if (reason !== 'drag') {
+          if (isMobile()) {
+               TweenMax.to(card, 0.5, { y: "120vh", ease: Power2.easeIn });
+          } else {
+               TweenMax.to(card, 0.5, { x: "120vw", ease: Power2.easeIn });
+          }
+      }
+
+      TweenMax.to(popupOverlay, 0.5, { 
+          autoAlpha: 0, 
+          delay: 0.2, 
+          onComplete: () => {
+             popupOverlay.style.display = "none";
+             resetCardState();
+             document.body.style.overflow = ""; 
+          }
+      });
+    }
+
+    function resetCardState() {
+        const card = document.querySelector(".rating-card");
+        TweenMax.set(card, { clearProps: "all" });
     }
 
     // Event Listeners
     if (closeBtn) {
-      closeBtn.addEventListener("click", closePopup);
+      closeBtn.addEventListener("click", () => closePopup('button'));
     }
-
-    // Close on click outside (optional)
+    
     popupOverlay.addEventListener("click", (e) => {
       if (e.target === popupOverlay) {
-        closePopup();
+        closePopup('overlay');
       }
     });
 
+    // Hover Logic for Desktop (Pause on Hover)
+    const cardElement = document.querySelector(".rating-card");
+    if (cardElement) {
+        cardElement.addEventListener("mouseenter", stopAutoClose);
+        cardElement.addEventListener("mouseleave", () => {
+             // Only restart if we haven't already interacted in a way that permanently cancels it (like typing)
+             // But for now, simple restart is safer to ensure it eventually closes if they just leave the mouse there
+             startAutoClose();
+        });
+    }
+
     // ---------------------------------------------------------
-    // Form Interaction Logic (Cancel Auto-Close)
+    // Form Interaction Logic (Permanent Cancel on Type)
     // ---------------------------------------------------------
     const inputs = ratingForm ? ratingForm.querySelectorAll("input, textarea") : [];
     
-    function cancelAutoClose() {
-        if (autoCloseTimer) {
-            clearTimeout(autoCloseTimer);
-            autoCloseTimer = null;
-            // console.log("Auto-close cancelled by user interaction");
+    // Typing permanently cancels the timer for this session
+    function cancelAutoClosePermanently() {
+        stopAutoClose();
+        // Remove hover listeners so it doesn't restart
+        if (cardElement) {
+            cardElement.removeEventListener("mouseleave", startAutoClose);
+            // We can leave mouseenter as stopping it is fine, but restarting is the issue.
+            // Actually better to just nullify the start function or set a flag.
         }
     }
 
     if (inputs.length > 0) {
         inputs.forEach(input => {
-            input.addEventListener("input", cancelAutoClose);
-            input.addEventListener("change", cancelAutoClose);
+            input.addEventListener("input", cancelAutoClosePermanently);
+            input.addEventListener("change", cancelAutoClosePermanently);
+        });
+    }
+
+    // ---------------------------------------------------------
+    // Swipe Gestures (GSAP Draggable Logic)
+    // ---------------------------------------------------------
+    const card = document.querySelector(".rating-card");
+    let startX = 0, startY = 0;
+    let isDragging = false;
+
+    if (card) {
+        // --- Touch Events (Mobile) ---
+        card.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            TweenMax.killTweensOf(card); // Stop any entrance animation
+            cancelAutoClose();
+        }, { passive: true });
+
+        card.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            const deltaY = touch.clientY - startY;
+
+            if (isMobile()) {
+                // Only allow drag DOWN (positive Y)
+                if (deltaY > 0) {
+                   TweenMax.set(card, { y: deltaY });
+                }
+            }
+        }, { passive: true });
+
+        card.addEventListener("touchend", (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const touch = e.changedTouches[0];
+            const deltaY = touch.clientY - startY;
+
+            if (isMobile()) {
+                if (deltaY > 100) { 
+                    // Throw Down
+                    TweenMax.to(card, 0.4, { y: "100vh", ease: Power1.easeIn });
+                    closePopup('drag');
+                } else {
+                    // Snap Back
+                    TweenMax.to(card, 0.5, { y: 0, ease: Elastic.easeOut.config(1, 0.5) });
+                }
+            }
+        });
+
+        // --- Mouse Events (Desktop) ---
+        card.addEventListener("mousedown", (e) => {
+            if (["INPUT", "TEXTAREA", "BUTTON", "LABEL"].includes(e.target.tagName)) return;
+            
+            startX = e.clientX;
+            isDragging = true;
+            TweenMax.killTweensOf(card);
+            cancelAutoClose();
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - startX;
+            
+            if (!isMobile()) {
+                // Only allow drag RIGHT (positive X)
+                if (deltaX > 0) {
+                     TweenMax.set(card, { x: deltaX });
+                }
+            }
+        });
+
+        document.addEventListener("mouseup", (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const deltaX = e.clientX - startX;
+             
+            if (!isMobile()) {
+                if (deltaX > 100) { 
+                    // Throw Right
+                    TweenMax.to(card, 0.4, { x: "100vw", ease: Power1.easeIn });
+                    closePopup('drag');
+                } else {
+                    // Snap Back
+                    TweenMax.to(card, 0.5, { x: 0, ease: Elastic.easeOut.config(1, 0.5) });
+                }
+            }
         });
     }
 
@@ -151,12 +296,20 @@
 
         const submitBtn = ratingForm.querySelector(".resume-btn");
         const btnText = submitBtn.querySelector(".resume-btn-text");
-        const originalText = btnText.innerText;
 
         // Visual Loading State
-        btnText.innerText = "Sending...";
-        submitBtn.style.opacity = "0.7";
+        btnText.style.display = "none"; // Hide text
+        submitBtn.style.opacity = "0.8";
         submitBtn.disabled = true;
+
+        // Check/Add Loader
+        let loader = submitBtn.querySelector(".rating-btn-loader");
+        if (!loader) {
+            loader = document.createElement("span");
+            loader.className = "rating-btn-loader";
+            submitBtn.appendChild(loader);
+        }
+        loader.style.display = "inline-block";
 
         // Prepare Template Params
         const templateParams = {
@@ -177,26 +330,40 @@
                 // Save persistence state
                 localStorage.setItem("hasRatedWebsite_v1", "true");
                 
-                // Show Success Animation
-                formContent.style.display = "none";
-                successMessage.style.display = "block";
+                // Show Success Animation with a slight delay for smoother transition
+                setTimeout(() => {
+                    formContent.style.display = "none";
+                    successMessage.style.display = "block";
+                    
+                    // Reset Tick Animation to ensure it plays every time
+                    const tickPath = successMessage.querySelector(".success-tick-path");
+                    if (tickPath) {
+                        tickPath.style.animation = 'none';
+                        tickPath.offsetHeight; /* trigger reflow */
+                        tickPath.style.animation = 'drawTick 0.6s ease forwards 0.3s';
+                    }
+                }, 500);
                 
                 // Close popup after a delay
                 setTimeout(() => {
                     closePopup();
-                }, 2500);
+                }, 3000);
 
             }, function(error) {
                 console.error('FAILED...', error);
+                
+                // Reset Button State
+                loader.style.display = "none";
+                btnText.style.display = "block"; // Restore text
+                submitBtn.style.opacity = "1";
+                submitBtn.disabled = false;
+
                 // Show detailed error via custom notification
                 if (typeof showNotification === "function") {
                     showNotification(false, "Failed to send rating. Error: " + JSON.stringify(error));
                 } else {
                     alert("Failed: " + JSON.stringify(error));
                 }
-                btnText.innerText = originalText;
-                submitBtn.style.opacity = "1";
-                submitBtn.disabled = false;
             });
       });
     }
