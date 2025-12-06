@@ -62,19 +62,24 @@
 
 .service-mini-tag {
   background: #0d0d0d;
-  border: none;
+  border: 1px solid transparent; /* Prepare for border transition */
   padding: 6px 14px;
   border-radius: 6px;
   color: #ccc;
   font-size: 0.75rem;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .service-mini-tag:hover {
   background: #1a1a1a;
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.15);
   color: #fff;
+  transform: translateY(-3px) scale(1.05); /* Rich lift and scale */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 /* Indicator Line */

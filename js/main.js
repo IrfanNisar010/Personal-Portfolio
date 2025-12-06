@@ -860,6 +860,7 @@ var animateReveal = function() {
 
   // Mouse tracking for CTA button border (Global tracking with Proximity)
   $(document).on('mousemove', function(e) {
+    if (window.innerWidth < 992) return; // Disable on mobile to prevent layout breaking
     var $btn = $('.hero-cta-pill');
     if ($btn.length) {
       var rect = $btn[0].getBoundingClientRect();

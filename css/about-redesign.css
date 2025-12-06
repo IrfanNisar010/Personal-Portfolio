@@ -148,9 +148,11 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
   box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Drop shadow instead of border */
   cursor: pointer;
-  border: none; /* Removed border */
+  border: none !important; /* Explicitly remove border */
   backdrop-filter: blur(4px); /* Subtle blur */
-  background-clip: padding-box; /* Ensure border doesn't overlap bg */
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 
@@ -214,10 +216,12 @@
 }
 
 /* Hover Interactions */
+/* Hover Interactions */
 .resume-btn:hover .resume-btn-dot {
-  transform: scale(100);
-  background: linear-gradient(135deg, #D63447 0%, #a01a2a 100%);
-  box-shadow: inset 0 2px 5px rgba(255,255,255,0.2), inset 0 -2px 5px rgba(0,0,0,0.2);
+  transform: scale(80) translateZ(0); /* Reduced scale + HW accel */
+  background-color: #D63447; /* Solid rich red */
+  /* Split transitions: Instant color change, Smooth expansion */
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), background-color 0.05s ease-out;
 }
 
 .resume-btn:hover .resume-btn-text {
@@ -228,7 +232,7 @@
 .resume-btn:hover .resume-btn-arrow {
   opacity: 1;
   right: 20px;
-  transition-delay: 0.05s;
+  transition-delay: 0.1s; /* Slightly increased delay for better sequencing */
 }
 
 /* Responsive Adjustments */
@@ -322,34 +326,115 @@
     font-size: 0.9rem; /* Match desktop size for consistency */
   }
   
-  /* General Resume Button Mobile Styles */
+  /* New Mobile Glass Button Design (Refined Glow) */
   .resume-btn {
-    width: 100% !important; /* Full width for better touch targets */
-    max-width: 320px; /* Cap width so it's not "too wide" on larger phones */
-    justify-content: center; /* Center content */
+    width: 100% !important;
+    max-width: 320px;
+    height: 52px;
+    justify-content: center;
+    
+    /* Dark Background */
+    background: #000 !important; 
+    
+    /* Gradient Border (Subtle White/Transparent mix) */
+    background: linear-gradient(#000, #000) padding-box, 
+                linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.6) 100%) border-box !important;
+    border: 1px solid transparent !important;
+    border-radius: 30px;
+    
+    /* Complex Glow Shadows (Inner Top White + Outer Soft White) */
+    box-shadow: 
+      inset 0 1px 1px rgba(255,255,255,0.3), 
+      inset 0 10px 20px -10px rgba(255,255,255,0.15), 
+      0 0 15px -5px rgba(255,255,255,0.2);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    animation: mobile-glass-pulse 3s ease-in-out infinite alternate;
+    
+    /* Reset other properties */
+    transform: none !important;
+    transition: none !important;
   }
-  
+
+  @keyframes mobile-glass-pulse {
+    0% {
+      box-shadow: 
+        inset 0 1px 1px rgba(255,255,255,0.2), 
+        inset 0 10px 20px -10px rgba(255,255,255,0.1), 
+        0 0 10px -5px rgba(255,255,255,0.1);
+    }
+    100% {
+      box-shadow: 
+        inset 0 1px 1px rgba(255,255,255,0.5), 
+        inset 0 15px 25px -5px rgba(255,255,255,0.25), 
+        0 0 20px -2px rgba(255,255,255,0.4);
+    }
+  }
+
+  /* Reset Hover State */
+  .resume-btn:hover {
+    background-color: #000 !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255,255,255,0.4), 
+      inset 0 10px 20px -10px rgba(255,255,255,0.2), 
+      0 0 20px -5px rgba(255,255,255,0.3) !important; /* Slightly brighter on touch */
+    transform: none !important;
+  }
+
+  /* Active Click State (Subtle Red Tint) */
+  .resume-btn:active {
+    /* Subtle Red Background Gradient */
+    background: radial-gradient(circle at center, rgba(214, 52, 71, 0.25) 0%, #000 80%) !important;
+    animation: none; 
+    border-color: transparent !important; /* Keep border transparent */
+    box-shadow: 
+      inset 0 0 15px rgba(214, 52, 71, 0.3), /* Soft Inner Red Mist */
+      0 0 15px rgba(0,0,0,0.5) !important; /* Standard shadow, no outer red glow */
+    transform: scale(0.96) !important;
+    transition: all 0.1s ease !important;
+  }
+
+  /* Hide Animation Elements */
+  .resume-btn-dot,
+  .resume-btn-arrow {
+    display: none !important;
+  }
+
   .resume-btn-text {
-    font-size: 0.9rem;
-    padding-left: 0; /* Remove padding since we want centered text */
+    font-size: 1rem;
+    padding: 0;
+    margin: 0;
     text-align: center;
-    width: 100%; /* Ensure text takes up space to center properly */
+    color: #fff !important; /* Always white */
+    width: auto;
+    left: 0 !important; /* Prevent sliding */
   }
 
-  /* Force Dot to Left on Mobile */
-  .resume-btn-dot {
-    left: 20px !important; /* Force left position */
-    margin-right: 0;
-  }
-
-  /* Center the button wrapper */
+  /* Center the button wrapper & allow side-by-side */
   .resume-button-wrap, 
-  .process-buttons {
+  .process-buttons,
+  .luxury-button-wrapper { /* Added luxury-button-wrapper class */
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row !important; /* Force row layout */
     align-items: center;
-    gap: 15px;
+    gap: 10px; /* Reduced gap to fit */
     width: 100%;
+    flex-wrap: wrap; /* Allow wrap on very small screens */
+  }
+
+  /* Adjust width for side-by-side fit (approx 48% with gap) */
+  .resume-btn {
+    width: calc(50% - 10px) !important; /* Fit two in a row */
+    min-width: 140px; /* Prevent crushing */
+    max-width: none; /* Remove cap */
+    padding: 0 5px; /* Tighter padding */
+  }
+
+  .resume-btn-text {
+    font-size: 0.85rem !important; /* Smaller text for side-by-side */
+    white-space: nowrap; /* Prevent text wrap */
   }
 }

@@ -2790,11 +2790,19 @@ span.error {
   transform-origin: center;
 }
 
-
-
 @keyframes rotate-border {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Mobile Optimization: Disable Magnetic Effects */
+@media (max-width: 991px) {
+  .hero-cta-pill::before,
+  .hero-cta-pill .border-rotate {
+    display: none !important;
+    opacity: 0 !important;
+    animation: none !important;
+  }
 }
 
 /* The inner background */
