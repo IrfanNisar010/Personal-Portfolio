@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Portfolio Rating</title>
+<style type="text/css">
+    body {margin: 0; padding: 0; min-width: 100%!important;}
+    .content {width: 100%; max-width: 600px;}
+    @media only screen and (max-width: 600px) {
+        .content {width: 100% !important;}
+    }
+</style>
+</head>
+<body yahoo bgcolor="#000000" style="margin: 0; padding: 0; min-width: 100%!important; background-color: #000000;">
+
+<table width="100%" bgcolor="#000000" border="0" cellpadding="0" cellspacing="0">
+<tr>
+    <td align="center" style="padding: 30px 0;">
+        
+        <!-- Main Card -->
+        <table class="content" align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: #121212; border: 1px solid #333333; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(214, 52, 71, 0.2);">
+            
+            <!-- Header Red Strip -->
+            <tr>
+                <td height="6" bgcolor="#D63447" style="line-height: 6px; font-size: 6px;">&nbsp;</td>
+            </tr>
+
+            <!-- Content Area -->
+            <tr>
+                <td style="padding: 40px 30px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                    
+                    <!-- Logo Area -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center" style="padding-bottom: 20px;">
+                                <!-- Replace src with your HOSTED logo URL if this doesn't load -->
+                                <img src="https://raw.githubusercontent.com/IrfanNisar010/Personal-Portfolio/main/images/favicon.png" width="50" height="50" alt="Irfan Logo" style="display: block; border-radius: 50%;" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Title -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center" style="color: #666666; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">New Website Rating</td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding: 10px 0 30px 0;">
+                                <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 300;">You received feedback</h1>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Rating Hero -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #1a1a1a; border-radius: 8px; margin-bottom: 30px;">
+                        <tr>
+                            <td align="center" style="padding: 30px;">
+                                <span style="font-size: 64px; font-weight: 700; color: #FFD700; display: block; line-height: 1;">{{user_rating}}<span style="font-size: 24px; color: #444444;">/5</span></span>
+                                <div style="color: #FFD700; font-size: 24px; letter-spacing: 4px; margin-top: 10px;">★★★★★</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Details Section -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <!-- Name -->
+                        <tr>
+                            <td style="padding-bottom: 5px; color: #666666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Rated By</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 25px; color: #ffffff; font-size: 18px; font-weight: 500;">
+                                {{user_name}}
+                            </td>
+                        </tr>
+
+                        <!-- Feedback -->
+                        <tr>
+                            <td style="padding-bottom: 5px; color: #666666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Feedback</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; background-color: #1a1a1a; border-left: 3px solid #D63447; color: #cccccc; font-size: 14px; line-height: 1.6; border-radius: 0 4px 4px 0; margin-bottom: 25px;">
+                                {{user_feedback}}
+                            </td>
+                        </tr>
+                        
+                        <!-- Spacer -->
+                        <tr><td height="25"></td></tr>
+
+                        <!-- Technical Details -->
+                        <tr>
+                            <td style="padding-bottom: 5px; color: #666666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Time</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 15px; color: #888888; font-size: 14px;">
+                                {{rating_date}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 5px; color: #666666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Device Info</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 5px; color: #888888; font-size: 12px; font-family: monospace;">
+                                {{user_device}}
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td align="center" style="padding: 20px; background-color: #080808; border-top: 1px solid #222222;">
+                    <p style="margin: 0 0 10px 0; color: #444444; font-size: 11px; font-family: sans-serif;">
+                        <strong>Irfan Nisar</strong> | Web Developer & Designer
+                    </p>
+                    <p style="margin: 0; color: #333333; font-size: 10px; font-family: sans-serif;">
+                        inzrwork020@gmail.com
+                    </p>
+                </td>
+            </tr>
+
+        </table>
+
+    </td>
+</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,481 @@
+/* Rating Popup Container - Hidden by default */
+#rating-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex; /* Flex but hidden via visibility/opacity for animation */
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none; /* Allow clicks to pass through to website */
+  justify-content: flex-end; /* Right alignment */
+  align-items: flex-end; /* Bottom alignment */
+  padding: 20px; /* Spacing from screen edge */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#rating-popup-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* The Card itself */
+.rating-card {
+  pointer-events: auto; /* Re-enable clicks on the card */
+  width: 100%;
+  max-width: 320px; /* Decreased size */
+  background: linear-gradient(
+    165deg, 
+    rgba(255, 255, 255, 0.05) 0%, 
+    rgba(0, 0, 0, 0.4) 50%, 
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(40px) saturate(120%);
+  -webkit-backdrop-filter: blur(40px) saturate(120%);
+  border-radius: 20px; /* Slightly smaller radius */
+  padding: 25px 20px; /* Reduced padding */
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transform: translateY(100px) scale(0.8); /* Start somewhat smaller */
+  transform-origin: bottom right;
+  opacity: 0;
+  margin-bottom: 20px; /* Lift slightly from very bottom */
+  margin-right: 10px;
+}
+
+/* Animated Liquid Glass Border Matching Mobile Menu */
+.rating-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit; /* Inherit animation changes */
+  padding: 1.5px;
+  background: linear-gradient(
+    110deg, 
+    rgba(255,255,255,0.05) 35%, 
+    rgba(255,255,255,0.4) 50%, 
+    rgba(255,255,255,0.05) 65%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-glass 10s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1010;
+}
+
+/* Show State (Slide Up from Bottom Right with Blur) */
+#rating-popup-overlay.show .rating-card {
+  animation: slideUpCorner 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Exit State (Slide Down with Blur) */
+#rating-popup-overlay.closing .rating-card {
+  animation: slideDownCorner 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpCorner {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes slideDownCorner {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+    filter: blur(12px);
+  }
+}
+
+/* Header */
+.rating-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.rating-header h3 {
+  font-family: 'Aeonik', sans-serif;
+  font-weight: 300;
+  font-size: 20px; /* Reduced font size */
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.rating-header p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Star Rating */
+.star-rating-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse; /* For CSS hover tricks */
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.star-rating-wrapper input {
+  display: none;
+}
+
+.star-rating-wrapper label {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-rating-wrapper label:hover,
+.star-rating-wrapper label:hover ~ label,
+.star-rating-wrapper input:checked ~ label {
+  color: #FFD700; /* Yellow Stars */
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  transform: scale(1.1);
+}
+
+/* Form Styles */
+.rating-form-group {
+  margin-bottom: 20px;
+  position: relative;
+  border-radius: 12px; /* Ensure wrapper matches input radius */
+  display: flex; /* Removes bottom whitespace gap */
+}
+
+/* Animated Border for Inputs (Matching Popup) */
+.rating-form-group::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 1.5px;
+  background: linear-gradient(
+    110deg, 
+    rgba(255,255,255,0.05) 35%, 
+    rgba(255,255,255,0.4) 50%, 
+    rgba(255,255,255,0.05) 65%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-glass 10s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.rating-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid transparent; /* Hide native border, show animated wrapper */
+  border-radius: 12px;
+  padding: 15px;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+/* Force dark background for autofill to avoid white flash */
+.rating-input:-webkit-autofill,
+.rating-input:-webkit-autofill:hover, 
+.rating-input:-webkit-autofill:focus, 
+.rating-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important; /* Matches dark card theme */
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+  background-clip: content-box !important;
+}
+
+.rating-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  /* border-color removed to keep animated border consistent */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05); /* Subtle white glow instead of red */
+}
+
+.rating-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+textarea.rating-input {
+  resize: none;
+  height: 100px;
+}
+
+/* Close Button (X) */
+/* Close Button (Circular Glass 3D) */
+.close-popup {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px; /* Slightly larger area */
+  height: 32px;
+  background: #000;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 20px; /* Larger icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  line-height: 1; /* Reset line height to prevent offset */
+  /* Top-Left Rim Light matching the reference */
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 10px rgba(0,0,0,0.5);
+}
+
+.close-popup:hover {
+  background: #111;
+  color: #fff;
+  transform: rotate(90deg);
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.5),
+    0 4px 15px rgba(0,0,0,0.6);
+}
+
+/* Success Message State */
+#rating-success-message {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+#rating-success-message h4 {
+  color: #fff;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+#rating-success-message p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+/* Futuristic Tick Animation (Matching existing style) */
+.success-tick-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.1); /* Green tint */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.success-tick-svg {
+  width: 40px;
+  height: 40px;
+}
+
+.success-tick-path {
+  fill: none;
+  stroke: #22c55e;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawTick 0.6s ease forwards 0.3s;
+}
+
+@keyframes drawTick {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* =========================================
+   Send Review Button (Force Mobile Style)
+   ========================================= */
+
+#rating-form .resume-btn {
+  width: 100% !important;
+  height: 52px;
+  justify-content: center;
+  
+  /* Dark Background */
+  background: #000 !important; 
+  
+  /* Gradient Border (Subtle White/Transparent mix) */
+  background: linear-gradient(#000, #000) padding-box, 
+              linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.6) 100%) border-box !important;
+  border: 1px solid transparent !important;
+  border-radius: 30px;
+  
+  /* Complex Glow Shadows */
+  box-shadow: 
+    inset 0 1px 1px rgba(255,255,255,0.3), 
+    inset 0 10px 20px -10px rgba(255,255,255,0.15), 
+    0 0 15px -5px rgba(255,255,255,0.2);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  animation: mobile-glass-pulse 3s ease-in-out infinite alternate;
+  
+  /* Reset other properties */
+  transform: none !important;
+  transition: none !important;
+  
+  display: flex !important;
+  align-items: center !important;
+}
+
+@keyframes mobile-glass-pulse {
+  0% {
+    box-shadow: 
+      inset 0 1px 1px rgba(255,255,255,0.2), 
+      inset 0 10px 20px -10px rgba(255,255,255,0.1), 
+      0 0 10px -5px rgba(255,255,255,0.1);
+  }
+  100% {
+    box-shadow: 
+      inset 0 1px 1px rgba(255,255,255,0.5), 
+      inset 0 15px 25px -5px rgba(255,255,255,0.25), 
+      0 0 20px -2px rgba(255,255,255,0.4);
+  }
+}
+
+/* Reset Hover State */
+#rating-form .resume-btn:hover {
+  background-color: #000 !important;
+  box-shadow: 
+    inset 0 1px 1px rgba(255,255,255,0.4), 
+    inset 0 10px 20px -10px rgba(255,255,255,0.2), 
+    0 0 20px -5px rgba(255,255,255,0.3) !important;
+  transform: none !important;
+}
+
+/* Active Click State & Focus */
+#rating-form .resume-btn:active,
+#rating-form .resume-btn:focus {
+  background: radial-gradient(circle at center, rgba(214, 52, 71, 0.25) 0%, #000 80%) !important;
+  animation: none; 
+  border: 0 !important; /* Completely remove border space */
+  outline: none !important;
+  box-shadow: 
+    inset 0 0 15px rgba(214, 52, 71, 0.3), 
+    0 0 15px rgba(0,0,0,0.5) !important;
+  transform: scale(0.96) !important;
+  transition: all 0.1s ease !important;
+}
+
+/* Disabled State (Sending...) - Ensure no border here either */
+#rating-form .resume-btn:disabled {
+  background: #000 !important; /* Flat black, no gradient border */
+  border: 0 !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Hide Desktop Animation Elements */
+#rating-form .resume-btn-dot,
+#rating-form .resume-btn-arrow {
+  display: none !important;
+}
+
+#rating-form .resume-btn-text {
+  font-size: 1rem;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: #fff !important;
+  width: auto;
+  left: 0 !important;
+}
+
+/* =========================================
+   Mobile Optimization
+   ========================================= */
+@media (max-width: 768px) {
+  #rating-popup-overlay {
+    justify-content: center; /* Center horizontally on mobile */
+    align-items: flex-end;
+    padding: 0 15px 20px 15px; /* Side padding + bottom spacing */
+  }
+
+  .rating-card {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 0;
+    transform-origin: bottom center;
+    border-radius: 20px 20px 0 0; /* Optional: simpler shape? Keeping rounded for now */
+    border-radius: 24px;
+    margin-bottom: 10px; /* Slight float from bottom */
+  }
+
+  /* Adjust Animation for Mobile center rise */
+  @keyframes slideUpCorner {
+    0% {
+      opacity: 0;
+      transform: translateY(100%) scale(0.9);
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes slideDownCorner {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(100%) scale(0.9);
+      filter: blur(10px);
+    }
+  }
+}

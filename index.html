@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="css/faq-section.css">
     <link rel="stylesheet" href="css/back-to-top.css">
     <link rel="stylesheet" href="css/services-redesign.css">
+    <link rel="stylesheet" href="css/rating-popup.css">
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script> 
     
     <!-- Vercel Speed Insights -->
@@ -1162,11 +1163,67 @@
     <!-- Permanent Bottom Blur -->
     <div class="site-bottom-blur"></div>
 
+    <!-- Rating Popup Overlay -->
+    <div id="rating-popup-overlay">
+      <div class="rating-card">
+        <button class="close-popup">&times;</button>
+        
+        <div id="rating-form-content">
+          <div class="rating-header">
+             <h3>Rate Experience</h3>
+             <p>Your insights refine the design.</p>
+          </div>
+          
+          <form id="rating-form">
+            <!-- Stars -->
+            <div class="star-rating-wrapper">
+               <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars">★</label>
+               <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">★</label>
+               <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">★</label>
+               <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">★</label>
+               <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">★</label>
+            </div>
+  
+            <div class="rating-form-group">
+              <input type="text" id="rating-name" class="rating-input" placeholder="Name" required>
+            </div>
+            
+            <div class="rating-form-group">
+              <textarea id="rating-feedback" class="rating-input" placeholder="Thoughts"></textarea>
+            </div>
+  
+            <div class="luxury-button-wrapper" style="width: 100%; margin-top: 10px;">
+               <button type="submit" class="resume-btn">
+                 <span class="resume-btn-dot"></span>
+                 <span class="resume-btn-text">Send Review</span>
+                 <span class="resume-btn-arrow">
+                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                 </span>
+               </button>
+            </div>
+          </form>
+        </div>
+  
+        <!-- Success State -->
+        <div id="rating-success-message">
+           <div class="success-tick-wrapper">
+              <svg class="success-tick-svg" viewBox="0 0 52 52">
+                 <circle cx="26" cy="26" r="25" fill="none" stroke="none" />
+                 <path class="success-tick-path" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              </svg>
+           </div>
+           <h4>Thank You!</h4>
+           <p>Your feedback helps me improve.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/rating-popup.js"></script>
     <script>
 
       // Custom GSAP Animation for Hero Section
