@@ -575,3 +575,115 @@ textarea.rating-input {
     transform: scale(1); /* Ensure no shrinking */
   }
 }
+
+/* Custom Notification - Glassmorphism */
+.custom-notification {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 24px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 999999;
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  opacity: 0;
+  visibility: hidden;
+  min-width: 200px;
+  max-width: 90%; 
+  width: auto;
+  white-space: nowrap; 
+  cursor: pointer; /* Clickable */
+}
+
+/* Show state */
+.custom-notification.show {
+  top: 40px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+.custom-notification:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* Dynamic glow effect on top */
+.custom-notification::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.4), transparent 70%);
+  border-radius: 99px;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.15; 
+}
+
+.custom-notification .notif-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.1); /* Subtle glass bg for container */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFD700; /* Yellow Icon */
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); /* Yellow Glow */
+  animation: pulse-glow 2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+  to { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+}
+
+.custom-notification .notif-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: #FFD700; /* Fill the star */
+}
+
+.custom-notification .notif-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.custom-notification .notif-text h4 {
+  font-family: 'Aeonik', sans-serif;
+  font-size: 14px;
+  margin: 0;
+  color: #fff;
+  font-weight: 500; /* Reduced from 600 */
+  line-height: 1.2;
+}
+
+.custom-notification .notif-text p {
+  font-family: 'Aeonik', sans-serif;
+  font-size: 11px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.2;
+  font-weight: 300; /* Explicitly light */
+}
+
+@media (max-width: 576px) {
+  .custom-notification {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+}

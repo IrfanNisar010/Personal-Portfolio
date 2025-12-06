@@ -48,17 +48,42 @@
         const contactObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // FIX: Check computed style to correctly detect effective visibility (CSS display: none)
-                    const computedStyle = window.getComputedStyle(popupOverlay);
-                    const isVisible = computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.opacity !== "0";
-                    
-                    if (!isVisible) {
-                         showPopup();
-                    }
+                    handleReviewTrigger();
                 }
             });
         }, { threshold: 0.1 }); 
         contactObserver.observe(contactSection);
+    }
+    
+    // Notification Element
+    const notif = document.getElementById("custom-notification");
+    if (notif) {
+        notif.addEventListener("click", () => {
+            // Hide notification and show actual popup
+            notif.classList.remove("show");
+            showPopup(); 
+        });
+    }
+
+    function handleReviewTrigger() {
+        // FIX: Check computed style to correctly detect effective visibility (CSS display: none)
+        const computedStyle = window.getComputedStyle(popupOverlay);
+        const isVisible = computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.opacity !== "0";
+        
+        // Also check if notification is already showing
+        const isNotifVisible = notif && notif.classList.contains("show");
+
+        if (!isVisible && !isNotifVisible) {
+             if (isMobile()) {
+                 // Mobile: Show Notification Button
+                 if (notif) notif.classList.add("show");
+                 // Auto-hide notification after 8s if ignored? Optional.
+                 setTimeout(() => { if(notif) notif.classList.remove("show"); }, 8000); 
+             } else {
+                 // Desktop: Show Popup Directly
+                 showPopup();
+             }
+        }
     }
 
     // ---------------------------------------------------------
@@ -74,12 +99,9 @@
     // Auto-Close Logic with Hover Pause
     // ---------------------------------------------------------
     function startAutoClose() {
+        // Auto-close removed per user request ("only have to work on review popup windows" - implying manual check)
+        // If we want it to stay open until user interacts, we disable this.
         if (autoCloseTimer) clearTimeout(autoCloseTimer);
-        autoCloseTimer = setTimeout(() => {
-            if (popupOverlay.style.display !== "none" && popupOverlay.style.opacity !== "0") {
-                closePopup('auto');
-            }
-        }, 5000);
     }
 
     function stopAutoClose() {
