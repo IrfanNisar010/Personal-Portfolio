@@ -665,7 +665,7 @@ textarea.rating-input {
 
 .custom-notification .notif-text h4 {
   font-family: 'Aeonik', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   margin: 0;
   color: #fff;
   font-weight: 500; /* Reduced from 600 */
@@ -674,7 +674,7 @@ textarea.rating-input {
 
 .custom-notification .notif-text p {
   font-family: 'Aeonik', sans-serif;
-  font-size: 11px;
+  font-size: 8px;
   margin: 0;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.2;
