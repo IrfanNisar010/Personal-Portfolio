@@ -302,14 +302,19 @@
         submitBtn.style.opacity = "0.8";
         submitBtn.disabled = true;
 
-        // Check/Add Loader
+        // Check/Add Loader (3 Dots)
         let loader = submitBtn.querySelector(".rating-btn-loader");
         if (!loader) {
-            loader = document.createElement("span");
+            loader = document.createElement("div");
             loader.className = "rating-btn-loader";
+            // Create 3 dots
+            for (let i = 0; i < 3; i++) {
+                let dot = document.createElement("span");
+                loader.appendChild(dot);
+            }
             submitBtn.appendChild(loader);
         }
-        loader.style.display = "inline-block";
+        loader.style.display = "inline-flex"; // Ensure flex display
 
         // Prepare Template Params
         const templateParams = {
@@ -335,13 +340,29 @@
                     formContent.style.display = "none";
                     successMessage.style.display = "block";
                     
-                    // Reset Tick Animation to ensure it plays every time
-                    const tickPath = successMessage.querySelector(".success-tick-path");
-                    if (tickPath) {
-                        tickPath.style.animation = 'none';
-                        tickPath.offsetHeight; /* trigger reflow */
-                        tickPath.style.animation = 'drawTick 0.6s ease forwards 0.3s';
+                    // Trigger New Animations (Circle Pop + SVG Draw + Particles)
+                    const circleBg = successMessage.querySelector(".success-circle-bg");
+                    const tickSvg = successMessage.querySelector(".new-success-tick");
+                    const wrapper = successMessage.querySelector(".success-tick-wrapper");
+                    
+                    if (wrapper) {
+                         wrapper.classList.remove('animate');
+                         void wrapper.offsetWidth; 
+                         wrapper.classList.add('animate');
                     }
+
+                    if (circleBg) {
+                         circleBg.classList.remove('animate');
+                         void circleBg.offsetWidth; 
+                         circleBg.classList.add('animate');
+                    }
+                    
+                    if (tickSvg) {
+                         tickSvg.classList.remove('animate');
+                         void tickSvg.offsetWidth;
+                         tickSvg.classList.add('animate');
+                    }
+                    
                 }, 500);
                 
                 // Close popup after a delay

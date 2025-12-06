@@ -1166,7 +1166,12 @@
     <!-- Rating Popup Overlay -->
     <div id="rating-popup-overlay">
       <div class="rating-card">
-        <button class="close-popup">&times;</button>
+        <button class="close-popup">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
         
         <div id="rating-form-content">
           <div class="rating-header">
@@ -1211,10 +1216,15 @@
         <!-- Success State -->
         <div id="rating-success-message">
            <div class="success-tick-wrapper">
-              <svg class="success-tick-svg" viewBox="0 0 52 52">
-                 <circle cx="26" cy="26" r="25" fill="none" stroke="none" />
-                 <path class="success-tick-path" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              <div class="success-circle-bg"></div>
+              <svg class="new-success-tick" viewBox="0 0 52 52">
+                 <path d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
               </svg>
+              <!-- Particles for Pop Effect -->
+              <div class="success-particle"></div>
+              <div class="success-particle"></div>
+              <div class="success-particle"></div>
+              <div class="success-particle"></div>
            </div>
            <h4>Thank You!</h4>
            <p>Your feedback helps me improve.</p>
