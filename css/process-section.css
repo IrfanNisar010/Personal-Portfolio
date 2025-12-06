@@ -180,7 +180,7 @@
 /* Mobile Process Card Redesign */
 @media (max-width: 480px) {
   .process-card {
-    background: #050505 !important;
+    background: rgb(13, 13, 13) !important;
     border: none !important;
     border-radius: 24px !important;
     padding: 30px 25px !important;

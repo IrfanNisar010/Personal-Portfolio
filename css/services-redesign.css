@@ -53,7 +53,21 @@
 }
 
 /* Service Tags (Cards) */
+/* Service Tags (Cards) */
 .services-tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.service-mini-tag {
+  background: #0d0d0d;
+  border: none;
+  padding: 8px 16px; 
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   
@@ -102,7 +116,6 @@
 .service-mini-tag:hover {
   background: #151515;
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px); /* Slight lift */
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }

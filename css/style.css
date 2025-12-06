@@ -2061,7 +2061,7 @@ figure.dotted-bg:before {
   min-width: 200px;
   max-width: 90%; /* Ensure it doesn't overflow on mobile */
   width: auto;
-  white-space: normal; /* Allow text to wrap */
+  white-space: nowrap; /* Prevent text wrap */
 }
 
 .custom-notification .notif-text h4 {
@@ -2130,9 +2130,9 @@ figure.dotted-bg:before {
 
 .custom-notification .notif-text {
   color: #fff;
-  font-family: "Aeonik", sans-serif;
-  font-size: 15px;
-  font-weight: 100;
+  font-family: 'Aeonik', sans-serif;
+  font-size: 14px; /* Adjusted size */
+  font-weight: 500; /* Adjusted weight for readability */
   letter-spacing: 0.01em;
 }
 
