@@ -2795,15 +2795,15 @@ span.error {
   100% { transform: rotate(360deg); }
 }
 
-/* Mobile Optimization: Disable Magnetic Effects */
-@media (max-width: 991px) {
+/* Mobile Optimization: Magnetic Effects Enabled */
+/* @media (max-width: 991px) {
   .hero-cta-pill::before,
   .hero-cta-pill .border-rotate {
     display: none !important;
     opacity: 0 !important;
     animation: none !important;
   }
-}
+} */
 
 /* The inner background */
 .hero-cta-pill::after {
