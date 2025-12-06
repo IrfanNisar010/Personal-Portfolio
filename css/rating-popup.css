@@ -541,6 +541,13 @@ textarea.rating-input {
 .mobile-hint { display: none; }
 
 @media (max-width: 991px) {
+  /* Reset padding for mobile/tablet to keep it centered */
+  #rating-popup-overlay {
+    padding: 20px !important; 
+    align-items: flex-end; /* Still bottom aligned for sheet effect */
+    justify-content: center; /* Center horizontally */
+  }
+
   .desktop-hint { display: none; }
   .mobile-hint { display: block; }
   
