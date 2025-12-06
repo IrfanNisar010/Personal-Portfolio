@@ -91,8 +91,6 @@
   gap: 20px; /* Increased gap */
   margin-bottom: 25px; /* Reduced */
   flex-wrap: wrap;
-  padding-bottom: 15px; /* Reduced space for line */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
   width: 100%; /* Ensure line spans full width */
 }
 

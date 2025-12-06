@@ -9,7 +9,7 @@
 
 /* Header Section */
 .services-header-row {
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
 .services-tag {
@@ -116,6 +116,7 @@
 .service-mini-tag:hover {
   background: #151515;
   color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px); /* Slight lift */
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
@@ -131,6 +132,8 @@
   height: 2px;
   background: rgba(255, 255, 255, 0.05); /* Significantly reduced opacity */
   border-radius: 2px;
+  margin: 30px 0; /* Align correctly with spacing */
+  display: block; /* Ensure block behavior */
 }
 
 /* Image */

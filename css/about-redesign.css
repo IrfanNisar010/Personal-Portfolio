@@ -29,6 +29,10 @@
   word-wrap: normal !important; /* Legacy support */
 }
 
+#about-section {
+  padding-bottom: 0 !important;
+}
+
 @media (max-width: 991px) {
   .meet-desc {
     max-width: 100%; /* Use full width on mobile */
@@ -50,7 +54,7 @@
 
 .skill-pill {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   color: #ccc;
   padding: 8px 16px;
   border-radius: 8px;
@@ -418,29 +422,51 @@
     left: 0 !important; /* Prevent sliding */
   }
 
-  /* Center the button wrapper & allow side-by-side */
-  .resume-button-wrap, 
-  .process-buttons,
-  .luxury-button-wrapper { /* Added luxury-button-wrapper class */
+  /* Center the button wrapper & allow stacking for single buttons */
+  .resume-button-wrap,
+  .luxury-button-wrapper { 
     display: flex;
     justify-content: center;
-    flex-direction: row !important; /* Force row layout */
+    flex-direction: column !important; /* Stack buttons vertically by default */
     align-items: center;
-    gap: 10px; /* Reduced gap to fit */
+    gap: 15px;
     width: 100%;
-    flex-wrap: wrap; /* Allow wrap on very small screens */
   }
 
-  /* Adjust width for side-by-side fit (approx 48% with gap) */
+  /* Specific Override for Process & Services Buttons (Side-by-Side) */
+  .process-buttons.luxury-button-wrapper,
+  .process-buttons,
+  .services-buttons.luxury-button-wrapper {
+    flex-direction: row !important; /* Force row layout */
+    gap: 10px;
+    padding: 0 10px; /* Prevent edge touching */
+  }
+
+  /* Full width buttons for Resume/Form/Single */
   .resume-btn {
-    width: calc(50% - 10px) !important; /* Fit two in a row */
-    min-width: 140px; /* Prevent crushing */
-    max-width: none; /* Remove cap */
-    padding: 0 5px; /* Tighter padding */
+    width: 100% !important; 
+    min-width: unset;
+    max-width: 320px; 
+    padding: 0;
   }
 
-  .resume-btn-text {
-    font-size: 0.85rem !important; /* Smaller text for side-by-side */
-    white-space: nowrap; /* Prevent text wrap */
+  /* Side-by-side width for Process & Services Buttons */
+  .process-buttons .resume-btn,
+  .services-buttons .resume-btn {
+    width: calc(50% - 6px) !important; /* Fit two in row */
+    font-size: 0.85rem !important; /* Scale down text */
+    max-width: none !important;
+  }
+
+  .process-buttons .resume-btn-text,
+  .services-buttons .resume-btn-text {
+    font-size: 0.75rem !important; /* Smaller text for side-by-side */
+    white-space: nowrap; 
+  }
+
+  /* Keep main resume button text normal size */
+  .resume-button-wrap .resume-btn-text,
+  #gform .resume-btn-text {
+    font-size: 1rem !important;
   }
 }
