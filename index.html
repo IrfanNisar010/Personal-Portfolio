@@ -1459,7 +1459,7 @@
       $(document).ready(function() {
         const sendBtn = $('#gform .resume-btn');
         if (sendBtn.length && sendBtn.find('.btn-loader').length === 0) {
-          sendBtn.append('<div class="btn-loader"></div><svg class="btn-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>');
+          sendBtn.append('<div class="btn-loader"></div><div class="btn-check tick-anim-wrapper" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 28px; height: 28px;"></div>');
         }
       });
 
@@ -1490,6 +1490,13 @@
                 setTimeout(() => {
                   const successTl = new TimelineMax();
                   
+                  // Inject Animated SVG Structure (Refresh animation)
+                  check.innerHTML = `
+                    <svg class="checkmark-svg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                      <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                      <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>`;
+
                   // 1. Force Loader to Hide Immediately (Use display:none to be sure)
                   successTl.set(btn, { className: "-=loading" }) // Stop spinner animation
                            .set(loader, { opacity: 0, display: 'none' }) // Force hide loader element instantly
@@ -1498,15 +1505,16 @@
                            .set(btn, { className: "+=success" }) // Show Checkmark container visibility
                            .to(check, 0.4, { scale: 1, opacity: 1, visibility: 'visible', ease: Elastic.easeOut.config(1, 0.5) })
                            .call(() => {
-                              showNotification(true, "Message sent successfully");
-                              document.getElementById("gform").reset();
-                              document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
+                               showNotification(true, "Message sent successfully");
+                               document.getElementById("gform").reset();
+                               document.querySelectorAll('.form-group').forEach(el => el.classList.remove('field--not-empty'));
                            })
                            // Reset after delay
                            .to(check, 0.2, { scale: 0, opacity: 0, visibility: 'hidden', delay: 2 })
                            .set(btn, { className: "-=success" })
                            .set(btn, { className: "-=processing" }) // Remove Red BG
                            .set(loader, { clearProps: "all" }) // Reset loader state for next time
+                           .set(check, { innerHTML: "" }) // Clear SVG to reset animation state
                            .to([btnText, btnArrow, btnDot], 0.3, { opacity: 1, clearProps: "all" }); // Restore content
                 }, 1000);
             }, function(error) {
