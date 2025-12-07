@@ -39,6 +39,7 @@ jQuery(function($) {
 	animateBookCallCard();
 	animateContactForm();
 	typewriterEffect();
+	customCursor();
 
 	smoothScrollEngine();
 
@@ -1081,28 +1082,86 @@ var universalButtonReveal = function() {
 };
 
 var faqAccordion = function() {
-	// Accordion Logic with GSAP for smoother animation
+	// Accordion Logic with GSAP - Smooth & Quick Blur Fade
+	// No line-by-line splitting to ensure maximum smoothness and speed
 	$('.faq-header').on('click', function() {
 		var $this = $(this);
 		var $item = $this.closest('.faq-item');
 		var $body = $item.find('.faq-body');
+		var $text = $body.find('p'); 
 		
+		// Optimization: Check mobile for faster/simpler animation
+		// Using consistent snappy timing for both, slightly slower on desktop for scale
+		var isMobile = window.innerWidth < 992;
+		var duration = 0.5; 
+		var ease = Power3.easeInOut; // Pure smooth ease
+
 		if ($item.hasClass('active')) {
-			// Close
+			// Close behavior
 			$item.removeClass('active');
-			TweenMax.to($body, 0.5, { height: 0, paddingBottom: 0, ease: Power3.easeInOut });
-		} else {
-			// Open
-			// Optional: Close others
-			$('.faq-item.active').removeClass('active').each(function() {
-				TweenMax.to($(this).find('.faq-body'), 0.5, { height: 0, paddingBottom: 0, ease: Power3.easeInOut });
+			
+			// Quick Blur Fade Out
+			TweenMax.to($text, 0.3, { 
+				autoAlpha: 0, 
+				y: -5,
+				filter: "blur(10px)",
+				webkitFilter: "blur(10px)",
+				ease: Power2.easeIn 
 			});
 			
+			TweenMax.to($body, 0.45, { 
+				height: 0, 
+				paddingBottom: 0, 
+				opacity: 0, 
+				ease: ease 
+			});
+		} else {
+			// Close others first
+			$('.faq-item.active').removeClass('active').each(function() {
+				var $otherBody = $(this).find('.faq-body');
+				// Immediate hide for others
+				TweenMax.to($otherBody.find('p'), 0.2, { autoAlpha: 0 }); 
+				TweenMax.to($otherBody, 0.4, { height: 0, paddingBottom: 0, opacity: 0, ease: ease });
+			});
+			
+			// Open Current
 			$item.addClass('active');
-			TweenMax.set($body, { height: "auto" }); // Get natural height
-			TweenMax.from($body, 0.5, { height: 0, paddingBottom: 0, ease: Power3.easeInOut });
-			// Ensure padding is correct after animation (or during if explicit)
-			TweenMax.to($body, 0.5, { paddingBottom: 25, ease: Power3.easeInOut });
+			
+			// 1. Measure
+			var endPadding = isMobile ? 20 : 25;
+			TweenMax.set($body, { height: "auto", paddingBottom: endPadding, display: "block" });
+			var targetHeight = $body.get(0).scrollHeight; 
+			TweenMax.set($body, { height: 0, paddingBottom: 0, opacity: 0 }); 
+			
+			// 2. Animate Height
+			TweenMax.to($body, duration, { 
+				height: targetHeight, 
+				paddingBottom: endPadding, 
+				opacity: 1,
+				ease: ease,
+				onComplete: function() {
+					TweenMax.set($body, { height: "auto" }); 
+				}
+			});
+			
+			// 3. Smooth Blur Fade In (Whole Text)
+			// Reset first
+			TweenMax.set($text, { 
+				autoAlpha: 0, 
+				y: 10,
+				filter: "blur(10px)",
+				webkitFilter: "blur(10px)"
+			});
+			
+			// Animate In: Quick but Linear-ish smooth
+			TweenMax.to($text, 0.6, { 
+				autoAlpha: 1, 
+				y: 0, 
+				filter: "blur(0px)", 
+				webkitFilter: "blur(0px)", 
+				ease: Power2.easeOut, 
+				delay: 0.1 // Just enough for box to start opening
+			});
 		}
 	});
 };
@@ -1846,4 +1905,40 @@ var typewriterEffect = function() {
 		$elements.addClass('typing-active');
 		$elements.closest('.status-indicator').addClass('active');
 	}
+};
+// Custom Cursor Logic
+var customCursor = function() {
+	// Only for desktop
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	if (isMobile) return;
+
+	// Create Cursor Elements
+	var cursorWrap = $('<div class="mouse-cursor-wrap"><div class="mouse-cursor-dot"></div></div>');
+	$('body').append(cursorWrap);
+
+	var cursorDot = cursorWrap.find('.mouse-cursor-dot');
+	
+	// Track mouse movement
+	$(document).on('mousemove', function(e) {
+		// Fade in on first move
+		TweenMax.to(cursorDot, 0.3, { opacity: 1 });
+
+		// Smooth follow using GSAP
+		// 0.15s duration gives it that "attached" but smooth feel
+		TweenMax.to(cursorDot, 0.15, { 
+			x: e.clientX, 
+			y: e.clientY,
+			ease: Power2.easeOut 
+		});
+	});
+
+
+
+	// Hide on leave window
+	$(document).on('mouseleave', function() {
+		TweenMax.to(cursorDot, 0.3, { opacity: 0 });
+	});
+	$(document).on('mouseenter', function() {
+		TweenMax.to(cursorDot, 0.3, { opacity: 1 });
+	});
 };
