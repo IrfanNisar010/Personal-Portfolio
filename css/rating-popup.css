@@ -591,7 +591,7 @@ textarea.rating-input {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 12px 24px;
+  padding: 14px 40px; /* Increased padding for width */
   border-radius: 99px;
   display: flex;
   align-items: center;
@@ -603,12 +603,14 @@ textarea.rating-input {
   transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   opacity: 0;
   visibility: hidden;
-  min-width: 200px;
+  min-width: 280px; /* Increased min-width */
   max-width: 90%; 
   width: auto;
   white-space: nowrap; 
   cursor: pointer; /* Clickable */
 }
+
+
 
 /* Show state */
 .custom-notification.show {
@@ -670,7 +672,7 @@ textarea.rating-input {
 
 .custom-notification .notif-text h4 {
   font-family: 'Aeonik', sans-serif;
-  font-size: 15px;
+  font-size: 17px; /* Increased from 15px */
   margin: 0;
   color: #fff;
   font-weight: 500; /* Reduced from 600 */
@@ -679,7 +681,7 @@ textarea.rating-input {
 
 .custom-notification .notif-text p {
   font-family: 'Aeonik', sans-serif;
-  font-size: 8px;
+  font-size: 11px; /* Increased from 8px */
   margin: 0;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.2;
@@ -689,6 +691,20 @@ textarea.rating-input {
 @media (max-width: 576px) {
   .custom-notification {
     padding: 10px 16px;
-    gap: 10px;
+    gap: 0; /* Removing gap since icon is absolute */
+    justify-content: center;
+  }
+  
+  .custom-notification .notif-icon {
+    position: absolute;
+    left: 16px;
+  }
+
+  .custom-notification .notif-text {
+    text-align: center;
+    align-items: center;
+    width: 100%; /* Ensure text centers in the full container */
+    padding-left: 30px; /* Prevent overlap with icon */
+    padding-right: 30px; /* Balance right side */
   }
 }
