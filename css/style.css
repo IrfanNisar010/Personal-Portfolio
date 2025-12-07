@@ -2214,66 +2214,86 @@ figure.dotted-bg:before {
   display: none;
 }
 
+/* Liquid Glass Close Button */
 .unslate_co--close-portfolio {
   position: absolute;
-  top: -10px;
+  top: -20px;
+  right: -20px;
+  z-index: 999;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  z-index: 9;
-  padding: 10px 10px 10px 10px;
-  right: -10px;
-  border: 2px solid transparent;
-  background-color: #212121;
-  border-radius: 30px;
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
-  transition: .3s all ease;
+  
+  /* Glassmorphism Background */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Liquid Shine Effect */
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
+  
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
 }
 
-.unslate_co--close-portfolio .close-portfolio-label {
-  font-size: 14px;
-  top: 25px;
-  right: -10px;
-  width: 150px;
+/* Add a shimmer overlay */
+.unslate_co--close-portfolio::after {
+  content: '';
   position: absolute;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  opacity: 0;
-  visibility: hidden;
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
-  transition: .3s all ease;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
+/* Icon Styling */
 .unslate_co--close-portfolio .wrap-icon-close {
-  font-size: 30px;
-  position: relative;
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
-  transition: .3s all ease;
+  font-size: 24px; /* Adjusted icon size */
+  color: #fff;
+  transition: transform 0.5s ease;
+  display: block;
+  line-height: 1;
+}
+
+/* Hover Effects */
+.unslate_co--close-portfolio:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+  transform: scale(1.1) rotate(90deg); /* Button pop + rotation */
 }
 
 .unslate_co--close-portfolio:hover .wrap-icon-close {
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
+  transform: rotate(-90deg); /* Counter-rotate icon to keep X upright or create interesting spin */
 }
 
-.unslate_co--close-portfolio:hover .close-portfolio-lanel {
-  opacity: 1;
-  left: -10px;
-  visibility: visible;
+/* Adjusted spacing for mobile */
+@media (max-width: 767px) {
+  .unslate_co--close-portfolio {
+    top: -10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 10, 0.6); /* Slightly darker on mobile for contrast */
+  }
 }
 
-.unslate_co--close-portfolio:hover, .unslate_co--close-portfolio:focus {
-  border-color: #333333;
-  background-color: #2e2e2e;
-}
-
-.unslate_co--close-portfolio:hover .close-portfolio-label, .unslate_co--close-portfolio:focus .close-portfolio-label {
-  right: 20px;
-  opacity: 1;
-  visibility: visible;
+/* Hide the old label to keep it clean circular */
+.unslate_co--close-portfolio .close-portfolio-label {
+  display: none;
 }
 
 .close-portfolio--content {
