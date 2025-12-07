@@ -1805,6 +1805,13 @@ var typewriterEffect = function() {
 					if ($el.hasClass('typing-started')) return;
 					$el.addClass('typing-started');
 
+					// SYNC: Trigger Dot Pulse & Magic Shine immediately
+					$el.addClass('typing-active'); // Triggers shine
+					var $statusIndicator = $el.closest('.status-indicator');
+					if ($statusIndicator.length) {
+						$statusIndicator.addClass('active'); // Triggers pulse
+					}
+
 					// Clear visibility hidden if set
 					$el.css({ 'visibility': 'visible', 'opacity': 1 });
 
@@ -1836,5 +1843,7 @@ var typewriterEffect = function() {
 	} else {
 		// Fallback for no observer
 		$elements.css('visibility', 'visible');
+		$elements.addClass('typing-active');
+		$elements.closest('.status-indicator').addClass('active');
 	}
 };

@@ -271,6 +271,11 @@
   }
 }
 
+/* New class for syncing */
+.status-indicator.active .status-dot {
+  animation: pulse-green 2s infinite;
+}
+
 .contact-book-call-card h3 {
   font-size: 0.95rem; /* Reduced from 1.1rem */
   font-weight: 500; /* Reduced from 600 */
@@ -514,7 +519,8 @@
   -webkit-text-fill-color: transparent;
 }
 
-.magic-slide-text.aos-animate {
+/* Triggered by JS for sync with dot */
+.magic-slide-text.typing-active {
   animation: shine 3s linear forwards;
 }
 
