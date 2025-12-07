@@ -223,7 +223,7 @@
 
 .testimonial-text {
   font-size: 0.78rem;
-  color: #a0a0a0;
+  color: #b0b0b0; /* Lighter grey for better glow contrast */
   line-height: 1.6;
   margin: 0;
   font-family: 'Inter', sans-serif;

@@ -33,6 +33,11 @@ jQuery(function($) {
 	liquidRippleEffect();
 	// portfolioHoverEffect(); // Moved to siteIstotope done callback
 	mobileImageReveal();
+	animateStats();
+	animatePremiumTestimonial();
+	animateSectionLines();
+	animateBookCallCard();
+	animateContactForm();
 
 	smoothScrollEngine();
 
@@ -1365,6 +1370,8 @@ var maskTextReveal = function() {
 	$('.mask-reveal-text').each(function() {
 		var $this = $(this);
 		var text = $this.text();
+		var delay = $this.data('delay') || 0; // Support manual delay
+
 		$this.empty();
 
 		// Split text into characters and wrap each
@@ -1377,7 +1384,7 @@ var maskTextReveal = function() {
 
 		var $chars = $this.find('.char-inner');
 
-		var tl = new TimelineMax();
+		var tl = new TimelineMax({ delay: delay });
 		// Stagger the characters in
 		tl.staggerTo($chars, 1, {
 			y: "0%",
@@ -1413,4 +1420,292 @@ var servicesImageSlideshow = function() {
 		
 		currentIndex = nextIndex;
 	}, 4000); // 4 seconds per slide
+};
+
+var animateStats = function() {
+	// Wait for DOM to ensure elements exist
+	if ($('.contact-stats-row').length === 0) return;
+
+	var controller = new ScrollMagic.Controller();
+
+	// Initial State for Cards
+	TweenMax.set('.stat-card', { 
+		y: 40, 
+		autoAlpha: 0, 
+		filter: "blur(10px)",
+		webkitFilter: "blur(10px)",
+		transformOrigin: "center center"
+	});
+
+	// Initial State for Texts
+	TweenMax.set('.stat-card p', { 
+		y: 20, 
+		autoAlpha: 0, 
+		filter: "blur(5px)",
+		webkitFilter: "blur(5px)"
+	});
+
+	new ScrollMagic.Scene({
+		triggerElement: '.contact-stats-row',
+		triggerHook: 0.85,
+		reverse: false
+	})
+	.on('enter', function() {
+		// 1. Stagger Cards In
+		TweenMax.staggerTo('.stat-card', 1.0, {
+			y: 0,
+			autoAlpha: 1,
+			filter: "blur(0px)",
+			webkitFilter: "blur(0px)",
+			ease: Power3.easeOut,
+			force3D: true
+		}, 0.15); // Stagger delay
+
+		// 2. Animate Numbers
+		$('.stat-number').each(function() {
+			var $this = $(this);
+			var target = parseFloat($this.data('target'));
+			var isFloat = $this.data('float'); // Check if float logic needed
+			
+			// Use a dummy object to animate values
+			var dummy = { val: 0 };
+
+			TweenMax.to(dummy, 2.5, {
+				val: target,
+				ease: Power4.easeOut, // Premium easing
+				onUpdate: function() {
+					if (isFloat) {
+						// Format: 4.5
+						$this.text(dummy.val.toFixed(1));
+					} else {
+						// Format: 40 (Integer)
+						$this.text(Math.round(dummy.val));
+					}
+				}
+			});
+		});
+
+		// 3. Animate Text (Delayed Stagger)
+		TweenMax.staggerTo('.stat-card p', 0.8, {
+			y: 0,
+			autoAlpha: 1,
+			filter: "blur(0px)",
+			webkitFilter: "blur(0px)",
+			ease: Power2.easeOut,
+			delay: 0.3 // Wait for cards to start settling
+		}, 0.15);
+	})
+	.addTo(controller);
+};
+
+var animatePremiumTestimonial = function() {
+	var $card = $('#premium-testimonial-card');
+	if ($card.length === 0) return;
+
+	var controller = new ScrollMagic.Controller();
+
+	// Elements to Animate
+	var $img = $card.find('.testimonial-img');
+	var $info = $card.find('.testimonial-info'); // Name & Title
+	var $stars = $card.find('.testimonial-stars');
+	var $p = $card.find('.testimonial-text');
+
+	// split text approach
+	var text = $p.text().trim();
+	var words = text.split(' ');
+	$p.empty();
+	// Reconstruct with spans
+	$.each(words, function(i, word) {
+		$p.append('<span class="t-word" style="display:inline-block; opacity:0; transform:translateX(15px) translateZ(0); filter:blur(12px); color:#fff; text-shadow:0 0 15px rgba(255,255,255,0.6); margin-right: 4px; will-change:transform, opacity, filter, color, text-shadow;">' + word + '</span>');
+	});
+
+	// Initial States
+	TweenMax.set($card, { 
+		autoAlpha: 0, 
+		y: 50, 
+		rotationX: 5, /* Subtle 3D tilt */
+		transformPerspective: 1000,
+		transformOrigin: "center top",
+		filter: "blur(10px)",
+		webkitFilter: "blur(10px)"
+	});
+
+	TweenMax.set($img, { 
+		scale: 0.5, 
+		opacity: 0, 
+		filter: "grayscale(100%) blur(10px)"
+	});
+
+	TweenMax.set($info, { opacity: 0, x: -20, filter: "blur(5px)" });
+	TweenMax.set($stars, { opacity: 0, scale: 0.8, filter: "blur(5px)" });
+
+
+	// Animation Timeline
+	var tl = new TimelineMax({ paused: true });
+
+	// 1. Card Reveal (Smooth Rise)
+	tl.to($card, 1.2, { 
+		autoAlpha: 1, 
+		y: 0, 
+		rotationX: 0,
+		filter: "blur(0px)",
+		webkitFilter: "blur(0px)",
+		ease: Power3.easeOut,
+		force3D: true
+	})
+	
+	// 2. Image Reveal (Pop + Focus)
+	.to($img, 1.0, {
+		scale: 1,
+		opacity: 1,
+		filter: "grayscale(0%) blur(0px)",
+		ease: Expo.easeOut
+	}, "-=0.8")
+
+	// 3. Info & Stars (Slide In)
+	.to($info, 0.8, {
+		opacity: 1,
+		x: 0,
+		filter: "blur(0px)",
+		ease: Power2.easeOut
+	}, "-=0.6")
+	.to($stars, 0.8, {
+		opacity: 1,
+		scale: 1,
+		filter: "blur(0px)",
+		ease: Back.easeOut.config(1.7)
+	}, "-=0.7")
+
+	// 4. Text Flow (New "Mist Flow" Style) with Magic Glow
+	// Concept: Words drift in from the side with deep blur, creating a liquid "filling" effect.
+	// Glow: Words start white/hot with shadow, cooling down to a premium bright grey.
+	.staggerTo($card.find('.t-word'), 1.5, {
+		opacity: 1,
+		x: 0, 
+		y: 0,
+		filter: "blur(0px)",
+		color: "#e6e6e6", // Brighter final color (Magical Silver)
+		textShadow: "0 0 0px rgba(255,255,255,0)", // Remove glow
+		ease: Power2.easeOut
+	}, 0.015, "-=0.6"); // 0.015 stagger is very fast, creating a seamless flow
+
+
+	// Trigger
+	new ScrollMagic.Scene({
+		triggerElement: '#premium-testimonial-card',
+		triggerHook: 0.8,
+		reverse: false
+	})
+	.on('enter', function() {
+		tl.play();
+	})
+	.addTo(controller);
+};
+
+var animateSectionLines = function() {
+	var lineSelectors = '.contact-header-line, .services-indicator-line, .faq-separator, .footer-divider, .service-card-divider';
+	var $lines = $(lineSelectors);
+	
+	if ($lines.length === 0) return;
+
+	var controller = new ScrollMagic.Controller();
+
+	$lines.each(function() {
+		var $line = $(this);
+		
+		// Initial State
+		TweenMax.set($line, { 
+			scaleX: 0, 
+			transformOrigin: "left center" 
+		});
+
+		new ScrollMagic.Scene({
+			triggerElement: this,
+			triggerHook: 0.9, // Trigger slightly earlier (lower on screen)
+			reverse: false
+		})
+		.setTween(TweenMax.to($line, 1.5, {
+			scaleX: 1,
+			ease: Expo.easeOut,
+			delay: 0.1
+		}))
+		.addTo(controller);
+	});
+};
+
+var animateBookCallCard = function() {
+	var $card = $('#book-call-card'); // Use ID for specificity
+	if ($card.length === 0) return;
+
+	var controller = new ScrollMagic.Controller();
+
+	// Elements
+	var $dot = $card.find('.status-dot');
+	var $text = $card.find('h3');
+	var $chars = $card.find('.status-char'); // If text was split previously
+
+	// If chars not found (in case re-running), re-split
+	if ($chars.length === 0) {
+		var rawText = $text.text().trim();
+		var html = '';
+		for (var i = 0; i < rawText.length; i++) {
+			var char = rawText[i] === ' ' ? '&nbsp;' : rawText[i];
+			html += '<span class="status-char" style="display:inline-block; opacity:0;">' + char + '</span>';
+		}
+		$text.html(html);
+		$chars = $card.find('.status-char');
+	}
+
+	// Initial Entrance States
+	TweenMax.set($card, { 
+		autoAlpha: 0, 
+		y: 50, 
+		rotationX: 15,
+		transformPerspective: 1500,
+		transformOrigin: "center center",
+		filter: "blur(10px)"
+	});
+
+	// Dot & Chars Initial States
+	TweenMax.set($dot, { scale: 3, opacity: 0, filter: "blur(20px)", transformOrigin: "center center" });
+	TweenMax.set($chars, { opacity: 0, y: 15, rotateX: -90, filter: "blur(5px)", transformOrigin: "center bottom" });
+
+	// Entrance Timeline
+	var tl = new TimelineMax({ paused: true });
+
+	tl
+	// 1. Card Entrance (Subtle & Premium, no bounce)
+	.to($card, 1.2, {
+		autoAlpha: 1,
+		y: 0,
+		rotationX: 0,
+		filter: "blur(0px)",
+		ease: Power3.easeOut, // Very smooth, non-distracting
+		force3D: true
+	})
+	
+	// 2. Dot Coalesce
+	.to($dot, 0.8, { scale: 1, opacity: 1, filter: "blur(0px)", ease: Expo.easeOut }, "-=0.9")
+	.to($dot, 0.2, { scale: 1.4, backgroundColor: "#86efac", ease: Power2.easeOut }) 
+	.to($dot, 0.6, { scale: 1, backgroundColor: "#4CAF50", ease: Power2.easeOut })
+
+	// 3. Text Stagger Reveal
+	.staggerTo($chars, 0.6, {
+		opacity: 1,
+		y: 0,
+		rotateX: 0,
+		filter: "blur(0px)",
+		ease: Back.easeOut.config(2)
+	}, 0.03, "-=0.6");
+
+	// Trigger Entrance
+	new ScrollMagic.Scene({
+		triggerElement: '#book-call-card',
+		triggerHook: 0.9,
+		reverse: false
+	})
+	.on('enter', function() {
+		tl.play();
+	})
+	.addTo(controller);
 };

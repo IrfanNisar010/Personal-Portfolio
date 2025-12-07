@@ -80,8 +80,13 @@
                  // Auto-hide notification after 8s if ignored? Optional.
                  setTimeout(() => { if(notif) notif.classList.remove("show"); }, 8000); 
              } else {
-                 // Desktop: Show Popup Directly
-                 showPopup();
+                 // Desktop: Show Popup Directly with 5s delay
+                 setTimeout(() => {
+                     // Simple re-check to avoid disrupting if user already opened it
+                     if (popupOverlay.style.display !== "flex") { 
+                         showPopup();
+                     }
+                 }, 5000);
              }
         }
     }
@@ -245,7 +250,10 @@
 
     // Event Listeners
     if (closeBtn) {
-      closeBtn.addEventListener("click", () => closePopup('button'));
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closePopup('button');
+      });
     }
     
     popupOverlay.addEventListener("click", (e) => {
@@ -298,6 +306,9 @@
     if (card) {
         // --- Touch Events (Mobile) ---
         card.addEventListener("touchstart", (e) => {
+            // Prevent drag if interacting with form elements or buttons
+            if (e.target.closest("input") || e.target.closest("textarea") || e.target.closest("button") || e.target.closest("label")) return;
+
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
             isDragging = true;
@@ -339,7 +350,8 @@
 
         // --- Mouse Events (Desktop) ---
         card.addEventListener("mousedown", (e) => {
-            if (["INPUT", "TEXTAREA", "BUTTON", "LABEL"].includes(e.target.tagName)) return;
+            // Prevent drag if interacting with form elements or buttons (including close button & its children)
+            if (e.target.closest("input") || e.target.closest("textarea") || e.target.closest("button") || e.target.closest("label")) return;
             
             startX = e.clientX;
             isDragging = true;

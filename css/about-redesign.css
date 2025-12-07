@@ -30,7 +30,13 @@
 }
 
 #about-section {
-  padding-bottom: 0 !important;
+  padding-bottom: 0; /* Default (Mobile) */
+}
+
+@media (min-width: 992px) {
+  #about-section {
+    padding-bottom: 120px !important; /* Space for Resume Button on Desktop */
+  }
 }
 
 @media (max-width: 991px) {
