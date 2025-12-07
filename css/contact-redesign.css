@@ -379,23 +379,76 @@
     flex-direction: column;
   }
   .contact-header-wrap {
-    text-align: center;
+    text-align: left; /* Better alignment with cards below */
+    margin-bottom: 30px;
   }
   .contact-heading {
-    font-size: 2.5rem;
+    font-size: 2.2rem; /* Slightly smaller for mobile */
+  }
+  .contact-tag-pill {
+    margin-bottom: 15px;
   }
   .contact-stats-row {
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Keep in one row if possible, or scroll */
+    overflow-x: auto; /* Allow scroll if too tight */
+    padding-bottom: 10px; /* Space for scrollbar if needed */
+    scrollbar-width: none; /* Hide scrollbar for cleaner look */
+    gap: 10px;
+  }
+  .contact-stats-row::-webkit-scrollbar {
+    display: none;
   }
   .stat-card {
-    min-width: 45%;
+    min-width: 100px; /* Minimum width to prevent crushing */
+    flex: 1;
+    padding: 15px 10px;
   }
+  .contact-testimonial-card {
+    padding: 20px; /* Reduced padding */
+  }
+  .testimonial-img {
+    width: 45px;
+    height: 45px;
+  }
+  .contact-book-call-card {
+    padding: 25px 30px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 35px; /* Increased gap clearly separates text and button */
+  }
+  .contact-book-call-card .status-indicator {
+    width: 100%;
+    justify-content: center;
+  }
+  .contact-book-call-card h3 {
+    font-size: 1.15rem;
+    font-weight: 500; /* Reduced weight */
+  }
+  .contact-book-call-card .luxury-button-wrapper {
+    width: 100%;
+    max-width: 250px; /* Significantly reduced width for a tighter look */
+  }
+  
   .contact-form-container {
-    margin-top: 30px;
+    margin-top: 20px;
     height: auto;
+    padding: 25px 20px; /* Tighter padding for mobile */
   }
   .textarea-new {
-    min-height: 200px;
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-heading {
+    font-size: 2rem;
+  }
+  .contact-stats-row {
+    gap: 8px;
+  }
+  .contact-book-call-card {
+     padding: 20px; /* Slightly less on very small screens */
   }
 }
 

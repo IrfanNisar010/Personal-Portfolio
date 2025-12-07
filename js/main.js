@@ -1709,3 +1709,78 @@ var animateBookCallCard = function() {
 	})
 	.addTo(controller);
 };
+
+var animateContactForm = function() {
+	var $container = $('.contact-form-container');
+	if ($container.length === 0) return;
+
+	var controller = new ScrollMagic.Controller();
+
+	// Elements
+	var $inputs = $container.find('input, textarea');
+	var $labels = $container.find('label');
+	var $btnWrapper = $container.find('.luxury-button-wrapper-contact');
+	var $note = $container.find('.contact-form-note');
+	var $groups = $container.find('.form-group-new, .form-row-new');
+
+	// Initial States: "Folded Paper"
+	
+	// 1. Container: Folded Up (Scale Y 0, Top Origin)
+	TweenMax.set($container, { 
+		autoAlpha: 0, 
+		scaleY: 0, 
+		scaleX: 0.95, // Slightly narrower when folded
+		transformOrigin: "center top",
+		perspective: 1000,
+		rotationX: 30, // Slight tilt to imply depth during unfold
+		filter: "blur(5px)"
+	});
+
+	// 2. Inner Groups: Hidden & Shifted Up (to slide down as paper expands)
+	TweenMax.set($groups, { opacity: 0, y: -20 });
+	TweenMax.set($btnWrapper, { opacity: 0, y: -20 });
+	TweenMax.set($note, { opacity: 0 });
+
+	var tl = new TimelineMax();
+
+	tl
+	// 1. The Unfold (Paper drops down)
+	.to($container, 1.2, {
+		autoAlpha: 1,
+		scaleY: 1,
+		scaleX: 1,
+		rotationX: 0,
+		filter: "blur(0px)",
+		ease: Expo.easeOut, // Fast start, smooth end (like paper snapping open)
+		force3D: true
+	})
+
+	// 2. Content Slide Down (Simulating ink flowing or content settling)
+	// We animate the groups (rows/inputs) to fade in overlapping the unfold
+	.staggerTo($groups, 0.8, {
+		opacity: 1,
+		y: 0,
+		ease: Power2.easeOut
+	}, 0.1, "-=0.8")
+
+	// 3. Button Fade In
+	.to($btnWrapper, 0.6, {
+		opacity: 1,
+		y: 0,
+		ease: Back.easeOut.config(1.2)
+	}, "-=0.4")
+	
+	// 4. Note Fade
+	.to($note, 0.6, {
+		opacity: 1,
+		ease: Power2.easeOut
+	}, "-=0.4");
+
+	new ScrollMagic.Scene({
+		triggerElement: '.contact-form-container',
+		triggerHook: 0.8,
+		reverse: false
+	})
+	.setTween(tl)
+	.addTo(controller);
+};
