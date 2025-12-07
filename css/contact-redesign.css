@@ -452,6 +452,7 @@
   }
 }
 
+
 .contact-form-note {
   text-align: center;
   color: #666;
@@ -459,4 +460,66 @@
   margin-top: 15px;
   margin-bottom: 0;
   font-family: 'Manrope', sans-serif;
+}
+
+/* Fix for Send Message Button Hover Animation */
+.luxury-button-wrapper-contact .resume-btn {
+  overflow: hidden; /* Ensure dot doesn't overflow */
+  position: relative;
+  z-index: 1;
+}
+
+.luxury-button-wrapper-contact .resume-btn .resume-btn-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 10px;
+  height: 10px;
+  background-color: #D63447; /* Red color */
+  border-radius: 50%;
+  transition: transform 0.6s cubic-bezier(0.6, 0.05, 0.01, 0.99);
+  z-index: -1; /* Behind text */
+}
+
+.luxury-button-wrapper-contact .resume-btn:hover .resume-btn-dot {
+  transform: translate(-50%, -50%) scale(150) !important; /* Massive scale to cover full width */
+}
+
+/* Ensure text stays white on hover */
+.luxury-button-wrapper-contact .resume-btn:hover .resume-btn-text,
+.luxury-button-wrapper-contact .resume-btn:hover svg {
+  color: #fff !important;
+  fill: #fff !important;
+  z-index: 2;
+}
+
+/* -----------------------------
+   Magic Slide Right Glow Text
+   ----------------------------- */
+.section-sub-heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.magic-slide-text {
+  background: linear-gradient(to right, #777 0%, #fff 50%, #777 100%);
+  background-size: 200% auto;
+  color: #888;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.magic-slide-text.aos-animate {
+  animation: shine 3s linear forwards;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
 }

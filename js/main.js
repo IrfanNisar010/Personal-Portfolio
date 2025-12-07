@@ -38,6 +38,7 @@ jQuery(function($) {
 	animateSectionLines();
 	animateBookCallCard();
 	animateContactForm();
+	typewriterEffect();
 
 	smoothScrollEngine();
 
@@ -1378,8 +1379,9 @@ var maskTextReveal = function() {
 		var chars = text.split('');
 		$.each(chars, function(i, char) {
 			var content = char === ' ' ? '&nbsp;' : char;
+			var margin = char === ' ' ? '4px' : '-0.05em';
 			// Outer span handles masking, Inner span moves
-			$this.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:-0.05em;"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
+			$this.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:' + margin + ';"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
 		});
 
 		var $chars = $this.find('.char-inner');
@@ -1783,4 +1785,56 @@ var animateContactForm = function() {
 	})
 	.setTween(tl)
 	.addTo(controller);
+};
+
+var typewriterEffect = function() {
+	// Select elements with the typewriter class
+	var $elements = $('.typewriter-text');
+
+	if ($elements.length === 0) return;
+
+	// Intersection Observer to trigger typing when in view
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					var $el = $(entry.target);
+					var text = $el.data('text'); // Get stored text
+					
+					// Avoid double typing
+					if ($el.hasClass('typing-started')) return;
+					$el.addClass('typing-started');
+
+					// Clear visibility hidden if set
+					$el.css({ 'visibility': 'visible', 'opacity': 1 });
+
+					var i = 0;
+					$el.text(''); // Clear placeholder
+
+					var typeLoop = setInterval(function() {
+						$el.text(text.substring(0, i + 1));
+						i++;
+						if (i >= text.length) {
+							clearInterval(typeLoop);
+						}
+					}, 30); // Typing speed
+					
+					observer.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.5 }); // Trigger when 50% visible
+
+		$elements.each(function() {
+			var $this = $(this);
+			// Store original text
+			$this.data('text', $this.text().trim());
+			// Clear and hide initially (to prevent flash)
+			$this.text(''); 
+			$this.css('visibility', 'hidden'); 
+			observer.observe(this);
+		});
+	} else {
+		// Fallback for no observer
+		$elements.css('visibility', 'visible');
+	}
 };
