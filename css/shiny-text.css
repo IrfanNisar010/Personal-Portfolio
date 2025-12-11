@@ -1,0 +1,43 @@
+
+:root {
+  --shiny-width: 100px;
+}
+
+.shiny-text-effect {
+  position: relative;
+  display: inline-block;
+  
+  /* Gradient: Mostly base color (semi-transparent white) with a center peak of solid white */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.7) 45%,
+    rgba(255, 255, 255, 1.0) 50%,
+    rgba(255, 255, 255, 0.7) 55%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  
+  /* Size: 500% width ensures the "Shine" (at 50%) is hidden when we look at the edges (0% or 100% pos) */
+  background-size: 500% auto;
+  
+  background-clip: text;
+  -webkit-background-clip: text;
+  
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important; 
+  
+  /* 3s Total Loop */
+  animation: shiny-text 3s infinite ease-in-out;
+}
+
+@keyframes shiny-text {
+  0% {
+    background-position: 0% 0; /* View Left: Shows [0% - 20%] of gradient (All Base) */
+  }
+  35% {
+    background-position: 100% 0; /* View Right: Shows [80% - 100%] of gradient (All Base) */
+  }
+  100% {
+    background-position: 100% 0; /* Hold (Pause) */
+  }
+}
