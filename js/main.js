@@ -47,20 +47,19 @@ jQuery(function($) {
 
 var smoothScrollEngine = function() {
 	// Initialize Lenis for luxury smooth scrolling
-	// Check if user prefers reduced motion
-	if (typeof Lenis === 'undefined') return; // Safety check
+	if (typeof Lenis === 'undefined') return; 
 	
 	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 	if (prefersReducedMotion) return;
 
 	const lenis = new Lenis({
 		duration: 1.2,
-		easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Luxurious exponential ease
+		easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
 		direction: 'vertical',
 		gestureDirection: 'vertical',
 		smooth: true,
 		mouseMultiplier: 1,
-		smoothTouch: false, // Default to native touch for performance
+		smoothTouch: false, // Keep false for mobile performance unless client requests otherwise
 		touchMultiplier: 2,
 	});
 
@@ -73,6 +72,13 @@ var smoothScrollEngine = function() {
 
 	// Expose to window
 	window.lenis = lenis;
+
+    // Connect to Scroll Indicator (if exists in global scope)
+    lenis.on('scroll', (e) => {
+        if (typeof updateScrollIndicator === 'function') {
+            updateScrollIndicator(e.scroll);
+        }
+    });
 
 	// Optimization: Pause on hidden tab
 	document.addEventListener("visibilitychange", function() {

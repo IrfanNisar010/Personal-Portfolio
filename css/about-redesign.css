@@ -174,10 +174,10 @@
 
 /* The Dot */
 .resume-btn-dot {
-  position: absolute; /* Reverted to absolute for strict left placement */
+  position: absolute;
   left: 20px;
   top: 50%;
-  transform: translateY(-50%); /* Vertically center */
+  transform: translateY(-50%);
   width: 8px;
   height: 8px;
   background-color: #000;
@@ -186,37 +186,57 @@
   transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* The Text */
+/* The Original Text (Slides Right & Fades Out) */
 .resume-btn-text {
   position: relative;
   z-index: 10;
   color: #000;
   font-family: 'Aeonik', 'Manrope', sans-serif;
-  font-weight: 400; /* Reverted to thinner weight */
-  font-size: 0.85rem; /* Reverted to smaller size for consistency */
-  text-transform: none; /* Respect HTML case (Download Resume) */
-  letter-spacing: 0.5px; /* Reduced letter spacing for title case */
-  padding-left: 15px; /* Added padding to clear the absolute dot */
+  font-weight: 400; 
+  font-size: 0.85rem; 
+  text-transform: none; 
+  letter-spacing: 0.5px; 
+  padding-left: 15px; /* Space for the dot */
   margin: 0;
   left: 0; 
-  transition: left 0.3s cubic-bezier(0.23, 1, 0.32, 1), color 0.3s ease;
+  opacity: 1;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* The New Hover Content (Slides In from Right) */
+.resume-btn-hover-content {
+  position: absolute;
+  top: 0;
+  left: 20px; /* Start right using left property NOT transform */
+  width: 100%;
+  height: 100%;
+  z-index: 15; /* Above text, Below potential overlays */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Gap between text and arrow */
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none; /* Let interaction pass to button */
+}
+
+/* Text inside Hover Content */
+.resume-btn-hover-content span {
+  color: #fff;
+  font-family: 'Aeonik', 'Manrope', sans-serif;
+  font-weight: 400; 
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
 }
 
 /* The Arrow */
 .resume-btn-arrow {
-  position: absolute;
-  right: 35px;
-  top: 50%;
-  margin-top: -8px;
-  z-index: 5;
+  position: relative; /* Reset from absolute */
   width: 16px;
   height: 16px;
-  opacity: 0;
-  transition: right 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
 }
 
 .resume-btn-arrow svg {
@@ -226,23 +246,24 @@
 }
 
 /* Hover Interactions */
-/* Hover Interactions */
+
+/* Dot Expands */
 .resume-btn:hover .resume-btn-dot {
-  transform: scale(80) translateZ(0); /* Reduced scale + HW accel */
-  background-color: #D63447; /* Solid rich red */
-  /* Split transitions: Instant color change, Smooth expansion */
+  transform: scale(80) translateZ(0); 
+  background-color: #D63447; 
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), background-color 0.05s ease-out;
 }
 
+/* Original Text Slides Right & Fades */
 .resume-btn:hover .resume-btn-text {
-  color: #fff;
-  left: -10px; /* Slide left slightly to make room for arrow */
+  opacity: 0;
+  left: 20px; /* Slide right */
 }
 
-.resume-btn:hover .resume-btn-arrow {
+/* Hover Content Slides In & Fades In */
+.resume-btn:hover .resume-btn-hover-content {
   opacity: 1;
-  right: 20px;
-  transition-delay: 0.1s; /* Slightly increased delay for better sequencing */
+  left: 0; /* Center */
 }
 
 /* Responsive Adjustments */
