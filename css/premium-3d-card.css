@@ -1,0 +1,208 @@
+/* Premium 3D Card Styles - Extracted from Sign In Card 2 */
+
+/* The Card Container - Establishes Perspective */
+.premium-3d-card-wrap {
+  perspective: 1500px;
+  position: relative;
+  z-index: 10;
+  /* Ensure it takes the dimensions of its content/layout */
+  width: 100%; 
+  height: 100%;
+}
+
+/* The Animated Element that Rotates */
+.premium-3d-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: 1rem; /* 16px */
+  background-color: rgba(0, 0, 0, 0.4); /* bg-black/40 */
+  backdrop-filter: blur(24px); /* backdrop-blur-xl */
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* shadow-2xl */
+  transition: transform 0.1s ease-out; /* Smooth follow for JS tilt */
+  overflow: hidden;
+}
+
+/* Spotlight Effect - Desktop Only */
+.premium-3d-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  /* Richer, softer spotlight */
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+    rgba(255, 255, 255, 0.04), 
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.8s ease; /* Slower fade for smoothness */
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Enable Hover Effects Only on Desktop */
+@media (min-width: 992px) {
+  .premium-3d-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Inner Background Pattern (Subtle grid/noise) */
+.premium-3d-card-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05; /* Slightly increased for visibility */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ------------------------------------------------
+   Glow Effects
+   ------------------------------------------------ */
+
+/* Main Border Glow (Group Hover) */
+.premium-3d-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 1rem;
+  background: linear-gradient(to right, rgba(255,255,255,0.03), rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.03);
+}
+
+@media (min-width: 992px) {
+  .premium-3d-card:hover::after {
+    opacity: 0.7;
+  }
+}
+
+/* ------------------------------------------------
+   Traveling Light Beams
+   ------------------------------------------------ */
+.light-beam-container {
+  position: absolute;
+  inset: -1px;
+  border-radius: 1rem;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Shared Beam Animation Properties */
+.light-beam {
+  position: absolute;
+  opacity: 0.7;
+  filter: blur(2px);
+  will-change: transform, opacity, width, height, top, right, bottom, left;
+}
+
+/* Top Beam */
+.light-beam-top {
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 50%;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: beam-top 8s ease-in-out infinite;
+}
+
+/* Right Beam */
+.light-beam-right {
+  top: 0;
+  right: 0;
+  height: 50%;
+  width: 3px;
+  background: linear-gradient(180deg, transparent, #fff, transparent);
+  animation: beam-right 8s ease-in-out infinite 1.2s; /* Delay */
+}
+
+/* Bottom Beam */
+.light-beam-bottom {
+  bottom: 0;
+  right: 0;
+  height: 3px;
+  width: 50%;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: beam-bottom 8s ease-in-out infinite 2.4s; /* Delay */
+}
+
+/* Left Beam */
+.light-beam-left {
+  bottom: 0;
+  left: 0;
+  height: 50%;
+  width: 3px;
+  background: linear-gradient(180deg, transparent, #fff, transparent);
+  animation: beam-left 8s ease-in-out infinite 3.6s; /* Delay */
+}
+
+/* Beam Keyframes */
+@keyframes beam-top {
+  0% { left: -50%; opacity: 0.3; filter: blur(1px); }
+  50% { opacity: 0.7; filter: blur(2.5px); }
+  100% { left: 100%; opacity: 0.3; filter: blur(1px); }
+}
+
+@keyframes beam-right {
+  0% { top: -50%; opacity: 0.3; filter: blur(1px); }
+  50% { opacity: 0.7; filter: blur(2.5px); }
+  100% { top: 100%; opacity: 0.3; filter: blur(1px); }
+}
+
+@keyframes beam-bottom {
+  0% { right: -50%; opacity: 0.3; filter: blur(1px); }
+  50% { opacity: 0.7; filter: blur(2.5px); }
+  100% { right: 100%; opacity: 0.3; filter: blur(1px); }
+}
+
+@keyframes beam-left {
+  0% { bottom: -50%; opacity: 0.3; filter: blur(1px); }
+  50% { opacity: 0.7; filter: blur(2.5px); }
+  100% { bottom: 100%; opacity: 0.3; filter: blur(1px); }
+}
+
+/* ------------------------------------------------
+   Corner Glow Spots
+   ------------------------------------------------ */
+.corner-glow {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  /* blur handled by filter */
+  filter: blur(1px);
+  z-index: 2;
+  animation: corner-pulse 2s infinite alternate ease-in-out;
+}
+
+.corner-top-left { top: 0; left: 0; width: 5px; height: 5px; }
+.corner-top-right { top: 0; right: 0; width: 8px; height: 8px; animation-delay: 0.5s; background-color: rgba(255, 255, 255, 0.6); filter: blur(2px); }
+.corner-bottom-right { bottom: 0; right: 0; width: 8px; height: 8px; animation-delay: 1s; background-color: rgba(255, 255, 255, 0.6); filter: blur(2px); }
+.corner-bottom-left { bottom: 0; left: 0; width: 5px; height: 5px; animation-delay: 1.5s; }
+
+@keyframes corner-pulse {
+  0% { opacity: 0.2; }
+  100% { opacity: 0.4; }
+}
+
+/* ------------------------------------------------
+   Content Z-Index
+   ------------------------------------------------ */
+.premium-3d-card-content {
+  position: relative;
+  z-index: 10;
+}
