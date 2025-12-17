@@ -1,0 +1,170 @@
+/* Modern Futuristic 3D Hamburger Menu */
+.modern-burger-icon {
+  display: inline-flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end; /* Align lines to right for staggering effect */
+  width: 45px;
+  height: 45px;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  z-index: 9999;
+  text-decoration: none !important;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Reduced transparency */
+  box-shadow: 
+    0 10px 20px rgba(0,0,0,0.2), 
+    inset 0 0 15px rgba(255,255,255,0.05); /* Glassmorphism glow */
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Smoother easing */
+  overflow: hidden; /* For liquid fill effect */
+}
+
+/* Glass Border Shimmer Effect - Reduced Opacity */
+.modern-burger-icon::before {
+  content: "";
+  position: absolute;
+  inset: -1px; 
+  border-radius: 50%;
+  padding: 1px; 
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.3) 0%, 
+    rgba(255, 255, 255, 0.05) 40%, 
+    rgba(255, 255, 255, 0.02) 60%, 
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Remove the default underline animation */
+.site-nav-ul-none-onepage > li > a.modern-burger-icon:before,
+.site-nav-ul-none-onepage > li > a.modern-burger-icon:hover:before,
+.site-nav-ul-none-onepage > li > a.modern-burger-icon.active:before {
+  display: none !important;
+  width: 0 !important;
+  content: none !important;
+}
+
+.modern-burger-icon:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+  box-shadow: 
+    0 15px 30px rgba(214, 52, 71, 0.15), 
+    inset 0 0 20px rgba(255,255,255,0.1);
+  border-color: transparent; 
+}
+
+.modern-burger-icon:active {
+  transform: scale(0.95);
+}
+
+/* The Lines */
+.burger-line {
+  display: block;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Elastic spring effect */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  transform-origin: center center;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+
+.burger-line.top {
+  width: 22px;
+  top: 16px;
+  transform: translateX(-50%);
+}
+
+.burger-line.mid {
+  width: 14px; 
+  top: 22px;
+  margin-right: -4px; 
+  transform: translateX(-50%);
+}
+
+.burger-line.bot {
+  width: 22px;
+  top: 28px;
+  transform: translateX(-50%);
+}
+
+/* Hover State - Lines Align */
+.modern-burger-icon:hover .burger-line.mid {
+  width: 22px;
+  margin-right: 0;
+  box-shadow: 0 0 8px rgba(214, 52, 71, 0.6);
+}
+
+/* Active State (X Shape) */
+.modern-burger-icon.active {
+  background: #D63447; 
+  border-color: #D63447;
+  transform: rotate(180deg); /* Full rotation for richer effect */
+  box-shadow: 0 0 25px rgba(214, 52, 71, 0.5);
+}
+
+.modern-burger-icon.active::before {
+  opacity: 0.1; /* Almost invisible glass border in active state */
+}
+
+.modern-burger-icon.active .burger-line.top {
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background-color: #fff;
+}
+
+.modern-burger-icon.active .burger-line.mid {
+  width: 0;
+  opacity: 0;
+  transform: translate(20px, -50%);
+}
+
+.modern-burger-icon.active .burger-line.bot {
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  background-color: #fff;
+}
+
+/* Pulse Ring Animation */
+.modern-burger-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+.modern-burger-icon:hover::after {
+  transform: translate(-50%, -50%) scale(1.4);
+  opacity: 0;
+  animation: pulse-ring 1.5s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; border-color: rgba(255,255,255,0.4); }
+  100% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; border-color: rgba(214, 52, 71, 0); }
+}

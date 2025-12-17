@@ -478,54 +478,80 @@ var mobileToggleClick = function() {
   var openMenu = function() {
     $('body').addClass('offcanvas');
     $('.js-menu-toggle').addClass('active');
-    if ( $('.js-burger-toggle-menu').length ) {
-      $('.js-burger-toggle-menu').addClass('open');
-    }
     
-    // GSAP Open Animation - True Genie Effect
-    // Set initial state (tiny circle near button)
+    var $btn = $('.js-menu-toggle');
+    
+    // 1. Measure positions (using getBoundingClientRect for viewport-relative precision)
+    // precise floating point pixels, no jQuery integer rounding
+    var btnRect = $btn[0].getBoundingClientRect();
+    var btnCenterX = btnRect.left + btnRect.width / 2;
+    var btnCenterY = btnRect.top + btnRect.height / 2;
+    
+    // 2. Prepare Menu
+    // We need to measure the menu's final state without showing it.
+    // We set it to block/flex but invisible.
     TweenMax.set(menu, { 
-        transformOrigin: "100% 0%", /* Top Right Corner */
-        scale: 0.1, 
-        x: 20, /* Offset to match button center */
-        y: -20, 
-        autoAlpha: 0, 
-        borderRadius: "100px", /* Start as circle */
-        filter: "blur(30px)",
-        webkitFilter: "blur(30px)"
-    });
-
-    // Animate to full rect
-    TweenMax.to(menu, 0.8, { 
-      scale: 1, 
-      x: 0, 
-      y: 0, 
-      autoAlpha: 1, 
-      borderRadius: "30px", /* Morph to rounded rect */
-      filter: "blur(0px)", 
-      webkitFilter: "blur(0px)",
-      ease: Elastic.easeOut.config(1, 0.75), /* Organic bounce */
-      force3D: true
+        display: 'flex', 
+        autoAlpha: 0,
+        // Reset transforms to measure "natural" resting place
+        x: 0, 
+        y: 0, 
+        scale: 1 
     });
     
-    // Stagger items in with Blur Typewriter effect (Fast)
-    TweenMax.staggerFromTo(menuItems, 0.3, 
-      { 
-        opacity: 0, 
-        y: 15, 
-        scale: 1.05,
-        filter: "blur(10px)", 
-        webkitFilter: "blur(10px)" 
-      },
-      { 
-        opacity: 1, 
-        y: 0, 
+    var menuRect = menu[0].getBoundingClientRect();
+    // Default resting position (defined by CSS: top: auto, right: auto...)
+    // Wait, CSS now has top/right/etc as auto, so it might not be positioned correctly if we don't set it.
+    // We need to force the specific "open" visual position in CSS or here.
+    // Let's set the standard fixed position we want.
+    
+    // We want the menu to live at right: 25px, top: 80px relative to viewport.
+    menu.css({
+        top: '80px',
+        right: '25px',
+        left: 'auto',
+        bottom: 'auto',
+        transformOrigin: 'center center' // Morph from center
+    });
+    
+    // Re-measure after setting CSS
+    var finalMenuRect = menu[0].getBoundingClientRect();
+    var finalCenterX = finalMenuRect.left + finalMenuRect.width / 2;
+    var finalCenterY = finalMenuRect.top + finalMenuRect.height / 2;
+    
+    // 3. Calculate Delta (Distance from Button Center to Menu Center)
+    var deltaX = btnCenterX - finalCenterX;
+    var deltaY = btnCenterY - finalCenterY;
+    
+    // 4. Set Initial State (At Button)
+    TweenMax.set(menu, { 
+        x: deltaX, 
+        y: deltaY, 
+        scale: 0.1, // Start tiny
+        borderRadius: "50%", // Circle
+        autoAlpha: 0, // Transparent
+        filter: "blur(10px)",
+        webkitFilter: "blur(10px)"
+    });
+    
+    // 5. Animate to Final State (Zero transforms = CSS position)
+    TweenMax.to(menu, 0.5, { 
+        x: 0,
+        y: 0,
         scale: 1,
-        filter: "blur(0px)", 
-        webkitFilter: "blur(0px)", 
-        ease: Power2.easeOut, 
-        delay: 0.1 
-      }, 
+        autoAlpha: 1,
+        borderRadius: "30px", // Final shape
+        filter: "blur(0px)",
+        webkitFilter: "blur(0px)",
+        ease: Back.easeOut.config(1.0), // clean pop, no excessive wobble
+        force3D: true
+    });
+    
+    // Items Enter
+    menu.addClass('active-menu');
+    TweenMax.staggerFromTo(menuItems, 0.3, 
+      { opacity: 0, x: 20 },
+      { opacity: 1, x: 0, ease: Power2.easeOut, delay: 0.1 }, 
       0.04
     );
   };
@@ -533,46 +559,38 @@ var mobileToggleClick = function() {
   var closeMenu = function() {
     $('body').removeClass('offcanvas');
     $('.js-menu-toggle').removeClass('active');
-    if ( $('.js-burger-toggle-menu').length ) {
-      $('.js-burger-toggle-menu').removeClass('open');
-    }
     
-    // GSAP Close Animation - Reverse Typewriter & Suction
+    var $btn = $('.js-menu-toggle');
+    // Re-measure in case of scroll/resize
+    var btnRect = $btn[0].getBoundingClientRect();
+    var btnCenterX = btnRect.left + btnRect.width / 2;
+    var btnCenterY = btnRect.top + btnRect.height / 2;
     
-    // 1. Stagger items out (Reverse Typewriter - Explicit)
-    // We use staggerFromTo to ensure the starting state is what we expect (visible) 
-    // and animate to the hidden state with a distinct motion.
-    TweenMax.staggerFromTo(menuItems, 0.3, 
-      { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        filter: "blur(0px)", 
-        webkitFilter: "blur(0px)" 
-      },
-      { 
-        opacity: 0, 
-        y: -20, /* Move up more noticeably */
-        scale: 0.9, /* Shrink slightly */
-        filter: "blur(15px)", /* Stronger blur */
-        webkitFilter: "blur(15px)",
-        ease: Back.easeIn.config(1.7), /* Pull back effect */
-      }, 
-      0.05 /* Slower stagger for visibility */
-    );
+    var menuRect = menu[0].getBoundingClientRect();
+    var menuCenterX = menuRect.left + menuRect.width / 2;
+    var menuCenterY = menuRect.top + menuRect.height / 2;
+    
+    var deltaX = btnCenterX - menuCenterX;
+    var deltaY = btnCenterY - menuCenterY;
 
-    // 2. Suck menu into button (Delayed slightly to let items vanish)
-    TweenMax.to(menu, 0.5, { 
-      delay: 0.15, /* Wait for items to start disappearing */
-      scale: 0.05, /* Shrink to a droplet */
-      x: 20, /* Move to button center */
-      y: -20, 
-      autoAlpha: 0, 
-      borderRadius: "50%", /* Turn into a circle */
-      filter: "blur(40px)", /* Blur out */
-      webkitFilter: "blur(40px)",
-      ease: Expo.easeIn, /* Accelerate into the button (Vacuum effect) */
-      force3D: true
+    // Items Exit
+    TweenMax.staggerTo(menuItems, 0.15, { opacity: 0, x: 10 }, 0.02);
+
+    // Menu Exits to Button
+    TweenMax.to(menu, 0.4, { 
+        x: deltaX, 
+        y: deltaY, 
+        scale: 0.1, 
+        autoAlpha: 0, 
+        borderRadius: "50%",
+        filter: "blur(20px)",
+        webkitFilter: "blur(20px)",
+        ease: Power3.easeIn, // Smooth acceleration in
+        force3D: true,
+        onComplete: function() {
+            menu.removeClass('active-menu');
+            TweenMax.set(menu, { display: 'none' }); 
+        }
     });
   };
 

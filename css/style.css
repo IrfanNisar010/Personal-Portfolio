@@ -704,33 +704,46 @@ a, a:hover {
 
 /* Mobile nav - iOS 'Liquid Glass' Concept */
 .unslate_co--site-mobile-menu {
-  position: fixed;
+  position: fixed; 
   z-index: 1009;
-  top: 80px;
-  right: 25px;
+  top: auto; 
+  right: auto;
   left: auto;
+  bottom: auto;
+  
   width: 230px;
   height: auto;
   max-height: 60vh;
-  overflow-y: auto;
-  /* Hide Scrollbar */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   
-  /* Advanced Liquid Glass Effect */
-  background: rgba(18, 18, 18, 0.4);
+  background: rgba(18, 18, 18, 0.6); /* Slightly darker for better liquid visibility */
   backdrop-filter: blur(20px) saturate(180%) brightness(110%);
   -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
-  /* Border handled by ::after for animation */
+  
   border: none;
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    inset 0 0 20px rgba(255, 255, 255, 0.02);
-  border-radius: 30px;
-  padding: 0; /* Remove padding from container */
-  overflow: hidden; /* Clip border */
-  display: flex;
+  border-radius: 50%; /* Default round */
+  
+  /* Important: removing padding/overflow here might help, 
+     but overflow:hidden is needed for border-radius clipping */
+  padding: 0;
+  overflow: hidden; 
+  display: none; 
   flex-direction: column;
+  
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+  
+  /* Remove any CSS transitions that conflict with GSAP */
+  transition: box-shadow 0.3s ease; 
+  
+  /* Add a subtle textured shadow for depth */
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.unslate_co--site-mobile-menu.active-menu {
+  pointer-events: auto;
 }
 
 .mobile-menu-scroll-content {
@@ -738,7 +751,6 @@ a, a:hover {
   overflow-y: auto;
   height: 100%;
   max-height: 60vh;
-  /* Hide Scrollbar */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
