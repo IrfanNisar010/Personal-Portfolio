@@ -936,18 +936,32 @@ var blurTextReveal = function() {
 
 	$('.blur-reveal-text').each(function() {
 		var $this = $(this);
-		var text = $this.text().trim(); // Trim to avoid weird spacing
+		var text = $this.text().trim();
 		$this.empty();
 		
-		// Split text into characters
-		var chars = text.split('');
-		$.each(chars, function(i, char) {
-			// Use non-breaking space for spaces to preserve layout
-			var content = char === ' ' ? '&nbsp;' : char;
-			$this.append('<span style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + content + '</span>');
+		// Split text into words to preserve word integrity
+		var words = text.split(/\s+/);
+		
+		$.each(words, function(i, word) {
+			// Wrap each word in a span that prevents breaking inside it
+			var $wordSpan = $('<span style="display:inline-block; white-space:nowrap;"></span>');
+			
+			var chars = word.split('');
+			$.each(chars, function(j, char) {
+				$wordSpan.append('<span class="char" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + char + '</span>');
+			});
+			
+			$this.append($wordSpan);
+			
+			// Add space after word (except last one)
+			if (i < words.length - 1) {
+				// Use a real space for wrapping, wrapped in a span for animation
+				// We use a regular space content but display:inline-block so it animates
+				$this.append('<span class="char space" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px);">&nbsp;</span>'); 
+			}
 		});
 
-		var $chars = $this.find('span');
+		var $chars = $this.find('.char');
 
 		var tl = new TimelineMax();
 		tl.staggerTo($chars, 0.8, {
@@ -959,7 +973,7 @@ var blurTextReveal = function() {
 
 		new ScrollMagic.Scene({
 			triggerElement: this,
-			triggerHook: 0.85, // Trigger slightly before it hits the bottom
+			triggerHook: 0.85, 
 			reverse: false
 		})
 		.setTween(tl)
