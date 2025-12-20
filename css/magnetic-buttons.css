@@ -1,0 +1,49 @@
+/* Magnetic Button Styles */
+
+/* Base class to apply to buttons we want to magnetize */
+.magnetic-btn {
+  display: inline-flex;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  /* Ensure transform doesn't blur text */
+  -webkit-font-smoothing: subpixel-antialiased;
+  will-change: transform;
+}
+
+/* 
+   The JS will apply transform: translate(x, y) to the button itself 
+   and ideally to the text inside it heavily for a parallax feel.
+*/
+
+/* 
+   We also want the child element (text/icon) to move slightly MORE 
+   than the button background for that "liquid" feel.
+*/
+.magnetic-btn > span, 
+.magnetic-btn > svg,
+.magnetic-btn .resume-btn-text,
+.magnetic-btn .resume-btn-icon {
+  pointer-events: none;
+  transition: transform 0.1s linear; /* Smooth catchup */
+}
+
+/* Optional: Add a localized glow spread on hover if not present */
+.magnetic-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s ease;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.magnetic-btn:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}

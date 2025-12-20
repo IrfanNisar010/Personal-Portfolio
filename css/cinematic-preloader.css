@@ -1,0 +1,119 @@
+/* Cinematic Preloader Styles */
+.preloader-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* The dark curtain that fades away */
+.preloader-curtain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  transform-origin: center center;
+  /* Reset transition for the simple state, handled in .loaded */
+  transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+}
+
+.preloader-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  font-family: 'Manrope', sans-serif;
+  text-align: center;
+}
+
+.preloader-percent {
+  font-size: 8rem;
+  font-weight: 300;
+  line-height: 1;
+  display: block;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeUpReveal 0.5s forwards;
+}
+
+.preloader-text {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-weight: 600;
+  margin-top: 20px;
+  
+  /* Text Shimmer/Glow Animation */
+  background: linear-gradient(to right, #444 0%, #fff 50%, #444 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerGlow 2s linear infinite, fadeIn 1s 0.3s forwards;
+  opacity: 0; /* Handled by fadeIn, but shimmer needs visible context once opaque */
+}
+
+@keyframes shimmerGlow {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Hide preloader state - Blur Zoom Out Transition */
+body.loaded .preloader-curtain {
+  opacity: 0;
+  transform: scale(1.2); /* Zoom in/expand effect */
+  filter: blur(20px);    /* Blur out */
+  pointer-events: none;
+}
+
+body.loaded .preloader-content {
+  opacity: 0;
+  transform: scale(1.1);
+  filter: blur(10px);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+body.loaded .preloader-wrap {
+  pointer-events: none;
+  /* Delay visibility hidden to allow transition to finish */
+  transition: visibility 0s 1.0s;
+  visibility: hidden;
+}
+
+@keyframes fadeUpReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Defer Hero Animation until Loaded */
+body:not(.loaded) .apple-fade-in,
+body:not(.loaded) .shiny-text-effect,
+body:not(.loaded) .anim-text,
+body:not(.loaded) #hero-heading .anim-text,
+body:not(.loaded) #hero-cta {
+  visibility: hidden; /* Use visibility so it doesn't flash */
+  opacity: 0 !important;
+  animation-play-state: paused !important;
+}
+
+/* Mobile sizing */
+@media (max-width: 768px) {
+  .preloader-percent {
+    font-size: 4rem;
+  }
+}

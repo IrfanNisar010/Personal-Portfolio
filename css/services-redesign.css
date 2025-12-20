@@ -45,11 +45,24 @@
 }
 
 .services-desc {
+  font-family: 'Manrope', sans-serif;
   font-size: 1.1rem;
   color: #a0a0a0;
   line-height: 1.6;
   max-width: 90%;
   margin-bottom: 30px;
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  text-wrap: pretty;
+  display: block; /* Ensure block level */
+}
+
+@media (max-width: 768px) {
+  .services-desc {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    font-size: 1rem; /* Better readability on mobile */
+  }
 }
 
 /* Service Tags (Cards) */

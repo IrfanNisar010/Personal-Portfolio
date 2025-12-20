@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="css/custom-cursor.css">
     <link rel="stylesheet" href="css/shiny-text.css">
     <link rel="stylesheet" href="css/premium-3d-card.css">
+    <link rel="stylesheet" href="css/cinematic-preloader.css">
+    <link rel="stylesheet" href="css/magnetic-buttons.css">
+    <link rel="stylesheet" href="css/ambient-grain.css">
     <link rel="stylesheet" href="css/hamburger-menu.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script> 
@@ -56,6 +59,25 @@
 
   </head>
   <body data-spy="scroll" data-target=".site-nav-target" data-offset="200">
+
+    <!-- Cinematic Preloader -->
+    <div class="preloader-wrap">
+      <div class="preloader-curtain"></div>
+      <div class="preloader-content">
+         <span class="preloader-percent">0%</span>
+         <div class="preloader-text">Loading</div>
+      </div>
+    </div>
+
+    <!-- Ambient Grain Background -->
+    <div class="ambient-grain-overlay">
+      <div class="ambient-gradients">
+        <div class="ambient-blob blob-1"></div>
+        <div class="ambient-blob blob-2"></div>
+        <div class="ambient-blob blob-3"></div>
+      </div>
+      <div class="ambient-noise"></div>
+    </div>
 
     <nav class="unslate_co--site-mobile-menu">
       <div class="mobile-menu-scroll-content">
@@ -111,7 +133,7 @@
             <div class="col-md-5 text-right text-lg-left">
               <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
                 <li><a href="#skills-section" class="nav-link">Skills</a></li>
-                <li><a href="#faq-section" class="nav-link">Faq's</a></li>
+                <li><a href="#faq-section" class="nav-link">Q & A</a></li>
                 <li><a href="#contact-section" class="nav-link">Contact</a></li>
                 <!-- <li><a href="#testimonial-section" class="nav-link">Testimonial</a></li> -->
               </ul>
@@ -462,7 +484,7 @@
                </div>
                <h2 class="services-heading mask-reveal-text">Services</h2>
                <p class="services-desc blur-reveal-text">
-                  I care about the details most people never notice — micro-interactions, structure, spacing, loading states. That’s why everything I build feels cleaner, faster, and more intentional than the typical digital experience.
+                  I care about the details most people never notice micro-interactions, structure, spacing, loading states. That’s why everything I build feels cleaner, faster, and more intentional than the typical digital experience.
                </p>
 
                <!-- Mini Tags -->
@@ -767,11 +789,11 @@
             <!-- Left Column: Title & Image -->
             <div class="col-lg-5 mb-5 mb-lg-0">
                <div class="process-tag">
-                  <span>FAQ'S</span>
+                  <span>Essentials</span>
                </div>
-               <h2 class="process-heading mask-reveal-text">Answers</h2>
+               <h2 class="process-heading mask-reveal-text">Q & A</h2>
                <p class="process-desc blur-reveal-text">
-                  Find answers to common questions about my design process, services etc...
+                  Clear answers to frequent questions about my process and how we can work together.
                </p>
                
                <div class="faq-image-wrap gsap-reveal-img">
@@ -1077,7 +1099,7 @@
                 </div>
                 
                 <div class="luxury-button-wrapper">
-                    <a href="https://cal.com/irfan-nisar-010/30min" class="resume-btn" target="_blank">
+                    <a href="https://cal.com/irfan-nisar-010/30min" class="resume-btn magnetic-btn" target="_blank">
                        <span class="resume-btn-text">Let's Book A Call</span>
                        <div class="resume-btn-hover-content">
                          <span>Let's Book A Call</span>
@@ -1130,7 +1152,7 @@
                       </div>
 
                       <div class="luxury-button-wrapper-contact">
-                        <button type="submit" class="resume-btn">
+                        <button type="submit" class="resume-btn magnetic-btn">
                           <span class="resume-btn-text">Send Message</span>
                           <div class="resume-btn-hover-content">
                             <span>Send Message</span>
@@ -1358,7 +1380,8 @@
       // Custom GSAP Animation for Hero Section
       $(document).ready(function() {
         if (typeof TimelineMax !== 'undefined') {
-          var tl = new TimelineMax();
+          var tl = new TimelineMax({ paused: true });
+          window.heroTimeline = tl;
 
           // Helper: Split text into characters for granular animation
           var splitText = function(selector) {
@@ -1774,30 +1797,147 @@
         }, 100);
       });
 
-      // Back to Top Visibility Logic
-      $(window).scroll(function() {
-         var contactSection = $('#contact-section');
-         var backToTop = $('.back-to-top');
+      // Smart "Back to Top" Logic (Idle Detection)
+      var idleTimer;
+      var $backToTop = $('.back-to-top');
+      
+      $(window).on('scroll mousemove touchstart', function() {
+         // User is active (scrolling or moving) -> Hide button
+         $backToTop.removeClass('active');
          
-         if (contactSection.length) {
-             var contactTop = contactSection.offset().top;
-             var contactHeight = contactSection.outerHeight();
+         // Clear existing timer
+         clearTimeout(idleTimer);
+         
+         // Start new timer: If no activity for 10 seconds, show button
+         idleTimer = setTimeout(function() {
              var windowScroll = $(window).scrollTop();
-             var windowHeight = $(window).height();
-             
-             // Show when the user scrolls past the middle of the "Let's Connect" section
-             // or reaches the end of it.
-             // Let's set it to appear when the *bottom* of the contact section enters the viewport
-             // or simply when we've scrolled past the contact section start.
-             
-             // Trigger when we reach the contact section
-             if (windowScroll + windowHeight > contactTop + (contactHeight / 2)) {
-                 backToTop.addClass('active');
-             } else {
-                 backToTop.removeClass('active');
+             // Only show if we are not at the very top (e.g., scrolled > 500px)
+             if (windowScroll > 500) {
+                 $backToTop.addClass('active');
              }
-         }
+         }, 10000); // 10 seconds delay
       });
+    </script>
+    <script>
+      // Mobile Portfolio Text Reveal Animation
+      document.addEventListener("DOMContentLoaded", function() {
+        // Only run on mobile
+        if (window.innerWidth < 992) {
+          var portfolioObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('mobile-in-view');
+                portfolioObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+          // Animate when the TEXT CONTENT itself comes into view
+          var contents = document.querySelectorAll('.portfolio-item-content');
+          contents.forEach(function(content) {
+            portfolioObserver.observe(content);
+          });
+        }
+      });
+    </script>
+    <script>
+      /* --- Cinematic Preloader Logic --- */
+      window.addEventListener('load', function() {
+          const percentText = document.querySelector('.preloader-percent');
+          const preloaderWrap = document.querySelector('.preloader-wrap');
+          let count = 0;
+          
+          if(percentText) {
+            const interval = setInterval(() => {
+                // Slower increment for "Exciting" build up (1-3% at a time)
+                count += Math.floor(Math.random() * 3) + 1; 
+                if (count > 100) count = 100;
+                percentText.textContent = count + '%';
+                
+                if (count === 100) {
+                    clearInterval(interval);
+                    // Trigger exit animation
+                    // Quick exit after load finishes (500ms) - preventing "stuck at 100%"
+                    setTimeout(() => {
+                        document.body.classList.add('loaded');
+                        
+                        // Force Trigger Hero Animations AFTER curtain is up
+                        setTimeout(() => {
+                           if (window.heroTimeline) {
+                               window.heroTimeline.play();
+                           }
+                           
+                           // Also ensure CTA visibility if not part of timeline (it is part of timeline, but just in case)
+                           // The timeline handles #hero-cta animation (step 4), so playing it covers everything.
+                           
+                           // Unpause other CSS animations if any remain
+                            const heroTitle = document.getElementById('hero-heading');
+                            if(heroTitle) {
+                               const spans = heroTitle.querySelectorAll('.anim-text');
+                               spans.forEach((span) => {
+                                 span.style.animationPlayState = 'running';
+                                 span.style.visibility = 'visible'; 
+                               });
+                            }
+                        }, 800); // Wait for most of the curtain lift (1.2s total)
+                    }, 500);
+                }
+            }, 50); // Slower tick speed (50ms)
+          } else {
+             // Fallback if element missing
+             document.body.classList.add('loaded');
+          }
+      });
+
+      /* --- Magnetic Button Logic (GSAP) --- */
+      // Only active on desktop/large screens
+      if (window.matchMedia("(min-width: 992px)").matches) {
+          const magneticBtns = document.querySelectorAll('.magnetic-btn');
+
+          magneticBtns.forEach((btn) => {
+              btn.addEventListener('mousemove', function(e) {
+                  const rect = btn.getBoundingClientRect();
+                  const x = e.clientX - rect.left - rect.width / 2;
+                  const y = e.clientY - rect.top - rect.height / 2;
+                  
+                  // Move the button container (slower, "heavy" feel)
+                  TweenMax.to(btn, 0.3, {
+                      x: x * 0.3,
+                      y: y * 0.3,
+                      ease: Power2.easeOut
+                  });
+
+                  // Move the text/children (faster, "float" feel)
+                  // We target direct children spans/divs to create parallax
+                  const children = btn.querySelectorAll('span, svg, div');
+                  if(children.length > 0) {
+                      TweenMax.to(children, 0.3, {
+                          x: x * 0.2, // Move slightly less or more depending on desired depth
+                          y: y * 0.2,
+                          ease: Power2.easeOut
+                      });
+                  }
+              });
+
+              btn.addEventListener('mouseleave', function() {
+                  // Snap back to center
+                  TweenMax.to(btn, 0.6, {
+                      x: 0,
+                      y: 0,
+                      ease: Elastic.easeOut.config(1, 0.3) // Elastic snap
+                  });
+                  
+                  const children = btn.querySelectorAll('span, svg, div');
+                  if(children.length > 0) {
+                       TweenMax.to(children, 0.6, {
+                          x: 0,
+                          y: 0,
+                          ease: Elastic.easeOut.config(1, 0.3)
+                      });
+                  }
+              });
+          });
+      }
     </script>
   </body>
 </html>

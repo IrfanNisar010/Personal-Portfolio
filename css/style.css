@@ -1510,14 +1510,34 @@ a, a:hover {
     justify-content: flex-end;
   }
 
+  /* Initial Animation State for Mobile */
   .portfolio-item .portfolio-item-content h3, .blog-item .portfolio-item-content h3 {
     font-size: 18px;
     margin-bottom: 2px;
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+    transition: all 0.8s ease-out;
   }
 
   .portfolio-item .portfolio-item-content p, .blog-item .portfolio-item-content p {
     font-size: 12px;
     line-height: 1.4;
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+    transition: all 0.8s ease-out;
+    transition-delay: 0.15s;
+  }
+
+  /* Triggered State - Applied to content div */
+  .portfolio-item .portfolio-item-content.mobile-in-view h3, 
+  .blog-item .portfolio-item-content.mobile-in-view h3,
+  .portfolio-item .portfolio-item-content.mobile-in-view p, 
+  .blog-item .portfolio-item-content.mobile-in-view p {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
   }
 }
 

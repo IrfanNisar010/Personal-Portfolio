@@ -231,7 +231,8 @@ var siteMenuClone = function() {
 
   // Inject Icon for Journal in Mobile Menu
   setTimeout(function() {
-    $('.unslate_co--site-mobile-menu .site-nav-wrap a:contains("Faq\'s")').prepend('<span class="icon-chat" style="margin-right: 10px;"></span>');
+    // Updated selector to match "Q & A" text instead of "Faq's"
+    $('.unslate_co--site-mobile-menu .site-nav-wrap a:contains("Q & A")').prepend('<span class="icon-chat" style="margin-right: 10px;"></span>');
   }, 1200);
 
 	$('body').on('click', '.arrow-collapse', function(e) {
@@ -651,144 +652,180 @@ var onePageNavigation = function() {
 // load ajax page
 var portfolioItemClick = function() {
 	$('.ajax-load-page').on('click', function(e) {
-		
-		var id = $(this).data('id'),
-			href = $(this).attr('href');
-
-		if ( $('#portfolio-single-holder > div').length ) {
-			$('#portfolio-single-holder > div').remove();
-		} 
-
-		TweenMax.to('.loader-portfolio-wrap', 1, { top: '-50px', autoAlpha: 1, display: 'block', ease: Power4.easeOut });
-
-		$('html, body').animate({
-    	scrollTop: $('#portfolio-section').offset().top - 50
-		}, 700, 'easeInOutExpo', function() {
-		});
-		
-		setTimeout(function(){
-			loadPortfolioSinglePage(id, href);
-		}, 100);
-
 		e.preventDefault();
+
+		var $this = $(this);
+		var id = $this.data('id');
+		var href = $this.attr('href');
+
+		// 1. Instant Visual Feedback
+		// Scale down clicked item slightly to indicate interaction
+		TweenMax.to($this, 0.2, { scale: 0.95, opacity: 0.8, ease: Power2.easeOut });
+
+		// 2. Start Transition Immediately
+		// Smooth scroll to top while we work
+		$('html, body').animate({
+			scrollTop: $('#portfolio-section').offset().top - 50
+		}, 500, 'easeInOutExpo');
+
+		// 3. Parallel Execution: Fetch & Fade
+		var fetchData = $.ajax({ url: href, type: 'GET' });
+
+		// Fade out grid wrapper - DON'T Wait for this to finish if data comes back faster
+		var $portfolioWrapper = $('.portfolio-wrapper');
+		
+		// Prevent section collapse by setting min-height to current height
+		$('#portfolio-section').css('min-height', $('#portfolio-section').outerHeight());
+
+		var fadeOutPromise = new Promise(function(resolve) {
+			TweenMax.to($portfolioWrapper, 0.4, { 
+				autoAlpha: 0, 
+				y: -20, 
+				display: 'none',
+				ease: Power2.easeIn,
+				onComplete: resolve 
+			});
+		});
+
+		// 4. Handle Completion
+		// Execute immediately when data is ready (Instant transition)
+		fetchData.then(function(html) {
+			
+			// Force finish grid hide if it's still running
+			TweenMax.set($portfolioWrapper, { autoAlpha: 0, display: 'none' });
+
+			var pSingleHolder = $('#portfolio-single-holder');
+			var $html = $(html);
+			// Fix: Extract CONTENT of .portfolio-single-inner to avoid double nesting
+			var getHTMLContent = $html.find('.portfolio-single-inner').html();
+			
+			// Previous cleanup
+			$('#portfolio-single-holder > div').remove();
+
+			// Insert New Content
+			pSingleHolder.empty().append(
+				'<div id="portfolio-single-'+id+'" class="portfolio-single-inner" style="opacity: 0; display: block;">' + 
+				'<span class="unslate_co--close-portfolio js-close-portfolio d-flex align-items-center"><span class="close-portfolio-label">Back to Portfolio</span><span class="icon-close2 wrap-icon-close"></span></span>' + 
+				getHTMLContent + 
+				'</div>'
+			);
+
+			// Reset clicked item
+			TweenMax.set($this, { scale: 1, opacity: 1 });
+
+			// Prepare Content & Images
+			preparePortfolioDetails();
+			owlSingleSlider();
+
+			// 5. Reveal Immediately
+			var $inner = $('.portfolio-single-inner');
+			
+			// Pop in main container
+			TweenMax.fromTo($inner, 0.4, 
+				{ opacity: 0, y: 15 },
+				{ opacity: 1, y: 0, ease: Power3.easeOut }
+			);
+
+			// Trigger content reveal almost immediately (slight overlap for fluid feel)
+			setTimeout(function() {
+				revealPortfolioDetails();
+			}, 100);
+
+		}).catch(function(err) {
+			console.error("Error loading portfolio:", err);
+			TweenMax.to($this, 0.2, { scale: 1, opacity: 1 }); 
+			TweenMax.to($portfolioWrapper, 0.3, { autoAlpha: 1, display: 'block', y: 0 }); // Restore grid
+		});
 
 	});
 
-	// Close
-	// Close
+	// Close Button Logic
 	$('body').on('click', '.js-close-portfolio', function() {
+		$('html, body').animate({
+			scrollTop: $('#portfolio-section').offset().top - 50
+		}, 500, 'easeInOutExpo');
 
-		setTimeout(function(){
-			$('html, body').animate({
-	    	scrollTop: $('#portfolio-section').offset().top - 50
-			}, 500, 'easeInOutExpo');
-		}, 200);
-
-		TweenMax.set('.portfolio-wrapper', { visibility: 'visible', height: 'auto' });
-		TweenMax.to('.portfolio-single-inner', 0.5, { 
-			marginTop: '50px', 
-			opacity: 0, 
-			display: 'none',
-			filter: 'blur(20px)',
-			webkitFilter: 'blur(20px)',
-			onComplete() {
-				TweenMax.to('.portfolio-wrapper', 0.5, { marginTop: '0px', autoAlpha: 1, position: 'relative' });
+		TweenMax.to('.portfolio-single-inner', 0.4, { 
+			opacity: 0,
+			y: 20, 
+			ease: Power2.easeIn,
+			onComplete: function() {
+				$(this.target).remove();
+				// Restore Grid with Pop
+				TweenMax.set('.portfolio-wrapper', { display: 'block', opacity: 0, y: 20 });
+				TweenMax.to('.portfolio-wrapper', 0.5, { opacity: 1, y: 0, autoAlpha: 1, ease: Power3.easeOut });
 			} 
 		});
 	});
 };
 
-$(document).ajaxStop(function(){
-	setTimeout(function(){
-		TweenMax.to('.loader-portfolio-wrap', 1, { top: '0px', autoAlpha: 0, ease: Power4.easeOut });	
-	}, 400);
-});
-
-var loadPortfolioSinglePage = function(id, href) {
-	$.ajax({
-		url: href,
-		type: 'GET',
-		success: function(html) {
-
-			TweenMax.to('.portfolio-wrapper', 1, { marginTop: '50px', autoAlpha: 0, visibility: 'hidden', onComplete() {
-				TweenMax.set('.portfolio-wrapper', { height: 0 });
-			} })
-
-			var pSingleHolder = $('#portfolio-single-holder');
-	    	
-			var getHTMLContent = $(html).find('.portfolio-single-wrap').html();
-
-			// Append with inline styles to prevent FOUC (Flash of Unstyled Content)
-			pSingleHolder.append(
-				'<div id="portfolio-single-'+id+
-				'" class="portfolio-single-inner" style="opacity: 0; display: none;"><span class="unslate_co--close-portfolio js-close-portfolio d-flex align-items-center"><span class="close-portfolio-label">Back to Portfolio</span><span class="icon-close2 wrap-icon-close"></span></span>' + getHTMLContent + '</div>'
-			);
-
-			// Prepare text/elements immediately (Split text, hide children)
-			preparePortfolioDetails();
-
-			setTimeout(function() {
-				owlSingleSlider();
-			}, 10);
-
-			setTimeout(function() {
-				// Entrance Animation: Fade Parent In
-				TweenMax.to('.portfolio-single-inner', 0.6, { 
-					marginTop: '0px', 
-					autoAlpha: 1, 
-					display: 'block', 
-					ease: Power3.easeOut,
-					onComplete() {
-						TweenMax.to('.loader-portfolio-wrap', 1, { top: '0px', autoAlpha: 0, ease: Power4.easeOut });
-						// Trigger content animations
-						revealPortfolioDetails(); 
-					} 
-				});
-			}, 400 ); // Reduced delay for quicker feel
-		}
-	});
-
-	return false;
-
-};
+// Removed isolated loadPortfolioSinglePage var to prevent duplication/confusion
 
 var preparePortfolioDetails = function() {
-	// 1. Prepare Heading (Split & Hide)
+	var isMobile = window.innerWidth < 992;
+	
+	// 1. Prepare Heading (Optimized)
 	var $heading = $('.portfolio-single-inner h2');
 	if ($heading.length) {
 		var text = $heading.text();
-		var chars = text.split('');
-		$heading.empty();
-		$.each(chars, function(i, char) {
-			$heading.append('<span style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(10px);">' + (char === ' ' ? '&nbsp;' : char) + '</span>');
-		});
+		// Only split if not too long, otherwise just animate whole block for perf
+		if (text.length < 50) {
+			var chars = text.split('');
+			$heading.empty();
+			$.each(chars, function(i, char) {
+				var style = 'display:inline-block; opacity:0; transform:translateY(10px);';
+				if (!isMobile) style += ' filter:blur(10px);'; // Blur only on desktop
+				$heading.append('<span style="' + style + '">' + (char === ' ' ? '&nbsp;' : char) + '</span>');
+			});
+		} else {
+			TweenMax.set($heading, { opacity: 0, y: 10 });
+		}
 	}
 
-	// 2. Prepare Content (Hide & Blur)
+	// 2. Prepare Content (Hide)
 	var $content = $('.portfolio-single-inner p, .portfolio-single-inner .detail-v1, .portfolio-single-inner figure, .portfolio-single-inner .owl-carousel');
-	TweenMax.set($content, { opacity: 0, y: 20, filter: 'blur(10px)' });
+	
+	var initialVars = { opacity: 0, y: 20 };
+	if (!isMobile) initialVars.filter = 'blur(10px)'; // Blur only on desktop
+	
+	TweenMax.set($content, initialVars);
 };
 
 var revealPortfolioDetails = function() {
-	// 1. Animate Heading Characters
+	var isMobile = window.innerWidth < 992;
+
+	// 1. Animate Heading Characters (High priority)
 	var $headingSpans = $('.portfolio-single-inner h2 span');
 	if ($headingSpans.length) {
-		TweenMax.staggerTo($headingSpans, 0.4, {
+		var animVars = {
 			opacity: 1,
-			filter: 'blur(0px)',
 			y: 0,
 			ease: Back.easeOut.config(1.7)
-		}, 0.02);
+		};
+		if (!isMobile) animVars.filter = 'blur(0px)';
+
+		TweenMax.staggerTo($headingSpans, 0.4, animVars, 0.02);
+	} else {
+		TweenMax.to('.portfolio-single-inner h2', 0.5, { opacity: 1, y: 0 });
 	}
 
 	// 2. Animate Content Elements
-	var $content = $('.portfolio-single-inner p, .portfolio-single-inner .detail-v1, .portfolio-single-inner figure, .portfolio-single-inner .owl-carousel');
-	TweenMax.staggerTo($content, 0.6, {
+	// Important: We also target Images explicitly here to ensure they fade in if the mobile observer missed them
+	var $content = $('.portfolio-single-inner p, .portfolio-single-inner .detail-v1, .portfolio-single-inner figure, .portfolio-single-inner .owl-carousel, .portfolio-single-inner img');
+	
+	// Reset images first to ensure they are visible for this animation
+	// (Mobile observer might have set them to opacity 0 awaiting scroll, but we want them NOW)
+	TweenMax.set($content, { visibility: 'visible', opacity: 0 }); // Ensure opacity starts at 0 for fade-in
+
+	var contentAnimVars = {
 		opacity: 1,
 		y: 0,
-		filter: 'blur(0px)',
 		ease: Power2.easeOut
-	}, 0.1);
+	};
+	if (!isMobile) contentAnimVars.filter = 'blur(0px)';
+
+	// Quick staggered reveal for "Pop" effect
+	TweenMax.staggerTo($content, 0.5, contentAnimVars, 0.05);
 };
 
 var jarallaxPlugin = function() {
@@ -815,10 +852,40 @@ var stickyFillPlugin = function() {
 };
 
 var animateReveal = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	// Mobile Optimized Reveal
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var $el = $(entry.target);
+						// Simple fade in
+						if ($el.hasClass('gsap-reveal-hero')) {
+							TweenMax.to($el, 0.5, { opacity: 1, x: 0 });
+						} else {
+							TweenMax.to($el, 0.5, { opacity: 1, x: 0 });
+						}
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
 
+			$('.gsap-reveal, .gsap-reveal-hero').each(function() {
+				TweenMax.set(this, { opacity: 0 });
+				observer.observe(this);
+			});
+		} else {
+			$('.gsap-reveal, .gsap-reveal-hero').css({ opacity: 1 });
+		}
+		return;
+	}
 
+	// Desktop: Original ScrollMagic
 	var controller = new ScrollMagic.Controller();
 	
+	// ... (rest of original animateReveal logic) ...
 	var greveal = $('.gsap-reveal');
 
 	// gsap reveal
@@ -829,15 +896,11 @@ var animateReveal = function() {
 		var revealNum = 0;
 		greveal.each(function() {
 			var cover = $(this).find('.cover');
-
 			var tl = new TimelineMax();
-
 			setTimeout(function() {
-				tl
-					.fromTo(cover, 2, { skewX: 0 }, { xPercent: 101, transformOrigin: "0% 100%", ease:Expo.easeInOut })
+				tl.fromTo(cover, 2, { skewX: 0 }, { xPercent: 101, transformOrigin: "0% 100%", ease:Expo.easeInOut })
 			}, revealNum * 0);
-			
-			var scene = new ScrollMagic.Scene({
+			new ScrollMagic.Scene({
 				triggerElement: this,
 				duration: "0%",
 				reverse: false,
@@ -845,9 +908,7 @@ var animateReveal = function() {
 			})
 			.setTween(tl)
 			.addTo(controller);
-
 			revealNum++;
-
 		});
 	}
 
@@ -857,26 +918,19 @@ var animateReveal = function() {
 		$(this).html('<span class="reveal-wrap"><span class="cover"></span><span class="reveal-content">'+html+'</span></span>');
 	});
 	var grevealhero = $('.gsap-reveal-hero');
-
 	if ( grevealhero.length ) {
 		var heroNum = 0;
 		grevealhero.each(function() {
-
 			var cover = $(this).find('.cover'),
 				revealContent = $(this).find('.reveal-content');
-
 			var tl2 = new TimelineMax();
-
 			setTimeout(function() {
-
-				tl2
-					.to(cover, 1, { marginLeft: '0', ease:Expo.easeInOut, onComplete() {
+				tl2.to(cover, 1, { marginLeft: '0', ease:Expo.easeInOut, onComplete() {
 						tl2.set(revealContent, { x: 0 });
 						tl2.to(cover, 1, { marginLeft: '102%', ease:Expo.easeInOut });
 					} } )
 			}, heroNum * 0 );
-
-			var scene = new ScrollMagic.Scene({
+			new ScrollMagic.Scene({
 				triggerElement: this,
 				duration: "0%",
 				reverse: false,
@@ -884,54 +938,37 @@ var animateReveal = function() {
 			})
 			.setTween(tl2)
 			.addTo(controller);
-
 			heroNum++;
 		});
   }
-
-  // Mouse tracking for CTA button border (Global tracking with Proximity) - Optimized
-  var rafId = null;
-  $(document).on('mousemove', function(e) {
-    if (window.innerWidth < 992) return; // Disable on mobile
-
-    if (rafId) return; // Skip if a frame is already pending
-
-    rafId = requestAnimationFrame(function() {
-      var $btn = $('.hero-cta-pill');
-      if ($btn.length) {
-        var rect = $btn[0].getBoundingClientRect();
-        var btnCenterX = rect.left + rect.width / 2;
-        var btnCenterY = rect.top + rect.height / 2;
-        
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        
-        // Update CSS variables for glow position
-        $btn[0].style.setProperty('--x', x + 'px');
-        $btn[0].style.setProperty('--y', y + 'px');
-
-        // Calculate distance from button center
-        var dist = Math.sqrt(Math.pow(e.clientX - btnCenterX, 2) + Math.pow(e.clientY - btnCenterY, 2));
-        
-        // Activation radius: 360px around the button center
-        if (dist < 360) {
-          if (!$btn.hasClass('interaction-active')) {
-             $btn.addClass('interaction-active');
-          }
-        } else {
-          if ($btn.hasClass('interaction-active')) {
-             $btn.removeClass('interaction-active');
-          }
-        }
-      }
-      rafId = null; // Reset flag
-    });
-  });
-
-}
+};
 
 
 var blurTextReveal = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
+	if (isMobile) {
+		// Lightweight Mobile Fallback
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						TweenMax.to(entry.target, 0.6, { opacity: 1, y: 0, ease: Power2.easeOut });
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+
+			$('.blur-reveal-text').each(function() {
+				TweenMax.set(this, { opacity: 0, y: 20 });
+				observer.observe(this);
+			});
+		} else {
+			$('.blur-reveal-text').css({ opacity: 1 });
+		}
+		return;
+	}
+
 	var controller = new ScrollMagic.Controller();
 
 	$('.blur-reveal-text').each(function() {
@@ -982,6 +1019,36 @@ var blurTextReveal = function() {
 };
 
 var blurStaggerReveal = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	if (isMobile) {
+		// Lightweight Mobile Fallback
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var $children = $(entry.target).find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
+						TweenMax.staggerTo($children, 0.5, {
+							opacity: 1,
+							y: 0,
+							ease: Power2.easeOut
+						}, 0.05);
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+
+			$('.blur-stagger-reveal').each(function() {
+				var $children = $(this).find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
+				TweenMax.set($children, { opacity: 0, y: 20 });
+				observer.observe(this);
+			});
+		} else {
+			$('.blur-stagger-reveal .skill-pill, .blur-stagger-reveal .experience-item').css({ opacity: 1 });
+		}
+		return;
+	}
+
 	var controller = new ScrollMagic.Controller();
 
 	$('.blur-stagger-reveal').each(function() {
@@ -1425,6 +1492,36 @@ var mobileImageReveal = function() {
 };
 
 var servicesCardReveal = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var $cards = $(entry.target).find('.service-card');
+						TweenMax.staggerTo($cards, 0.5, {
+							autoAlpha: 1,
+							y: 0,
+							scale: 1,
+							ease: Power2.easeOut
+						}, 0.1);
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+
+			$('.services-grid').each(function() {
+				var $cards = $(this).find('.service-card');
+				TweenMax.set($cards, { autoAlpha: 0, y: 30, scale: 0.95 });
+				observer.observe(this);
+			});
+		} else {
+			$('.service-card').css({ opacity: 1 });
+		}
+		return;
+	}
+
 	var controller = new ScrollMagic.Controller();
 
 	$('.services-grid').each(function() {
@@ -1463,6 +1560,30 @@ var servicesCardReveal = function() {
 };
 
 var maskTextReveal = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	if (isMobile) {
+		// Simplified mobile version
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						TweenMax.to(entry.target, 0.6, { opacity: 1, y: 0 });
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+
+			$('.mask-reveal-text').each(function() {
+				TweenMax.set(this, { opacity: 0, y: 20 });
+				observer.observe(this);
+			});
+		} else {
+			$('.mask-reveal-text').css({ opacity: 1 });
+		}
+		return;
+	}
+
 	var controller = new ScrollMagic.Controller();
 
 	$('.mask-reveal-text').each(function() {
@@ -1522,8 +1643,44 @@ var servicesImageSlideshow = function() {
 };
 
 var animateStats = function() {
-	// Wait for DOM to ensure elements exist
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	if ($('.contact-stats-row').length === 0) return;
+
+	if (isMobile) {
+		// Lightweight Fallback
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						// Fade in + counting
+						TweenMax.staggerTo('.stat-card', 0.5, { autoAlpha: 1, y: 0 }, 0.1);
+						
+						$('.stat-number').each(function() {
+							var $this = $(this);
+							var target = parseFloat($this.data('target'));
+							var isFloat = $this.data('float');
+							var dummy = { val: 0 };
+							TweenMax.to(dummy, 2.0, {
+								val: target,
+								ease: Power2.easeOut,
+								onUpdate: function() {
+									$this.text(isFloat ? dummy.val.toFixed(1) : Math.round(dummy.val));
+								}
+							});
+						});
+						TweenMax.to('.stat-card p', 0.5, { autoAlpha: 1, y: 0, delay: 0.5 });
+
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+			
+			TweenMax.set('.stat-card', { autoAlpha: 0, y: 20 });
+			TweenMax.set('.stat-card p', { autoAlpha: 0, y: 10 });
+			observer.observe(document.querySelector('.contact-stats-row'));
+		}
+		return;
+	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1598,8 +1755,25 @@ var animateStats = function() {
 };
 
 var animatePremiumTestimonial = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	var $card = $('#premium-testimonial-card');
 	if ($card.length === 0) return;
+
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						TweenMax.to(entry.target, 0.6, { autoAlpha: 1, y: 0, ease: Power2.easeOut });
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+			TweenMax.set($card, { autoAlpha: 0, y: 30 });
+			observer.observe($card[0]);
+		}
+		return;
+	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1702,10 +1876,29 @@ var animatePremiumTestimonial = function() {
 };
 
 var animateSectionLines = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	var lineSelectors = '.contact-header-line, .services-indicator-line, .faq-separator, .footer-divider, .service-card-divider';
 	var $lines = $(lineSelectors);
 	
 	if ($lines.length === 0) return;
+
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						TweenMax.to(entry.target, 0.8, { scaleX: 1, ease: Expo.easeOut });
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+			TweenMax.set($lines, { scaleX: 0, transformOrigin: "left center" });
+			$lines.each(function() { observer.observe(this); });
+		} else {
+			$lines.css({ transform: 'scaleX(1)' });
+		}
+		return;
+	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1733,8 +1926,25 @@ var animateSectionLines = function() {
 };
 
 var animateBookCallCard = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	var $card = $('#book-call-card'); // Use ID for specificity
 	if ($card.length === 0) return;
+
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						TweenMax.to($card, 0.8, { autoAlpha: 1, y: 0, ease: Power2.easeOut });
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+			TweenMax.set($card, { autoAlpha: 0, y: 30 });
+			observer.observe($card[0]);
+		}
+		return;
+	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1810,8 +2020,26 @@ var animateBookCallCard = function() {
 };
 
 var animateContactForm = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	var $container = $('.contact-form-container');
 	if ($container.length === 0) return;
+
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						TweenMax.to($container, 0.8, { autoAlpha: 1, y: 0, ease: Power2.easeOut });
+						TweenMax.to($container.find('.form-group-new, .form-row-new, .luxury-button-wrapper-contact'), 0.5, { opacity: 1, y: 0 });
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+			TweenMax.set($container, { autoAlpha: 0, y: 30 });
+			observer.observe($container[0]);
+		}
+		return;
+	}
 
 	var controller = new ScrollMagic.Controller();
 
