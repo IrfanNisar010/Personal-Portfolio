@@ -1798,24 +1798,60 @@
       });
 
       // Smart "Back to Top" Logic (Idle Detection)
+      // Smart "Back to Top" Logic
       var idleTimer;
+      var scrollUpTimer;
+      var lastScrollTop = 0;
       var $backToTop = $('.back-to-top');
+      var $portfolioSection = $('#portfolio-section');
+      var $homeSection = $('#home-section');
       
-      $(window).on('scroll mousemove touchstart', function() {
-         // User is active (scrolling or moving) -> Hide button
-         $backToTop.removeClass('active');
+      $(window).on('scroll', function() {
+         var st = $(this).scrollTop();
+         var homeBottom = $homeSection.outerHeight();
+
+         // Portfolio Section Bounds Checks
+         var pTop = $portfolioSection.offset().top;
+         var pBottom = pTop + $portfolioSection.outerHeight();
+         var isInPortfolio = (st > pTop && st < pBottom);
+
+         // 1. Detect Scroll Direction
+         if (st < lastScrollTop) {
+             // SCROLL UP
+             
+             // CONDITION: Show ONLY if NOT in Project Section AND NOT in Home Section (scrolled past home)
+             if (!isInPortfolio && st > homeBottom) {
+                 $backToTop.addClass('active');
+                 
+                 // Hide after 3 seconds (unless hovered)
+                 clearTimeout(scrollUpTimer);
+                 scrollUpTimer = setTimeout(function() {
+                     if (!$backToTop.is(':hover')) {
+                        $backToTop.removeClass('active');
+                     }
+                 }, 3000); // 3 seconds visible
+             } else {
+                 // Hide if we are scrolling up INSIDE the portfolio section OR reached Home
+                 if (!$backToTop.is(':hover')) {
+                    $backToTop.removeClass('active');
+                 }
+             }
+
+         } else {
+             // SCROLL DOWN
+             $backToTop.removeClass('active');
+         }
+         lastScrollTop = st;
          
-         // Clear existing timer
+         // 2. Idle Detection
          clearTimeout(idleTimer);
-         
-         // Start new timer: If no activity for 10 seconds, show button
          idleTimer = setTimeout(function() {
              var windowScroll = $(window).scrollTop();
-             // Only show if we are not at the very top (e.g., scrolled > 500px)
-             if (windowScroll > 500) {
+             // Only show if we are past home section
+             if (windowScroll > homeBottom) {
                  $backToTop.addClass('active');
              }
-         }, 10000); // 10 seconds delay
+         }, 4000); 
       });
     </script>
     <script>
