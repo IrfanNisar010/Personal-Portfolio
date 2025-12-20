@@ -945,29 +945,7 @@ var animateReveal = function() {
 
 
 var blurTextReveal = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 
-	if (isMobile) {
-		// Lightweight Mobile Fallback
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						TweenMax.to(entry.target, 0.6, { opacity: 1, y: 0, ease: Power2.easeOut });
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
-
-			$('.blur-reveal-text').each(function() {
-				TweenMax.set(this, { opacity: 0, y: 20 });
-				observer.observe(this);
-			});
-		} else {
-			$('.blur-reveal-text').css({ opacity: 1 });
-		}
-		return;
-	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1019,35 +997,7 @@ var blurTextReveal = function() {
 };
 
 var blurStaggerReveal = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	
-	if (isMobile) {
-		// Lightweight Mobile Fallback
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						var $children = $(entry.target).find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
-						TweenMax.staggerTo($children, 0.5, {
-							opacity: 1,
-							y: 0,
-							ease: Power2.easeOut
-						}, 0.05);
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
 
-			$('.blur-stagger-reveal').each(function() {
-				var $children = $(this).find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
-				TweenMax.set($children, { opacity: 0, y: 20 });
-				observer.observe(this);
-			});
-		} else {
-			$('.blur-stagger-reveal .skill-pill, .blur-stagger-reveal .experience-item').css({ opacity: 1 });
-		}
-		return;
-	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1492,35 +1442,9 @@ var mobileImageReveal = function() {
 };
 
 var servicesCardReveal = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	
-	if (isMobile) {
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						var $cards = $(entry.target).find('.service-card');
-						TweenMax.staggerTo($cards, 0.5, {
-							autoAlpha: 1,
-							y: 0,
-							scale: 1,
-							ease: Power2.easeOut
-						}, 0.1);
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
 
-			$('.services-grid').each(function() {
-				var $cards = $(this).find('.service-card');
-				TweenMax.set($cards, { autoAlpha: 0, y: 30, scale: 0.95 });
-				observer.observe(this);
-			});
-		} else {
-			$('.service-card').css({ opacity: 1 });
-		}
-		return;
-	}
+	
+
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1560,29 +1484,7 @@ var servicesCardReveal = function() {
 };
 
 var maskTextReveal = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	
-	if (isMobile) {
-		// Simplified mobile version
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						TweenMax.to(entry.target, 0.6, { opacity: 1, y: 0 });
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
 
-			$('.mask-reveal-text').each(function() {
-				TweenMax.set(this, { opacity: 0, y: 20 });
-				observer.observe(this);
-			});
-		} else {
-			$('.mask-reveal-text').css({ opacity: 1 });
-		}
-		return;
-	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1643,44 +1545,10 @@ var servicesImageSlideshow = function() {
 };
 
 var animateStats = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
 	if ($('.contact-stats-row').length === 0) return;
 
-	if (isMobile) {
-		// Lightweight Fallback
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						// Fade in + counting
-						TweenMax.staggerTo('.stat-card', 0.5, { autoAlpha: 1, y: 0 }, 0.1);
-						
-						$('.stat-number').each(function() {
-							var $this = $(this);
-							var target = parseFloat($this.data('target'));
-							var isFloat = $this.data('float');
-							var dummy = { val: 0 };
-							TweenMax.to(dummy, 2.0, {
-								val: target,
-								ease: Power2.easeOut,
-								onUpdate: function() {
-									$this.text(isFloat ? dummy.val.toFixed(1) : Math.round(dummy.val));
-								}
-							});
-						});
-						TweenMax.to('.stat-card p', 0.5, { autoAlpha: 1, y: 0, delay: 0.5 });
 
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
-			
-			TweenMax.set('.stat-card', { autoAlpha: 0, y: 20 });
-			TweenMax.set('.stat-card p', { autoAlpha: 0, y: 10 });
-			observer.observe(document.querySelector('.contact-stats-row'));
-		}
-		return;
-	}
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1755,25 +1623,11 @@ var animateStats = function() {
 };
 
 var animatePremiumTestimonial = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
 	var $card = $('#premium-testimonial-card');
 	if ($card.length === 0) return;
 
-	if (isMobile) {
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						TweenMax.to(entry.target, 0.6, { autoAlpha: 1, y: 0, ease: Power2.easeOut });
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
-			TweenMax.set($card, { autoAlpha: 0, y: 30 });
-			observer.observe($card[0]);
-		}
-		return;
-	}
+
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1876,29 +1730,13 @@ var animatePremiumTestimonial = function() {
 };
 
 var animateSectionLines = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
 	var lineSelectors = '.contact-header-line, .services-indicator-line, .faq-separator, .footer-divider, .service-card-divider';
 	var $lines = $(lineSelectors);
 	
 	if ($lines.length === 0) return;
 
-	if (isMobile) {
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						TweenMax.to(entry.target, 0.8, { scaleX: 1, ease: Expo.easeOut });
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
-			TweenMax.set($lines, { scaleX: 0, transformOrigin: "left center" });
-			$lines.each(function() { observer.observe(this); });
-		} else {
-			$lines.css({ transform: 'scaleX(1)' });
-		}
-		return;
-	}
+
 
 	var controller = new ScrollMagic.Controller();
 
@@ -1926,25 +1764,11 @@ var animateSectionLines = function() {
 };
 
 var animateBookCallCard = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
 	var $card = $('#book-call-card'); // Use ID for specificity
 	if ($card.length === 0) return;
 
-	if (isMobile) {
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						TweenMax.to($card, 0.8, { autoAlpha: 1, y: 0, ease: Power2.easeOut });
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
-			TweenMax.set($card, { autoAlpha: 0, y: 30 });
-			observer.observe($card[0]);
-		}
-		return;
-	}
+
 
 	var controller = new ScrollMagic.Controller();
 
