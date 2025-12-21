@@ -59,7 +59,7 @@ var smoothScrollEngine = function() {
 		gestureDirection: 'vertical',
 		smooth: true,
 		mouseMultiplier: 1,
-		smoothTouch: false, // Keep false for mobile performance unless client requests otherwise
+		smoothTouch: true, // Enable for smooth mobile scrolling
 		touchMultiplier: 2,
 	});
 
