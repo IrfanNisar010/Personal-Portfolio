@@ -1768,10 +1768,6 @@ var animateBookCallCard = function() {
 	var $card = $('#book-call-card'); // Use ID for specificity
 	if ($card.length === 0) return;
 
-
-
-	var controller = new ScrollMagic.Controller();
-
 	// Elements
 	var $dot = $card.find('.status-dot');
 	var $text = $card.find('h3');
@@ -1823,24 +1819,40 @@ var animateBookCallCard = function() {
 	.to($dot, 0.6, { scale: 1, backgroundColor: "#4CAF50", ease: Power2.easeOut })
 
 	// 3. Text Stagger Reveal
+	// Significant delay reduction: Start much earlier ("-=1.3" from the end of dot animation sequence)
 	.staggerTo($chars, 0.6, {
 		opacity: 1,
 		y: 0,
 		rotateX: 0,
 		filter: "blur(0px)",
 		ease: Back.easeOut.config(2)
-	}, 0.03, "-=0.6");
+	}, 0.03, "-=1.3");
 
-	// Trigger Entrance
-	new ScrollMagic.Scene({
-		triggerElement: '#book-call-card',
-		triggerHook: 0.9,
-		reverse: false
-	})
-	.on('enter', function() {
-		tl.play();
-	})
-	.addTo(controller);
+	// Trigger Logic
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
+	if (isMobile && 'IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					tl.play();
+					observer.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.15 });
+		observer.observe($card[0]);
+	} else {
+		var controller = new ScrollMagic.Controller();
+		new ScrollMagic.Scene({
+			triggerElement: '#book-call-card',
+			triggerHook: 0.9,
+			reverse: false
+		})
+		.on('enter', function() {
+			tl.play();
+		})
+		.addTo(controller);
+	}
 };
 
 var animateContactForm = function() {
