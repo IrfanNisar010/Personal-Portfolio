@@ -1027,72 +1027,48 @@ var blurTextReveal = function() {
 };
 
 var blurStaggerReveal = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	var selector = '.blur-stagger-reveal';
+	var $elements = $(selector);
+	if ($elements.length === 0) return;
 
-	// Initial State Set (Run once per group)
-	$(selector).each(function() {
-		var $this = $(this);
-		if ($this.data('stagger-init')) return;
-		$this.data('stagger-init', true);
-
-		var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
-		TweenMax.set($children, { 
-			opacity: 0, 
-			y: 30, 
-			filter: 'blur(20px)',
-			webkitFilter: 'blur(20px)'
-		});
-
-		if (isMobile) {
-			if ('IntersectionObserver' in window) {
-				var observer = new IntersectionObserver(function(entries) {
-					entries.forEach(function(entry) {
-						if (entry.isIntersecting) {
-							// Find children within the specific intersecting container logic
-							var $targetWrapper = $(entry.target);
-							var $targetChildren = $targetWrapper.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
-							
-							var tl = new TimelineMax();
-							tl.staggerTo($targetChildren, 0.8, {
-								opacity: 1,
-								y: 0,
-								filter: 'blur(0px)',
-								webkitFilter: 'blur(0px)',
-								ease: Power3.easeOut
-							}, 0.1);
-							
-							observer.unobserve(entry.target);
-						}
-					});
-				}, { threshold: 0.1 }); 
-
-				observer.observe(this);
-			} else {
-				// Fallback
-				$children.css({ opacity: 1, filter: 'none', transform: 'none' });
-			}
-		} else {
-			// Desktop
-			var controller = new ScrollMagic.Controller();
-			var tl = new TimelineMax();
-			tl.staggerTo($children, 0.8, {
-				opacity: 1,
-				y: 0,
-				filter: 'blur(0px)',
-				webkitFilter: 'blur(0px)',
-				ease: Power3.easeOut
-			}, 0.1); 
-
-			new ScrollMagic.Scene({
-				triggerElement: this,
-				triggerHook: 0.85,
-				reverse: false
-			})
-			.setTween(tl)
-			.addTo(controller);
-		}
+	// Initial State Set (Target all children at once)
+	var $allChildren = $elements.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
+	TweenMax.set($allChildren, { 
+		opacity: 0, 
+		y: 30, 
+		filter: 'blur(20px)',
+		webkitFilter: 'blur(20px)'
 	});
+
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					var $this = $(entry.target);
+					var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
+					
+					var tl = new TimelineMax();
+					tl.staggerTo($children, 0.8, {
+						opacity: 1,
+						y: 0,
+						filter: 'blur(0px)',
+						webkitFilter: 'blur(0px)',
+						ease: Power3.easeOut,
+						force3D: true
+					}, 0.1);
+					
+					observer.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.1 }); 
+
+		$elements.each(function() {
+			observer.observe(this);
+		});
+	} else {
+		// Fallback
+		TweenMax.set($allChildren, { opacity: 1, y: 0, filter: 'none' });
+	}
 };
 
 var universalButtonReveal = function() {
@@ -1111,9 +1087,10 @@ var universalButtonReveal = function() {
 		if ($this.hasClass('no-reveal') || $this.data('reveal-init')) return;
 		$this.data('reveal-init', true);
 
+		// Use opacity instead of autoAlpha to ensure IntersectionObserver reliably detects it
 		TweenMax.set($this, { 
 			y: 30, 
-			autoAlpha: 0, 
+			opacity: 0, 
 			filter: "blur(5px)", 
 			scale: 0.95
 		});
@@ -1128,7 +1105,8 @@ var universalButtonReveal = function() {
 					var tl = new TimelineMax();
 					tl.to(el, 0.8, {
 						y: 0,
-						autoAlpha: 1,
+						opacity: 1, // Animate opacity back to 1
+						// autoAlpha: 1, // Optional: if you want to ensure visibility is set to visible
 						filter: "blur(0px)",
 						scale: 1,
 						ease: Power3.easeOut,
@@ -1138,7 +1116,7 @@ var universalButtonReveal = function() {
 					observer.unobserve(el);
 				}
 			});
-		}, { threshold: 0.15 });
+		}, { threshold: 0.1 }); // Lower threshold for earlier trigger
 
 		$btns.each(function() {
 			var $this = $(this);
@@ -1148,7 +1126,7 @@ var universalButtonReveal = function() {
 		});
 	} else {
 		// Fallback for older browsers
-		TweenMax.set($btns, { autoAlpha: 1, y: 0, filter: "none", scale: 1 });
+		TweenMax.set($btns, { opacity: 1, y: 0, filter: "none", scale: 1 });
 	}
 };
 
