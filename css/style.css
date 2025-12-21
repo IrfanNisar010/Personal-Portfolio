@@ -3627,6 +3627,59 @@ html.lenis {
   overflow: hidden;
 }
 
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+
+/* --- Back to Top Button --- */
+.back-to-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 46px;
+  height: 46px;
+  z-index: 9999;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05); /* Default Glassy Neutral (Mobile/Inactive) */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; 
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  transform: translateY(15px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.back-to-top.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  stroke: #fff;
+  transition: all 0.2s ease;
+}
+
+/* Hover State (Desktop) */
+@media (hover: hover) {
+  .back-to-top:hover {
+    background: #D63447; 
+    border-color: #D63447;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(214, 52, 71, 0.4);
+  }
+}
+
+/* Active State (Mobile Touch / Click) */
+.back-to-top:active {
+  background: #D63447 !important; 
+  border-color: #D63447 !important;
+  transform: scale(0.95);
+  transition: background 0.1s;
 }

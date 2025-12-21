@@ -40,6 +40,7 @@ jQuery(function($) {
 	animateContactForm();
 	typewriterEffect();
 	customCursor();
+	backToTop();
 
 	smoothScrollEngine();
 
@@ -1519,8 +1520,6 @@ var servicesCardReveal = function() {
 };
 
 var maskTextReveal = function() {
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	
 	// Prepare Elements (Init once)
 	$('.mask-reveal-text').each(function() {
 		var $this = $(this);
@@ -1528,73 +1527,47 @@ var maskTextReveal = function() {
 		$this.data('mask-init', true);
 
 		var text = $this.text();
-		var delay = $this.data('delay') || 0; 
 		$this.empty();
 
 		var chars = text.split('');
 		$.each(chars, function(i, char) {
 			var content = char === ' ' ? '&nbsp;' : char;
-			var margin = char === ' ' ? '4px' : '-0.05em';
+			// Micro-optimization: Use larger negative margin for tighter керning if needed, or keep standard
+			var margin = char === ' ' ? '4px' : '-0.02em'; 
 			$this.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:' + margin + ';"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
 		});
-		
-		// If mobile and no IntersectionObserver, show immediately
-		if (isMobile && !('IntersectionObserver' in window)) {
-			$this.find('.char-inner').css('transform', 'translateY(0%)');
-		}
 	});
 
-	if (isMobile) {
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						var $this = $(entry.target);
-						var $chars = $this.find('.char-inner');
-						var delay = $this.data('delay') || 0;
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					var $this = $(entry.target);
+					var $chars = $this.find('.char-inner');
+					var delay = $this.data('delay') || 0;
 
-						var tl = new TimelineMax({ delay: delay });
-						tl.staggerTo($chars, 1, {
-							y: "0%",
-							ease: Power4.easeOut,
-							overwrite: "all"
-						}, 0.05);
+					var tl = new TimelineMax({ delay: delay });
+					tl.staggerTo($chars, 0.8, { // slightly faster duration for "snappy"
+						y: "0%",
+						ease: Power3.easeOut, // smooth but reactive
+						force3D: true
+					}, 0.04); // tight stagger
 
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.15 });
-
-			$('.mask-reveal-text').each(function() {
-				observer.observe(this);
+					observer.unobserve(entry.target);
+				}
 			});
-		}
-		return;
+		}, { 
+			threshold: 0,
+			rootMargin: "0px 0px -10% 0px"
+		});
+
+		$('.mask-reveal-text').each(function() {
+			observer.observe(this);
+		});
+	} else {
+		// Fallback
+		$('.mask-reveal-text .char-inner').css('transform', 'translateY(0%)');
 	}
-
-	// Desktop
-	var controller = new ScrollMagic.Controller();
-
-	$('.mask-reveal-text').each(function() {
-		var $this = $(this);
-		var $chars = $this.find('.char-inner');
-		var delay = $this.data('delay') || 0;
-
-		var tl = new TimelineMax({ delay: delay });
-		tl.staggerTo($chars, 1, {
-			y: "0%",
-			ease: Power4.easeOut,
-			overwrite: "all"
-		}, 0.05);
-
-		new ScrollMagic.Scene({
-			triggerElement: this,
-			triggerHook: 0.9,
-			reverse: false
-		})
-		.setTween(tl)
-		.addTo(controller);
-	});
 };
 
 var servicesImageSlideshow = function() {
@@ -2116,4 +2089,44 @@ var customCursor = function() {
 	$(document).on('mouseenter', function() {
 		TweenMax.to(cursorDot, 0.3, { opacity: 1 });
 	});
+};
+
+// Back to Top Logic
+var backToTop = function() {
+    var $btn = $('.back-to-top');
+
+    // Click Handler
+    $btn.on('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active immediately for visual feedback
+        $btn.removeClass('active'); 
+        
+        if (window.lenis) {
+            window.lenis.scrollTo(0);
+        } else {
+            $('html, body').animate({ scrollTop: 0 }, 1000, 'easeInOutExpo');
+        }
+    });
+
+    // Visibility Logic
+    var checkScroll = function(scrollY) {
+        if (scrollY > 700) { // Show after roughly 1 viewport
+             if (!$btn.hasClass('active')) $btn.addClass('active');
+        } else {
+             if ($btn.hasClass('active')) $btn.removeClass('active');
+        }
+    };
+
+    // Lenis Listener
+    if (window.lenis) {
+         window.lenis.on('scroll', ({ scroll }) => checkScroll(scroll));
+    }
+    
+    // Native/Fallback Listener
+    $(window).scroll(function() {
+        if (!window.lenis) { 
+            checkScroll($(this).scrollTop());
+        }
+    });
 };

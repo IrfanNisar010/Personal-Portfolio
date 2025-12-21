@@ -413,9 +413,12 @@
 
         const submitBtn = ratingForm.querySelector(".resume-btn");
         const btnText = submitBtn.querySelector(".resume-btn-text");
+        const btnHoverContent = submitBtn.querySelector(".resume-btn-hover-content");
 
         // Visual Loading State
-        btnText.style.display = "none"; // Hide text
+        if (btnText) btnText.style.display = "none"; // Hide main text
+        if (btnHoverContent) btnHoverContent.style.display = "none"; // Hide hover/mobile text
+        
         submitBtn.style.opacity = "0.8";
         submitBtn.disabled = true;
 
@@ -526,7 +529,8 @@
                 
                 // Reset Button State
                 loader.style.display = "none";
-                btnText.style.display = "block"; // Restore text
+                if (btnText) btnText.style.display = "block"; // Restore text
+                if (btnHoverContent) btnHoverContent.style.display = ""; // Restore hover content (flex or block)
                 submitBtn.style.opacity = "1";
                 submitBtn.disabled = false;
 
