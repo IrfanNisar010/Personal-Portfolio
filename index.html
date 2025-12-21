@@ -1893,11 +1893,11 @@
                 if (count === 100) {
                     clearInterval(interval);
                     // Trigger exit animation
-                    // Quick exit after load finishes (500ms) - preventing "stuck at 100%"
+                    // Quick exit after load finishes (200ms) - speed up "100%" duration
                     setTimeout(() => {
                         document.body.classList.add('loaded');
                         
-                        // Force Trigger Hero Animations AFTER curtain is up
+                        // Force Trigger Hero Animations IMMEDIATELY (overlapping with curtain lift)
                         setTimeout(() => {
                            if (window.heroTimeline) {
                                window.heroTimeline.play();
@@ -1915,8 +1915,8 @@
                                  span.style.visibility = 'visible'; 
                                });
                             }
-                        }, 800); // Wait for most of the curtain lift (1.2s total)
-                    }, 500);
+                        }, 100); // Start almost immediately (100ms) after curtain starts lifting
+                    }, 200);
                 }
             }, 50); // Slower tick speed (50ms)
           } else {

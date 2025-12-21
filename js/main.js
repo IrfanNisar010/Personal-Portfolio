@@ -945,46 +945,76 @@ var animateReveal = function() {
 
 
 var blurTextReveal = function() {
-
-
-	var controller = new ScrollMagic.Controller();
-
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	// Prepare Elements (Split Text) - Run only once
 	$('.blur-reveal-text').each(function() {
 		var $this = $(this);
+		if ($this.data('split-init')) return;
+		$this.data('split-init', true);
+
 		var text = $this.text().trim();
 		$this.empty();
 		
-		// Split text into words to preserve word integrity
 		var words = text.split(/\s+/);
-		
 		$.each(words, function(i, word) {
-			// Wrap each word in a span that prevents breaking inside it
 			var $wordSpan = $('<span style="display:inline-block; white-space:nowrap;"></span>');
-			
 			var chars = word.split('');
 			$.each(chars, function(j, char) {
 				$wordSpan.append('<span class="char" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + char + '</span>');
 			});
-			
 			$this.append($wordSpan);
-			
-			// Add space after word (except last one)
 			if (i < words.length - 1) {
-				// Use a real space for wrapping, wrapped in a span for animation
-				// We use a regular space content but display:inline-block so it animates
 				$this.append('<span class="char space" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px);">&nbsp;</span>'); 
 			}
 		});
+	});
 
-		var $chars = $this.find('.char');
+	if (isMobile) {
+		// Mobile: Lightweight IntersectionObserver
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var $this = $(entry.target);
+						var $chars = $this.find('.char');
+						
+						// Play Animation Once
+						var tl = new TimelineMax();
+						tl.staggerTo($chars, 0.8, {
+							opacity: 1,
+							filter: 'blur(0px)',
+							y: 0,
+							ease: Back.easeOut.config(1.2)
+						}, 0.015);
+						
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.15 });
 
+			$('.blur-reveal-text').each(function() {
+				observer.observe(this);
+			});
+		} else {
+			// Fallback
+			$('.blur-reveal-text .char').css({ opacity: 1, filter: 'blur(0px)', transform: 'translateY(0)' });
+		}
+		return;
+	}
+
+	// Desktop: ScrollMagic
+	var controller = new ScrollMagic.Controller();
+
+	$('.blur-reveal-text').each(function() {
+		var $chars = $(this).find('.char');
 		var tl = new TimelineMax();
 		tl.staggerTo($chars, 0.8, {
 			opacity: 1,
 			filter: 'blur(0px)',
 			y: 0,
-			ease: Back.easeOut.config(1.2) // Subtle bounce
-		}, 0.015); // Fast stagger for "no lag" feel
+			ease: Back.easeOut.config(1.2) 
+		}, 0.015); 
 
 		new ScrollMagic.Scene({
 			triggerElement: this,
@@ -997,19 +1027,16 @@ var blurTextReveal = function() {
 };
 
 var blurStaggerReveal = function() {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	var selector = '.blur-stagger-reveal';
 
-
-	var controller = new ScrollMagic.Controller();
-
-	$('.blur-stagger-reveal').each(function() {
+	// Initial State Set (Run once per group)
+	$(selector).each(function() {
 		var $this = $(this);
-		// Select children: .skill-pill for skills, .experience-item for experience list, .process-card for cards, .process-tag for pill, .faq-item for FAQs, .faq-tag for tags
-		// Also include the button if it's inside the wrapper, or handle separate reveal.
-		// Since the button is outside the wrapper in HTML above, let's keep it simple here or add a wrapper.
-		// Actually, let's just target the specific elements we know are inside blur-stagger-reveal containers.
-		var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
+		if ($this.data('stagger-init')) return;
+		$this.data('stagger-init', true);
 
-		// Initial State
+		var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
 		TweenMax.set($children, { 
 			opacity: 0, 
 			y: 30, 
@@ -1017,123 +1044,112 @@ var blurStaggerReveal = function() {
 			webkitFilter: 'blur(20px)'
 		});
 
-		var tl = new TimelineMax();
-		tl.staggerTo($children, 0.8, {
-			opacity: 1,
-			y: 0,
-			filter: 'blur(0px)',
-			webkitFilter: 'blur(0px)',
-			ease: Power3.easeOut
-		}, 0.1); // Stagger delay
+		if (isMobile) {
+			if ('IntersectionObserver' in window) {
+				var observer = new IntersectionObserver(function(entries) {
+					entries.forEach(function(entry) {
+						if (entry.isIntersecting) {
+							// Find children within the specific intersecting container logic
+							var $targetWrapper = $(entry.target);
+							var $targetChildren = $targetWrapper.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
+							
+							var tl = new TimelineMax();
+							tl.staggerTo($targetChildren, 0.8, {
+								opacity: 1,
+								y: 0,
+								filter: 'blur(0px)',
+								webkitFilter: 'blur(0px)',
+								ease: Power3.easeOut
+							}, 0.1);
+							
+							observer.unobserve(entry.target);
+						}
+					});
+				}, { threshold: 0.1 }); 
 
-		new ScrollMagic.Scene({
-			triggerElement: this,
-			triggerHook: 0.85,
-			reverse: false
-		})
-		.setTween(tl)
-		.addTo(controller);
+				observer.observe(this);
+			} else {
+				// Fallback
+				$children.css({ opacity: 1, filter: 'none', transform: 'none' });
+			}
+		} else {
+			// Desktop
+			var controller = new ScrollMagic.Controller();
+			var tl = new TimelineMax();
+			tl.staggerTo($children, 0.8, {
+				opacity: 1,
+				y: 0,
+				filter: 'blur(0px)',
+				webkitFilter: 'blur(0px)',
+				ease: Power3.easeOut
+			}, 0.1); 
+
+			new ScrollMagic.Scene({
+				triggerElement: this,
+				triggerHook: 0.85,
+				reverse: false
+			})
+			.setTween(tl)
+			.addTo(controller);
+		}
 	});
 };
 
 var universalButtonReveal = function() {
-	// Performance Check: Disable complex ScrollMagic scenes on mobile/tablet to ensure 60fps
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-
 	var selectors = [
 		'.btn', 
 		'.btn-outline-pill', 
-		// '.hero-cta-pill', // Excluded as per user request
 		'.resume-btn',
 		'input[type="submit"]',
 		'button[type="submit"]'
 	];
 	var $btns = $(selectors.join(', '));
-
-	if (isMobile) {
-		// Lightweight Mobile Fallback: Use IntersectionObserver or simple Auto-Show
-		if ('IntersectionObserver' in window) {
-			var observer = new IntersectionObserver(function(entries) {
-				entries.forEach(function(entry) {
-					if (entry.isIntersecting) {
-						var el = entry.target;
-						// Simple, high-performance CSS transition or GSAP set
-						TweenMax.to(el, 0.6, {
-							y: 0,
-							autoAlpha: 1,
-							filter: "blur(0px)",
-							scale: 1,
-							ease: Power2.easeOut,
-							force3D: true
-						});
-						observer.unobserve(el);
-					}
-				});
-			}, { threshold: 0.15 });
-
-			$btns.each(function() {
-				var $this = $(this);
-				if (!$this.hasClass('no-reveal')) {
-					// Set initial state
-					TweenMax.set($this, { 
-						y: 20, 
-						autoAlpha: 0, 
-						filter: "blur(5px)", 
-						scale: 0.98 
-					});
-					observer.observe(this);
-				}
-			});
-		} else {
-			// Fallback for very old devices: just show them
-			TweenMax.set($btns, { autoAlpha: 1, y: 0, filter: "none", scale: 1 });
-		}
-		return;
-	}
-
-	// Desktop: Luxury ScrollMagic Animation
-	var controller = new ScrollMagic.Controller();
-
+	
+	// Prepare Buttons (Hidden State)
 	$btns.each(function() {
 		var $this = $(this);
-		
-		if ($this.hasClass('no-reveal')) return;
+		if ($this.hasClass('no-reveal') || $this.data('reveal-init')) return;
+		$this.data('reveal-init', true);
 
-		// Initial State
-		TweenMax.set($this, {
-			y: 40,
-			autoAlpha: 0,
-			scale: 0.95,
-			filter: "blur(10px)",
-			webkitFilter: "blur(10px)",
-			transformOrigin: "center center",
-			willChange: "transform, opacity, filter" // Hint browser for performance
+		TweenMax.set($this, { 
+			y: 30, 
+			autoAlpha: 0, 
+			filter: "blur(5px)", 
+			scale: 0.95
 		});
+	});
 
-		var tl = new TimelineMax();
-		tl.to($this, 1.0, {
-			y: 0,
-			autoAlpha: 1,
-			scale: 1,
-			filter: "blur(0px)",
-			webkitFilter: "blur(0px)",
-			ease: Power3.easeOut, // Premium smooth ease
-			force3D: true,
-			overwrite: "auto",
-			onComplete: function() {
-				// Clean up optimization hint to free memory
-				TweenMax.set($this, { willChange: "auto" });
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					var el = entry.target;
+					
+					var tl = new TimelineMax();
+					tl.to(el, 0.8, {
+						y: 0,
+						autoAlpha: 1,
+						filter: "blur(0px)",
+						scale: 1,
+						ease: Power3.easeOut,
+						force3D: true
+					});
+					
+					observer.unobserve(el);
+				}
+			});
+		}, { threshold: 0.15 });
+
+		$btns.each(function() {
+			var $this = $(this);
+			if (!$this.hasClass('no-reveal')) {
+				observer.observe(this);
 			}
 		});
-
-		new ScrollMagic.Scene({
-			triggerElement: this,
-			triggerHook: 0.9,
-			reverse: false
-		})
-		.setTween(tl)
-		.addTo(controller);
-	});
+	} else {
+		// Fallback for older browsers
+		TweenMax.set($btns, { autoAlpha: 1, y: 0, filter: "none", scale: 1 });
+	}
 };
 
 var faqAccordion = function() {
@@ -1446,14 +1462,11 @@ var servicesCardReveal = function() {
 	
 
 
-	var controller = new ScrollMagic.Controller();
-
-	$('.services-grid').each(function() {
-		var $this = $(this);
-		var $cards = $this.find('.service-card');
-
-		// Initial State: Hidden, pushed down, scaled down, blurred
-		TweenMax.set($cards, {
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	// Initial State
+	$('.services-grid .service-card').each(function() {
+		TweenMax.set(this, {
 			autoAlpha: 0,
 			y: 60,
 			scale: 0.9,
@@ -1461,6 +1474,46 @@ var servicesCardReveal = function() {
 			webkitFilter: "blur(20px)",
 			transformOrigin: "center bottom"
 		});
+	});
+
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var $cards = $(entry.target).find('.service-card');
+						
+						// Run Animation Once (No Reverse on Mobile)
+						var tl = new TimelineMax();
+						tl.staggerTo($cards, 1.2, {
+							autoAlpha: 1,
+							y: 0,
+							scale: 1,
+							filter: "blur(0px)",
+							webkitFilter: "blur(0px)",
+							ease: Power4.easeOut,
+							force3D: true
+						}, 0.15);
+						
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 }); 
+
+			$('.services-grid').each(function() {
+				observer.observe(this);
+			});
+		} else {
+			TweenMax.set('.services-grid .service-card', { autoAlpha: 1, y: 0, scale: 1, filter: "none" });
+		}
+		return;
+	}
+
+	var controller = new ScrollMagic.Controller();
+
+	$('.services-grid').each(function() {
+		var $this = $(this);
+		var $cards = $this.find('.service-card');
 
 		var tl = new TimelineMax();
 		tl.staggerTo($cards, 1.2, {
@@ -1469,14 +1522,14 @@ var servicesCardReveal = function() {
 			scale: 1,
 			filter: "blur(0px)",
 			webkitFilter: "blur(0px)",
-			ease: Power4.easeOut, // Premium smooth ease
+			ease: Power4.easeOut, 
 			force3D: true
-		}, 0.15); // Stagger delay
+		}, 0.15); 
 
 		new ScrollMagic.Scene({
 			triggerElement: this,
 			triggerHook: 0.85, 
-			reverse: true // "Fade in Fade Out" effect enabled
+			reverse: true // Keep fade effect on Desktop
 		})
 		.setTween(tl)
 		.addTo(controller);
@@ -1484,30 +1537,68 @@ var servicesCardReveal = function() {
 };
 
 var maskTextReveal = function() {
-
-
-	var controller = new ScrollMagic.Controller();
-
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+	
+	// Prepare Elements (Init once)
 	$('.mask-reveal-text').each(function() {
 		var $this = $(this);
-		var text = $this.text();
-		var delay = $this.data('delay') || 0; // Support manual delay
+		if ($this.data('mask-init')) return;
+		$this.data('mask-init', true);
 
+		var text = $this.text();
+		var delay = $this.data('delay') || 0; 
 		$this.empty();
 
-		// Split text into characters and wrap each
 		var chars = text.split('');
 		$.each(chars, function(i, char) {
 			var content = char === ' ' ? '&nbsp;' : char;
 			var margin = char === ' ' ? '4px' : '-0.05em';
-			// Outer span handles masking, Inner span moves
 			$this.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:' + margin + ';"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
 		});
+		
+		// If mobile and no IntersectionObserver, show immediately
+		if (isMobile && !('IntersectionObserver' in window)) {
+			$this.find('.char-inner').css('transform', 'translateY(0%)');
+		}
+	});
 
+	if (isMobile) {
+		if ('IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						var $this = $(entry.target);
+						var $chars = $this.find('.char-inner');
+						var delay = $this.data('delay') || 0;
+
+						var tl = new TimelineMax({ delay: delay });
+						tl.staggerTo($chars, 1, {
+							y: "0%",
+							ease: Power4.easeOut,
+							overwrite: "all"
+						}, 0.05);
+
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.15 });
+
+			$('.mask-reveal-text').each(function() {
+				observer.observe(this);
+			});
+		}
+		return;
+	}
+
+	// Desktop
+	var controller = new ScrollMagic.Controller();
+
+	$('.mask-reveal-text').each(function() {
+		var $this = $(this);
 		var $chars = $this.find('.char-inner');
+		var delay = $this.data('delay') || 0;
 
 		var tl = new TimelineMax({ delay: delay });
-		// Stagger the characters in
 		tl.staggerTo($chars, 1, {
 			y: "0%",
 			ease: Power4.easeOut,
