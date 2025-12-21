@@ -1071,6 +1071,7 @@ var blurStaggerReveal = function() {
 	}
 };
 
+
 var universalButtonReveal = function() {
 	var selectors = [
 		'.btn', 
@@ -1087,12 +1088,13 @@ var universalButtonReveal = function() {
 		if ($this.hasClass('no-reveal') || $this.data('reveal-init')) return;
 		$this.data('reveal-init', true);
 
-		// Use opacity instead of autoAlpha to ensure IntersectionObserver reliably detects it
+		// Initial State - More dramatic
 		TweenMax.set($this, { 
-			y: 30, 
+			y: 50, 
 			opacity: 0, 
-			filter: "blur(5px)", 
-			scale: 0.95
+			visibility: 'visible',
+			filter: "blur(10px)", 
+			scale: 0.9
 		});
 	});
 
@@ -1103,20 +1105,22 @@ var universalButtonReveal = function() {
 					var el = entry.target;
 					
 					var tl = new TimelineMax();
-					tl.to(el, 0.8, {
+					tl.to(el, 1, { // Duration 1s
 						y: 0,
-						opacity: 1, // Animate opacity back to 1
-						// autoAlpha: 1, // Optional: if you want to ensure visibility is set to visible
+						opacity: 1,
 						filter: "blur(0px)",
 						scale: 1,
-						ease: Power3.easeOut,
+						ease: Back.easeOut.config(1.7), // Bouncy pop effect
 						force3D: true
 					});
 					
 					observer.unobserve(el);
 				}
 			});
-		}, { threshold: 0.1 }); // Lower threshold for earlier trigger
+		}, { 
+			threshold: 0,
+			rootMargin: "0px 0px -10% 0px" // Trigger slightly before bottom
+		});
 
 		$btns.each(function() {
 			var $this = $(this);

@@ -149,6 +149,17 @@ a, a:hover {
   text-decoration: none !important;
 }
 
+/* Pre-hide buttons for animation to prevent FOUC on mobile */
+.resume-btn, .btn, .btn-outline-pill {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.1s;
+}
+.resume-btn.no-reveal, .btn.no-reveal, .btn-outline-pill.no-reveal {
+    opacity: 1;
+    transform: none;
+}
+
 .unslate_co--site-inner {
   margin-bottom: 0;
   position: relative;
