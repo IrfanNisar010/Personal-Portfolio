@@ -58,8 +58,39 @@
     font-weight: 300;
 }
 
+/* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
-    .newsletter-title { font-size: 2.5rem; }
+    .newsletter-title { 
+        font-size: 2.2rem; 
+        margin-bottom: 16px; 
+        letter-spacing: -0.02em; 
+    }
+    .newsletter-desc { 
+        font-size: 0.95rem; 
+        padding-left: 15px; 
+        padding-right: 15px; 
+        margin-bottom: 30px; 
+    }
+    .newsletter-form-wrapper {
+        height: 54px;
+        max-width: 92%;
+    }
+    .newsletter-input {
+        padding: 0 110px 0 20px !important; /* Adjust spacing to prevent text getting crushed by button */
+        font-size: 0.9rem;
+    }
+    .newsletter-btn {
+        min-width: 95px !important; /* Smaller button to allow more space for the email text */
+        font-size: 0.9rem;
+        top: 4px;
+        right: 4px;
+        bottom: 4px;
+    }
+    .tech-brew-glass-pill {
+        padding: 6px 14px !important;
+        font-size: 0.8rem;
+        margin-bottom: 15px !important;
+    }
 }
 
 /* --- Form Wrapper (The Pill Container) --- */
