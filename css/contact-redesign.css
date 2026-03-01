@@ -474,6 +474,14 @@
     width: auto;
     /* max-width removed to allow natural button sizing */
   }
+  .contact-book-call-card .luxury-button-wrapper .resume-btn {
+    width: auto !important;
+    padding: 14px 30px !important;
+    white-space: nowrap;
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+  }
   
   .contact-form-container {
     margin-top: 20px;
