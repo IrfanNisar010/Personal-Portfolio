@@ -1,0 +1,451 @@
+/* --- Newsletter Section (Irfan Tech Brew) --- */
+.newsletter-section {
+    padding: 100px 0;
+    position: relative;
+    background-color: #000;
+    overflow: hidden;
+    color: #fff;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.newsletter-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Glass Design for Tech Brew Pill */
+.tech-brew-glass-pill {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid transparent !important; /* Retain mouse-hover track space */
+}
+
+.process-tag.tech-brew-glass-pill:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 0 transparent !important;
+}
+
+/* --- Consistent Typography --- */
+.newsletter-title {
+    font-family: 'Aeonik', sans-serif;
+    font-size: 3.5rem; /* Larger modern heading size */
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    font-weight: 600; /* Bold weight */
+    line-height: 1.1;
+    
+    /* Setup for the shining slide animation */
+    background: linear-gradient(-60deg, #a1a1aa 0%, #ffffff 20%, #ffffff 40%, #a1a1aa 60%, #ffffff 80%, #a1a1aa 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.newsletter-desc {
+    font-family: 'Aeonik', sans-serif;
+    font-size: 1.125rem; /* Slightly larger text for readability */
+    color: rgba(255, 255, 255, 0.6); /* Better contrast */
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+@media (max-width: 768px) {
+    .newsletter-title { font-size: 2.5rem; }
+}
+
+/* --- Form Wrapper (The Pill Container) --- */
+.newsletter-form-wrapper {
+    position: relative;
+    max-width: 480px; 
+    margin: 0 auto;
+    height: 60px;
+    perspective: 1000px;
+}
+
+/* 1. The Form Container (Animates Size) */
+.newsletter-form {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* Removed background/overflow here to allow border shine */
+    border-radius: 9999px; 
+    display: flex;
+    align-items: center;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: center bottom;
+    z-index: 10;
+    padding: 2px; /* IMPORTANT: Space for the border to show */
+    overflow: hidden; /* Ensure shine stays within bounds */
+}
+
+/* Inner Content Wrapper (The actual "Input" bg) */
+.form-content {
+    position: relative; /* Changed to relative to fit inside padding */
+    width: 100%;
+    height: 100%;
+    background: #0d0d0d; /* Slightly lighter than pure black */
+    border-radius: 9999px;
+    z-index: 2; /* Above border shine */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); 
+    display: flex;
+    align-items: center;
+}
+
+/* --- Border Shimmer Animation --- */
+.newsletter-border-shine {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 1; /* Behind content */
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(214, 52, 71, 0.1) 10%,
+        rgba(214, 52, 71, 0.8) 20%,
+        #ffffff 25%, 
+        rgba(214, 52, 71, 0.8) 30%,
+        rgba(214, 52, 71, 0.1) 40%,
+        transparent 50%
+    );
+    animation: rotate-border 4s linear infinite;
+}
+
+@keyframes rotate-border {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Input Field */
+.newsletter-input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #ffffff; /* textMain */
+    font-size: 1rem;
+    padding: 0 160px 0 24px; /* Space for button */
+    outline: none;
+    font-family: inherit;
+}
+
+.newsletter-input::placeholder {
+    color: #71717a; /* zinc-500 */
+}
+
+/* Submit Button */
+.newsletter-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    bottom: 6px;
+    min-width: 130px;
+    background: #D63447; /* Replaced Blue with Site Accent Red */
+    border: none;
+    border-radius: 9999px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.newsletter-btn:hover {
+    background: #E04556; /* Slightly lighter red for hover */
+    filter: brightness(1.1);
+}
+
+.newsletter-btn:active {
+    transform: scale(0.95);
+}
+
+.newsletter-btn:disabled {
+    cursor: wait;
+    opacity: 0.8;
+}
+
+/* Loader (Spinner) */
+.loader-svg {
+    animation: spin 1s linear infinite;
+    width: 20px;
+    height: 20px;
+    color: white;
+}
+.loader-circle { opacity: 0.25; }
+.loader-path { opacity: 0.75; }
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 2. Success State (Green Pill) */
+.newsletter-success {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #10b981; /* success */
+    border-radius: 9999px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.125rem;
+    
+    /* Initial State: Hidden & Rotated */
+    opacity: 0;
+    transform: scale(0.95) rotateX(-90deg);
+    transform-origin: center bottom;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+}
+
+.newsletter-success .btn-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.success-check-icon {
+    width: 24px;
+    height: 24px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.success-check-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    /* Drawing animation setup */
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24; 
+}
+
+/* --- Cinematic Mist Focus Animation --- */
+@keyframes mist-focus-in {
+    0% {
+        opacity: 0;
+        filter: blur(24px); /* Heavy initial blur */
+        transform: scale(1.1) translateY(10px); /* Slight zoom out effect */
+    }
+    30% {
+        opacity: 0.4; /* Opacity comes in before focus */
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1) translateY(0);
+    }
+}
+
+.premium-blur-reveal {
+    opacity: 0;
+    will-change: transform, opacity, filter; /* Optimize performance */
+}
+
+/* --- Fallback for old animations --- */
+.reveal-desc-focus,
+.reveal-title-masked {
+    opacity: 1; /* Safety override to prevent hidden elements */
+}
+
+.premium-blur-reveal.in-view,
+.premium-blur-reveal.active { /* Fallback for different JS triggers */
+    animation: mist-focus-in 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Override standard mist focus to instead run the new Shimmer & Flash effects */
+.newsletter-title.premium-blur-reveal.in-view {
+    /* 4.5s duration - ultra leisurely luxury pacing */
+    animation: shimmer-title-glow 4.5s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+}
+
+@keyframes shimmer-title-glow {
+    0% {
+        opacity: 0;
+        filter: blur(20px) brightness(0.8); /* Starting slightly dark */
+        transform: scale(1.01) translateY(10px); /* Barely perceptible movement */
+        background-position: 200% center; 
+    }
+    50% {
+        opacity: 1;
+        filter: blur(4px) brightness(1.2); /* Flash happens at the half-way mark so it fades in much slower */
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0px) brightness(1);
+        transform: scale(1) translateY(0);
+        background-position: 0% center; 
+    }
+}
+
+.newsletter-desc.premium-blur-reveal.in-view {
+    /* 3.5s prolonged mist reveal */
+    animation: mist-desc-slide 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+}
+
+@keyframes mist-desc-slide {
+    0% {
+        opacity: 0;
+        filter: blur(12px);
+        transform: translateY(8px);
+        letter-spacing: 1px; /* Even tighter spacing to prevent jitter at slow speeds */
+    }
+    100% {
+        opacity: 0.6; /* Base subtitle opacity */
+        filter: blur(0);
+        transform: translateY(0);
+        letter-spacing: normal;
+    }
+}
+
+/* Enhanced Stagger Delays for an extremely calm, 'rippling' sequence */
+.delay-100 { animation-delay: 0.2s; }
+.delay-200 { animation-delay: 0.8s; } /* Title waits for Pill */
+.delay-300 { animation-delay: 1.5s; } /* Desc waits for Title to flash */
+
+/* Consolidating typography */
+
+/* --- Smooth Liquid Expansion Animation --- */
+@keyframes fluid-expand {
+    0% {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    30% {
+        width: 40px;
+        height: 55px; /* Match final height */
+        border-radius: 50px;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        width: 100%; /* Expands to full container width */
+        height: 55px;
+        border-radius: 50px;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.newsletter-form-wrapper.animate-open .newsletter-form {
+    /* Using a spring-like bezier for "pop" */
+    animation: fluid-expand 1.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    transform-origin: center center;
+    overflow: hidden; /* Ensures content doesn't spill during width change */
+}
+
+/* Content Fade In - Staggered */
+.newsletter-form-wrapper.animate-open .newsletter-input {
+    animation: smooth-content-fade 0.6s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+.newsletter-form-wrapper.animate-open .newsletter-btn {
+    animation: smooth-content-fade 0.6s ease-out 0.7s forwards;
+    opacity: 0;
+}
+
+@keyframes smooth-content-fade {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- STATE: SUCCESS --- */
+.newsletter-form-wrapper.success .newsletter-form {
+    opacity: 0;
+    transform: scale(0.95) rotateX(90deg);
+    pointer-events: none;
+}
+
+.newsletter-form-wrapper.success .newsletter-success {
+    opacity: 1;
+    transform: scale(1) rotateX(0deg);
+    pointer-events: auto;
+    
+    /* Animations */
+    animation: success-pulse 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+               success-glow 2s ease-in-out infinite;
+}
+
+.newsletter-form-wrapper.success .success-check-icon svg {
+    animation: checkmark-draw 0.4s ease-out 0.3s forwards;
+}
+
+/* --- Animations Ported from React --- */
+@keyframes success-pulse {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes success-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+    50% { box-shadow: 0 0 60px rgba(16, 185, 129, 0.8), 0 0 100px rgba(16, 185, 129, 0.4); }
+}
+
+@keyframes checkmark-draw {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Background Ambient Glow (Red Pulse) - Fixed for Visibility */
+.newsletter-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw; /* Increased width to be visible */
+    height: 60vh; /* Increased height */
+    /* Stronger center, fades to transparent */
+    background: radial-gradient(circle, rgba(214, 52, 71, 0.4) 0%, rgba(214, 52, 71, 0.1) 40%, transparent 70%); 
+    z-index: 0; /* Ensure strictly behind content */
+    pointer-events: none;
+    mix-blend-mode: screen; /* Helps it show on dark background */
+    will-change: opacity, transform;
+    animation: glow-pulse 4s infinite alternate ease-in-out;
+}
+
+@keyframes glow-pulse {
+    0% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    100% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* Optional: Slight red tinge on hover or active state if desired, but keeping it minimal for now */
+.newsletter-section:hover .newsletter-glow {
+    opacity: 0.8;
+}

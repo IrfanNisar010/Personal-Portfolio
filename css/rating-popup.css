@@ -494,12 +494,12 @@ textarea.rating-input {
 }
 
 /* Hide Desktop Elements */
-#rating-form .resume-btn-dot,
-#rating-form .resume-btn-arrow {
+#rating-form .resume-btn .resume-btn-dot,
+#rating-form .resume-btn .resume-btn-arrow {
   display: none !important;
 }
 
-#rating-form .resume-btn-text {
+#rating-form .resume-btn .resume-btn-text {
   font-size: 1rem;
   padding: 0;
   margin: 0;

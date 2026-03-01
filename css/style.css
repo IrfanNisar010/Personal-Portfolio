@@ -928,6 +928,110 @@ a, a:hover {
   color: #D63447;
 }
 
+/* --- INTERACTIVE HOVER BUTTON (React Component Port) --- */
+/* --- INTERACTIVE HOVER BUTTON (Horizontal Slide) --- */
+.resume-btn {
+  display: inline-flex;
+  position: relative;
+  padding: 14px 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff !important;
+  background-color: transparent;
+  border: none; /* User requested NO BORDER */
+  border-radius: 9999px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none !important;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+  z-index: 1;
+}
+
+/* User said "no border need" but also "why there is no change". 
+   If I remove the border, it might look invisible. 
+   I will add a transparent border that turns red, or keep no border if they insist.
+   Request: "like in this code they have border in my button no border need".
+   Okay, I will stick to border: none. */
+.resume-btn {
+  border: none;
+}
+
+
+
+/* 1. Text (Initial State) */
+.resume-btn .resume-btn-text {
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-block;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Slide Right & Fade Out on Hover */
+.resume-btn:hover .resume-btn-text {
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+/* 2. Hover Content (Hidden State) */
+.resume-btn .resume-btn-hover-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateX(30px); /* Start offset to Right */
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 2;
+}
+
+/* Slide Left to Center on Hover */
+.resume-btn:hover .resume-btn-hover-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Arrow Styling */
+.resume-btn .resume-btn-arrow {
+  display: flex;
+  align-items: center;
+}
+
+.resume-btn .resume-btn-arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: #fff;
+}
+
+/* 3. Dot (Red Background Fill) */
+.resume-btn .resume-btn-dot {
+  position: absolute;
+  left: 20%;
+  top: 40%;
+  width: 10px;
+  height: 10px;
+  background: #D63447;
+  border-radius: 50%;
+  transform: scale(0); /* Hidden */
+  opacity: 1;
+  transition: transform 0.5s ease;
+  z-index: 0;
+}
+
+/* Expand Dot to Fill */
+.resume-btn:hover .resume-btn-dot {
+  transform: scale(30); /* Massive scale to fill */
+}
+
 /* Processing & Success States (Red Background, Seamless Border) */
 .resume-btn.processing,
 .resume-btn.success {
@@ -1393,6 +1497,20 @@ a, a:hover {
   /* Restore Color on Hover */
   filter: grayscale(0%);
   -webkit-filter: grayscale(0%);
+}
+
+/* Fix for "Available for Work" Button Hover */
+.contact-book-call-card .luxury-button-wrapper,
+.luxury-button-wrapper-contact {
+    overflow: visible !important;
+    position: relative;
+    z-index: 10;
+} 
+
+.contact-book-call-card .resume-btn,
+.luxury-button-wrapper-contact .resume-btn {
+    overflow: hidden; /* Keep internal overflow hidden for dot effect */
+    position: relative; /* Needed for z-index context */
 }
 
 .portfolio-item, .blog-item {

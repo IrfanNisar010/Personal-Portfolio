@@ -163,6 +163,7 @@
   transform: translateZ(0); /* Hardware acceleration */
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
+  padding: 0 15px; /* Fix text wrapping padding issue */
 }
 
 
@@ -173,7 +174,7 @@
 }
 
 /* The Dot */
-.resume-btn-dot {
+.resume-btn .resume-btn-dot {
   position: absolute;
   left: 20px;
   top: 50%;
@@ -187,7 +188,7 @@
 }
 
 /* The Original Text (Slides Right & Fades Out) */
-.resume-btn-text {
+.resume-btn .resume-btn-text {
   position: relative;
   z-index: 10;
   color: #000;
@@ -200,11 +201,12 @@
   margin: 0;
   left: 0; 
   opacity: 1;
+  transform: none; /* Override style.css */
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* The New Hover Content (Slides In from Right) */
-.resume-btn-hover-content {
+.resume-btn .resume-btn-hover-content {
   position: absolute;
   top: 0;
   left: 20px; /* Start right using left property NOT transform */
@@ -216,12 +218,13 @@
   justify-content: center;
   gap: 8px; /* Gap between text and arrow */
   opacity: 0;
+  transform: none; /* Override style.css */
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   pointer-events: none; /* Let interaction pass to button */
 }
 
 /* Text inside Hover Content */
-.resume-btn-hover-content span {
+.resume-btn .resume-btn-hover-content span {
   color: #fff;
   font-family: 'Aeonik', 'Manrope', sans-serif;
   font-weight: 400; 
@@ -230,7 +233,7 @@
 }
 
 /* The Arrow */
-.resume-btn-arrow {
+.resume-btn .resume-btn-arrow {
   position: relative; /* Reset from absolute */
   width: 16px;
   height: 16px;
@@ -239,7 +242,7 @@
   justify-content: center;
 }
 
-.resume-btn-arrow svg {
+.resume-btn .resume-btn-arrow svg {
   width: 100%;
   height: 100%;
   fill: #fff;
@@ -258,12 +261,14 @@
 .resume-btn:hover .resume-btn-text {
   opacity: 0;
   left: 20px; /* Slide right */
+  transform: none; /* Override style.css */
 }
 
 /* Hover Content Slides In & Fades In */
 .resume-btn:hover .resume-btn-hover-content {
   opacity: 1;
   left: 0; /* Center */
+  transform: none; /* Override style.css */
 }
 
 /* Responsive Adjustments */
@@ -273,18 +278,18 @@
     height: 44px;
   }
   
-  .resume-btn-text {
+  .resume-btn .resume-btn-text {
     font-size: 0.8rem;
     padding-left: 0; 
   }
   
-  .resume-btn-dot {
+  .resume-btn .resume-btn-dot {
     left: auto;
     width: 6px;
     height: 6px;
   }
   
-  .resume-btn-arrow {
+  .resume-btn .resume-btn-arrow {
     right: 16px;
     width: 14px;
     height: 14px;
@@ -434,12 +439,12 @@
   }
 
   /* Hide Animation Elements */
-  .resume-btn-dot,
-  .resume-btn-arrow {
+  .resume-btn .resume-btn-dot,
+  .resume-btn .resume-btn-arrow {
     display: none !important;
   }
 
-  .resume-btn-text {
+  .resume-btn .resume-btn-text {
     font-size: 1rem;
     padding: 0;
     margin: 0;
@@ -447,6 +452,7 @@
     color: #fff !important; /* Always white */
     width: auto;
     left: 0 !important; /* Prevent sliding */
+    transform: none !important;
   }
 
   /* Center the button wrapper & allow stacking for single buttons */
@@ -485,15 +491,15 @@
     max-width: none !important;
   }
 
-  .process-buttons .resume-btn-text,
-  .services-buttons .resume-btn-text {
+  .process-buttons .resume-btn .resume-btn-text,
+  .services-buttons .resume-btn .resume-btn-text {
     font-size: 0.75rem !important; /* Smaller text for side-by-side */
     white-space: nowrap; 
   }
 
   /* Keep main resume button text normal size */
-  .resume-button-wrap .resume-btn-text,
-  #gform .resume-btn-text {
+  .resume-button-wrap .resume-btn .resume-btn-text,
+  #gform .resume-btn .resume-btn-text {
     font-size: 1rem !important;
   }
 }

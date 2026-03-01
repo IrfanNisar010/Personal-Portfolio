@@ -2130,3 +2130,77 @@ var backToTop = function() {
         }
     });
 };
+
+var techBrewSubscription = function() {
+    // --- Animation Trigger on Scroll ---
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                $(entry.target).addClass('in-view animate-open');
+                // Optional: Stop observing once triggered
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 }); // Trigger when 30% visible
+
+    // Targets to observe
+    $('.premium-blur-reveal').each(function() { observer.observe(this); });
+    $('.reveal-title-masked').each(function() { observer.observe(this); });
+    $('.reveal-desc-focus').each(function() { observer.observe(this); });
+    $('.newsletter-form-wrapper').each(function() { observer.observe(this); });
+
+    var $form = $('#tech-brew-form');
+    var $wrapper = $('.newsletter-form-wrapper');
+    var $btn = $form.find('.newsletter-btn');
+    var $btnText = $btn.find('.btn-text');
+    var $spinner = $btn.find('.spinner');
+
+    if ($form.length === 0) return;
+
+    $form.on('submit', function(e) {
+        e.preventDefault();
+        var email = $form.find('input[type="email"]').val();
+        
+        if (!email) return;
+
+        // 1. Loading State
+        $btn.prop('disabled', true);
+        $btnText.hide();
+        $spinner.show();
+        $wrapper.addClass('loading');
+        
+        // Simulate API delay (1.5s)
+        setTimeout(function() {
+             // 2. Success State
+            $wrapper.removeClass('loading').addClass('success');
+
+            // 3. Trigger Confetti
+            if (typeof confetti !== 'undefined') {
+                var rect = $wrapper[0].getBoundingClientRect();
+                var x = (rect.left + rect.width / 2) / window.innerWidth;
+                var y = (rect.top + rect.height / 2) / window.innerHeight;
+
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { x: x, y: y },
+                    colors: ['#0079da', '#10b981', '#fbbf24', '#f472b6', '#ffffff'], // Matched colors
+                    zIndex: 9999
+                });
+            }
+        }, 1500);
+    });
+};
+// Initialize the new feature functionality
+jQuery(document).ready(function() {
+    techBrewSubscription();
+
+    // Mouse tracking for dynamic glass pill borders
+    $(document).on('mousemove', '.contact-tag-pill, .process-tag', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        this.style.setProperty('--mouse-x', `${x}px`);
+        this.style.setProperty('--mouse-y', `${y}px`);
+    });
+});

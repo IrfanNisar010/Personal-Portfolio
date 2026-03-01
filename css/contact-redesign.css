@@ -25,25 +25,61 @@
 
 /* Floating Pill Tag */
 .contact-tag-pill {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 16px;
   background: #0a0a0a; /* Darker bg */
   border-radius: 100px;
-  /* Join the "Top Border Only" club */
-  border: none;
-  border-top: 1px solid #333; 
+  border: 1px solid transparent; 
+  box-shadow: inset 0 1px 0 0 #333; /* Fake top border !*/
   color: #eee;
   font-size: 0.85rem;
   font-family: 'Manrope', sans-serif;
   font-weight: 500;
   margin-bottom: 25px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
 }
 .contact-tag-pill svg {
-  color: #fff;
-  width: 14px; 
+  display: none; /* Hide the HTML inline SVG so we can replace it with pseudo */
+}
+.contact-tag-pill::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
   height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='white'/%3E%3Ccircle cx='12' cy='12' r='2' fill='white' stroke='none'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+/* Glass Border Glow */
+.contact-tag-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  padding: 1px; /* border thickness */
+  background: radial-gradient(
+    60px circle at var(--mouse-x, -100px) var(--mouse-y, -100px), 
+    rgba(255, 255, 255, 0.8),
+    transparent 40%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.contact-tag-pill:hover::after {
+  opacity: 1; /* Show gradient border on hover */
+}
+.contact-tag-pill:hover {
+  box-shadow: inset 0 1px 0 0 transparent; /* hide default top border */
 }
 
 /* Heading */
@@ -366,6 +402,9 @@
 .luxury-button-wrapper-contact {
   margin-top: 25px;
   width: 100%;
+  overflow: visible !important; /* Critical for button hover overflow */
+  position: relative;
+  z-index: 10;
 }
 
 /* Button overrides removed to revert to default style */
@@ -432,8 +471,8 @@
     font-weight: 500; /* Reduced weight */
   }
   .contact-book-call-card .luxury-button-wrapper {
-    width: 100%;
-    max-width: 250px; /* Significantly reduced width for a tighter look */
+    width: auto;
+    /* max-width removed to allow natural button sizing */
   }
   
   .contact-form-container {
@@ -468,41 +507,190 @@
   font-family: 'Manrope', sans-serif;
 }
 
-/* Fix for Send Message Button Hover Animation */
-.luxury-button-wrapper-contact .resume-btn {
-  overflow: hidden; /* Ensure dot doesn't overflow */
+/* -----------------------------
+   New "Send Message" Button Animation
+   Style: Modern Blur & Fade Shimmer
+   ----------------------------- */
+
+.btn-send-message {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 40px;
+  background: rgba(255, 255, 255, 0.05); /* Subtle glass bg */
+  color: #fff;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  cursor: pointer;
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  text-decoration: none;
+  width: 100%;
+  backdrop-filter: blur(5px);
 }
 
-.luxury-button-wrapper-contact .resume-btn .resume-btn-dot {
+/* 1. Fade In Gradient Background */
+.btn-send-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #D63447, #f74d62); /* Vibrant Red Gradient */
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.4s ease;
+  z-index: 0;
+  border-radius: 9999px;
+}
+
+/* 2. The Shimmer Effect */
+.btn-send-message::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: none; /* Instant reset */
+  z-index: 1;
+  transform: skewX(-20deg);
+}
+
+/* Hover States */
+.btn-send-message:hover {
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(214, 52, 71, 0.4); /* Glow Blur */
+}
+
+.btn-send-message:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Trigger Shimmer on Hover */
+.btn-send-message:hover::after {
+  left: 100%;
+  transition: left 0.6s cubic-bezier(0.19, 1, 0.22, 1); /* Zoom across */
+}
+
+/* Content Z-Index & Layout */
+.btn-send-text,
+.btn-send-icon {
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-send-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* 1. Text Animation: Spacing Expansion or Subtlety */
+.btn-send-message:hover .btn-send-text {
+  letter-spacing: 1px; /* Subtle expansion */
+  transform: translateX(-4px); /* Make room for arrow */
+}
+
+/* 2. Arrow Animation: Slide & Bounce */
+.btn-send-message:hover .btn-send-icon {
+  transform: translateX(6px);
+}
+
+.btn-send-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  transition: transform 0.4s ease;
+}
+
+/* Arrow Tip Wiggle Effect */
+.btn-send-message:hover .btn-send-icon svg {
+  animation: arrow-bounce 0.6s infinite alternate cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+@keyframes arrow-bounce {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(3px); }
+}
+
+/* Active/Click Scale Effect */
+.btn-send-message:active {
+  transform: scale(0.95);
+  box-shadow: none; /* Remove glow on click for realistic press */
+}
+
+.btn-send-message:focus,
+.btn-send-message:active:focus {
+  outline: none;
+  /* Prevent browser default white border */
+  border-color: rgba(255, 255, 255, 0.05); 
+}
+
+/* Processing & Success States for .btn-send-message */
+.btn-send-message.processing,
+.btn-send-message.success {
+  pointer-events: none;
+  /* Keep transparent/glass background, maybe slight dim */
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.btn-send-message.processing .btn-send-text,
+.btn-send-message.processing .btn-send-icon,
+.btn-send-message.success .btn-send-text,
+.btn-send-message.success .btn-send-icon {
+  opacity: 0;
+}
+
+/* Loader Positioning within .btn-send-message */
+.btn-send-message .btn-loader {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  width: 10px;
-  height: 10px;
-  background-color: #D63447; /* Red color */
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
   border-radius: 50%;
-  transition: transform 0.6s cubic-bezier(0.6, 0.05, 0.01, 0.99);
-  z-index: -1; /* Behind text */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 10;
 }
 
-.luxury-button-wrapper-contact .resume-btn:hover .resume-btn-dot {
-  transform: translate(-50%, -50%) scale(150) !important; /* Massive scale to cover full width */
+.btn-send-message.loading .btn-loader {
+  opacity: 1;
+  visibility: visible;
+  animation: send-spin 0.8s linear infinite;
 }
 
-/* Ensure text stays white on hover */
-.luxury-button-wrapper-contact .resume-btn:hover .resume-btn-text,
-.luxury-button-wrapper-contact .resume-btn:hover svg {
-  color: #fff !important;
-  fill: #fff !important;
-  z-index: 2;
+@keyframes send-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* -----------------------------
-   Magic Slide Right Glow Text
-   ----------------------------- */
+/* Success Checkmark Positioning */
+.btn-send-message .btn-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
 .section-sub-heading {
   font-family: 'Manrope', sans-serif;
   font-size: 1rem;
