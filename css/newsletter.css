@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 /* --- Newsletter Section (Irfan Tech Brew) --- */
 .newsletter-section {
     padding: 100px 0;
@@ -38,12 +40,7 @@
     font-weight: 600; /* Bold weight */
     line-height: 1.1;
     
-    /* Setup for the shining slide animation */
-    background: linear-gradient(-60deg, #a1a1aa 0%, #ffffff 20%, #ffffff 40%, #a1a1aa 60%, #ffffff 80%, #a1a1aa 100%);
-    background-size: 300% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffffff; /* Use solid white color for the new animation */
 }
 
 .newsletter-desc {
@@ -335,6 +332,8 @@
         background-position: 0% center; 
     }
 }
+
+
 
 .newsletter-desc.premium-blur-reveal.in-view {
     /* 3.5s prolonged mist reveal */
@@ -628,4 +627,35 @@
       0 0 15px rgba(0,0,0,0.5);
     transition: all 0.1s ease;
   }
+}
+
+/* --- Luxury Popup Title --- */
+.popup-title-luxury {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    padding-bottom: 2px;
+    
+    /* Modern metallic red/silver luxury gradient */
+    background: linear-gradient(-45deg, #ffffff 0%, #f1f1f1 30%, #ff4b4b 60%, #D63447 80%, #ffffff 100%);
+    background-size: 200% auto;
+    color: #fff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    animation: shine-luxury-title 5s linear infinite;
+}
+
+@keyframes shine-luxury-title {
+    to { background-position: 200% center; }
+}
+
+@media (max-width: 768px) {
+    .popup-title-luxury {
+        font-size: 2.0rem;
+        margin-bottom: 8px;
+    }
 }
