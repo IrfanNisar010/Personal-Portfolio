@@ -1180,11 +1180,16 @@
       <section class="newsletter-section" id="newsletter-section">
           <div class="newsletter-glow"></div>
           <div class="newsletter-container">
-               <div class="process-tag premium-blur-reveal delay-100 tech-brew-glass-pill" style="justify-content: center; margin-bottom: 20px;">Irfan Tech Brew</div>
-               <h2 class="newsletter-title premium-blur-reveal delay-200">Elevate Your Craft.</h2>
-               <p class="newsletter-desc premium-blur-reveal delay-300">
-                  Exclusive insights on software engineering, premium design, and building the future.
-               </p>
+               <div class="process-tag premium-blur-reveal delay-100 tech-brew-glass-pill" style="justify-content: center; margin-bottom: 20px;">Tech Newsletter</div>
+               <h2 class="newsletter-title premium-blur-reveal delay-200">Stay Ahead of What’s Next.</h2>
+               <div class="luxury-button-wrapper premium-blur-reveal delay-300" style="margin-bottom: 40px; display: flex; justify-content: center;">
+                    <button class="glass-shimmer-btn" id="newsletter-more-info-btn">
+                        <span class="shimmer-btn-text">More Info</span>
+                        <span class="shimmer-btn-arrow">
+                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </span>
+                    </button>
+               </div>
                
                <div class="newsletter-form-wrapper">
                    <!-- 1. The Form (Input + Button) -->
@@ -1275,13 +1280,14 @@
             <!-- Status Column -->
             <div class="col-md-4 footer-newsletter-col">
               <h3 class="footer-heading mb-4">Status</h3>
-              <p class="footer-newsletter-text mb-4">
-                  <span style="display: flex; align-items:center; margin-bottom:10px; color:#86efac; font-weight:500;">
-                      <span style="display:inline-block; width:8px; height:8px; background:#4caf50; border-radius:50%; margin-right:8px;"></span>
-                      Available for new projects
-                  </span>
-                  <br>
-                  <span style="opacity:0.7;">Based in India, working worldwide.</span>
+              
+              <div class="footer-status-pill">
+                  <div class="status-dot-pulse"></div>
+                  <span class="status-text">Available for new projects</span>
+              </div>
+              
+              <p class="footer-location-text mt-3">
+                  Based in India, working worldwide.
               </p>
             </div>
 
@@ -1404,15 +1410,80 @@
            <h4>Thank You!</h4>
            <p>Your feedback helps me improve.</p>
         </div>
+        </div>
       </div>
     </div>
 
+    <!-- Newsletter Info Popup Overlay -->
+    <div id="newsletter-popup-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: none; justify-content: center; align-items: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); pointer-events: none; padding: 15px;">
+      <div class="rating-card" id="newsletter-card" style="pointer-events: auto; width: 100%; max-width: 480px; padding: 30px 30px; overflow: hidden;">
+        <button class="close-popup" id="close-newsletter-popup">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        
+        <div id="newsletter-info-content" style="text-align: left; padding-bottom: 0px;">
+          <div class="rating-header" style="margin-bottom: 20px; text-align: center;">
+             <h3 class="news-reveal-text" style="font-size: 26px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 2px;">Inside the Brew</h3>
+             <p class="news-reveal-text" style="font-size: 14px; color: rgba(255,255,255,0.6);">A closer look at what you’ll receive.</p>
+          </div>
+          
+          <div class="newsletter-info-body" style="font-size: 13.5px; line-height: 1.4;">
+             <p class="news-reveal-text" style="color: rgba(255,255,255,0.9); margin-bottom: 4px;">
+                 <strong>Irfan Tech Brew</strong> is a curated newsletter focused on what truly matters in technology.
+             </p>
+             <p class="news-reveal-text mb-2" style="color: rgba(255,255,255,0.6);">
+                 Clear insights. No noise.
+             </p>
+             
+             <div class="news-reveal-text" style="margin-top: 20px; margin-bottom: 16px;">
+                 <h4 style="font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 12px; letter-spacing: -0.3px;">What You’ll Get</h4>
+                 
+                 <div style="margin-bottom: 10px;">
+                     <strong style="color: #fff; display: block; margin-bottom: 2px; font-weight: 500;">🌐 Latest Tech Updates</strong>
+                     <span style="color: rgba(255,255,255,0.6); display: block;">Major breakthroughs, industry shifts, and emerging trends — explained simply.</span>
+                 </div>
+                 
+                 <div style="margin-bottom: 10px;">
+                     <strong style="color: #fff; display: block; margin-bottom: 2px; font-weight: 500;">🚀 New Releases & Launches</strong>
+                     <span style="color: rgba(255,255,255,0.6); display: block;">The newest products, tools, and platforms. What’s new. What’s useful. What’s worth your time.</span>
+                 </div>
+                 
+                 <div style="margin-bottom: 10px;">
+                     <strong style="color: #fff; display: block; margin-bottom: 2px; font-weight: 500;">⚙️ Practical Customization Tips</strong>
+                     <span style="color: rgba(255,255,255,0.6); display: block;">Small tweaks that improve performance, workflow, and everyday efficiency.</span>
+                 </div>
+                 
+                 <div style="margin-bottom: 10px;">
+                     <strong style="color: #fff; display: block; margin-bottom: 2px; font-weight: 500;">📱 Useful Apps & Smart Tools</strong>
+                     <span style="color: rgba(255,255,255,0.6); display: block;">Carefully selected apps that make work faster and life easier.</span>
+                 </div>
+                 
+                 <div style="margin-bottom: 16px;">
+                     <strong style="color: #fff; display: block; margin-bottom: 2px; font-weight: 500;">⚡ Time-Saving Tech Advice</strong>
+                     <span style="color: rgba(255,255,255,0.6); display: block;">Actionable tips to help you stay organized, focused, and ahead.</span>
+                 </div>
+             </div>
+             
+             <p class="news-reveal-text" style="color: rgba(255,255,255,0.9); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+                 Every edition is designed to help you make better decisions in a fast-moving digital world.
+             </p>
+          </div>
+          
+          <div class="swipe-hint-text desktop-hint news-reveal-text" style="margin-top: 20px; margin-bottom: 0px; text-align: center;">SLIDE RIGHT TO CLOSE</div>
+          <div class="swipe-hint-text mobile-hint news-reveal-text" style="margin-top: 20px; margin-bottom: 0px; text-align: center;">SLIDE DOWN TO CLOSE</div>
+        </div>
+      </div>
+    </div>
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
     <script src="js/rating-popup.js"></script>
+    <script src="js/newsletter-popup.js"></script>
     <script src="js/premium-3d-card.js"></script>
     <script>
 
