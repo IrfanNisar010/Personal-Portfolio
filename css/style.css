@@ -73,30 +73,89 @@ body {
   font-weight: 300 !important; /* Slightly reduced (Light/Regular) */
 }
 
-/* Permanent Bottom Blur Overlay */
-/* Permanent Bottom Blur Overlay */
+/* === GradualBlur — Modern Layered Bottom Blur === */
+/* Inspired by reactbits.dev GradualBlur component.
+   6 layers with bezier-curved mask gradients & increasing blur strength. */
+
 .site-bottom-blur {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 120px; /* Taller to allow smooth fade */
-  /* No background color, just pure blur */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  /* Fade the blur itself using a mask */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  height: 6rem;
   pointer-events: none;
   z-index: 9999;
+  isolation: isolate;
+}
+
+.site-bottom-blur > div {
+  position: absolute;
+  inset: 0;
+}
+
+/* Layer 1 — very faint, top slice */
+.site-bottom-blur .gb-l1 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16.7%, black 33.3%, transparent 50%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 16.7%, black 33.3%, transparent 50%);
+  -webkit-backdrop-filter: blur(0.2rem);
+  backdrop-filter: blur(0.2rem);
+  opacity: 0.9;
+}
+
+/* Layer 2 */
+.site-bottom-blur .gb-l2 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 16.7%, black 33.3%, black 50%, transparent 66.7%);
+  mask-image: linear-gradient(to bottom, transparent 16.7%, black 33.3%, black 50%, transparent 66.7%);
+  -webkit-backdrop-filter: blur(0.5rem);
+  backdrop-filter: blur(0.5rem);
+  opacity: 0.9;
+}
+
+/* Layer 3 */
+.site-bottom-blur .gb-l3 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 33.3%, black 50%, black 66.7%, transparent 83.3%);
+  mask-image: linear-gradient(to bottom, transparent 33.3%, black 50%, black 66.7%, transparent 83.3%);
+  -webkit-backdrop-filter: blur(1rem);
+  backdrop-filter: blur(1rem);
+  opacity: 0.95;
+}
+
+/* Layer 4 */
+.site-bottom-blur .gb-l4 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 50%, black 66.7%, black 83.3%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 50%, black 66.7%, black 83.3%, transparent 100%);
+  -webkit-backdrop-filter: blur(1.8rem);
+  backdrop-filter: blur(1.8rem);
+  opacity: 1;
+}
+
+/* Layer 5 */
+.site-bottom-blur .gb-l5 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 66.7%, black 83.3%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 66.7%, black 83.3%, black 100%);
+  -webkit-backdrop-filter: blur(2.8rem);
+  backdrop-filter: blur(2.8rem);
+  opacity: 1;
+}
+
+/* Layer 6 — strongest, very bottom edge */
+.site-bottom-blur .gb-l6 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 83.3%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 83.3%, black 100%);
+  -webkit-backdrop-filter: blur(4rem);
+  backdrop-filter: blur(4rem);
+  opacity: 1;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .site-bottom-blur > div {
+    background: rgba(0, 0, 0, 0.2);
+  }
 }
 
 @media (max-width: 991.98px) {
   .site-bottom-blur {
-    display: block; /* Force visible on mobile */
-    height: 100px; /* Adjust height for mobile if needed */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    height: 5rem;
   }
 }
 

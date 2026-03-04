@@ -711,6 +711,9 @@ var portfolioItemClick = function() {
 				'</div>'
 			);
 
+			// Clear min-height now that content is injected — prevents black gap below details
+			$('#portfolio-section').css('min-height', '');
+
 			// Reset clicked item
 			TweenMax.set($this, { scale: 1, opacity: 1 });
 
@@ -752,6 +755,8 @@ var portfolioItemClick = function() {
 			ease: Power2.easeIn,
 			onComplete: function() {
 				$(this.target).remove();
+				// Clear any leftover min-height so section fits the grid naturally
+				$('#portfolio-section').css('min-height', '');
 				// Restore Grid with Pop
 				TweenMax.set('.portfolio-wrapper', { display: 'block', opacity: 0, y: 20 });
 				TweenMax.to('.portfolio-wrapper', 0.5, { opacity: 1, y: 0, autoAlpha: 1, ease: Power3.easeOut });

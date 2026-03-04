@@ -55,20 +55,20 @@
       .unslate_co--site-wrap {
         overflow: hidden;
       }
+
+      /* Adjust scroll mouse position on mobile */
+      @media (max-width: 768px) {
+        .mouse-wrap {
+          bottom: 5rem !important; /* Move it higher up to start seeing it first */
+        }
+      }
     </style>
     
 
   </head>
   <body data-spy="scroll" data-target=".site-nav-target" data-offset="200">
 
-    <!-- Cinematic Preloader -->
-    <div class="preloader-wrap">
-      <div class="preloader-curtain"></div>
-      <div class="preloader-content">
-         <span class="preloader-percent">0%</span>
-         <div class="preloader-text">Loading</div>
-      </div>
-    </div>
+    <!-- Removed Cinematic Preloader -->
 
     <!-- Ambient Grain Background -->
     <div class="ambient-grain-overlay">
@@ -101,7 +101,7 @@
         </div>
         <!-- END lines -->
       
-      <nav class="unslate_co--site-nav site-nav-target">
+      <nav class="unslate_co--site-nav site-nav-target" style="opacity: 0;">
 
         <div class="container">
         
@@ -154,7 +154,7 @@
       </nav>
       <!-- END nav -->
 
-      <div class="cover-v1 jarallax" style="background-image: url('images/cover_bg_full.gif');" id="home-section">
+      <div class="cover-v1 jarallax" style="background-color: #000;" data-bg-gif="images/cover_bg_full.gif" id="home-section">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-md-7 mx-auto text-center">
@@ -191,7 +191,7 @@
         </div>
 
 
-        <a href="#portfolio-section" class="mouse-wrap smoothscroll">
+        <a href="#portfolio-section" class="mouse-wrap smoothscroll" style="opacity: 0;">
           <span class="mouse">
             <span class="scroll"></span>
           </span>
@@ -1319,14 +1319,17 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
     </a>
 
-    <!-- Loader -->
-    <div id="unslate_co--overlayer"></div>
-    <div class="site-loader-wrap">
-      <div class="site-loader"></div>
-    </div>
+    <!-- Loader Removed -->
 
-    <!-- Permanent Bottom Blur -->
-    <div class="site-bottom-blur"></div>
+    <!-- GradualBlur — Modern Layered Bottom Blur -->
+    <div class="site-bottom-blur" aria-hidden="true">
+      <div class="gb-l1"></div>
+      <div class="gb-l2"></div>
+      <div class="gb-l3"></div>
+      <div class="gb-l4"></div>
+      <div class="gb-l5"></div>
+      <div class="gb-l6"></div>
+    </div>
 
     <!-- Custom Mobile Notification Trigger -->
     <div id="custom-notification" class="custom-notification">
@@ -1518,28 +1521,41 @@
 
           // Ensure parents are visible (children are hidden by splitText styles)
           TweenMax.set("#hero-intro, #hero-heading", { opacity: 1 });
+          // Modern Navbar Initial hidden state (fade in from inside)
+          TweenMax.set(".unslate_co--site-nav", { opacity: 0, scale: 0.95, filter: "blur(10px)", webkitFilter: "blur(10px)", transformOrigin: "center center" });
 
           // 1. Intro "I'm Irfan" Characters In (Slower, Luxury Feel)
           tl.staggerTo("#hero-intro .char-anim", 1.5, 
             { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
             0.06
           )
-          // 2. Intro Out (Smooth Fade & Blur)
+          // 2. Custom action: load gif and fade in navbar
+          .add(function() {
+              var homeSection = document.getElementById("home-section");
+              if (homeSection) {
+                  homeSection.style.backgroundImage = "url('" + homeSection.getAttribute('data-bg-gif') + "?v=" + new Date().getTime() + "')";
+                  TweenMax.fromTo(homeSection, 1.5, { opacity: 0.8 }, { opacity: 1, ease: Power2.easeInOut });
+              }
+              TweenMax.to(".unslate_co--site-nav", 1.2, { opacity: 1, scale: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut });
+          }, "+=0.2")
+          // 3. Intro Out (Smooth Fade & Blur)
           .to("#hero-intro", 1.2, 
-            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", textShadow: "0 0 30px rgba(255,255,255,0.8)", scale: 1.05, ease: Power2.easeInOut, delay: 0.4 }
+            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", textShadow: "0 0 30px rgba(255,255,255,0.8)", scale: 1.05, ease: Power2.easeInOut, delay: 0.1 }
           )
-          // 3. Main Heading Characters In (Deep Overlap for Flow)
+          // 4. Main Heading Characters In (Deep Overlap for Flow)
           .staggerTo("#hero-heading .char-anim", 1.5, 
             { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
             0.02,
             "-=1.0" // Start 1s before Intro finishes
           )
-          // 4. CTA Pill In
+          // 5. CTA Pill In
           .fromTo("#hero-cta", 2.0,
             { opacity: 0, y: 20, filter: "blur(15px)", webkitFilter: "blur(15px)" },
             { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power2.easeOut },
             "-=1.0"
-          );
+          )
+          // 6. Fade in Mouse scroll icon
+          .to(".mouse-wrap", 1.0, { opacity: 1, ease: Power2.easeOut }, "-=0.5");
         }
 
         // Custom Entrance Animation for Contact Button
@@ -1990,51 +2006,21 @@
       });
     </script>
     <script>
-      /* --- Cinematic Preloader Logic --- */
+      /* --- Removed Cinematic Preloader Logic, Playing Animations Immediately --- */
       window.addEventListener('load', function() {
-          const percentText = document.querySelector('.preloader-percent');
-          const preloaderWrap = document.querySelector('.preloader-wrap');
-          let count = 0;
+          document.body.classList.add('loaded');
           
-          if(percentText) {
-            const interval = setInterval(() => {
-                // Slower increment for "Exciting" build up (1-3% at a time)
-                count += Math.floor(Math.random() * 3) + 1; 
-                if (count > 100) count = 100;
-                percentText.textContent = count + '%';
-                
-                if (count === 100) {
-                    clearInterval(interval);
-                    // Trigger exit animation
-                    // Quick exit after load finishes (200ms) - speed up "100%" duration
-                    setTimeout(() => {
-                        document.body.classList.add('loaded');
-                        
-                        // Force Trigger Hero Animations IMMEDIATELY (overlapping with curtain lift)
-                        setTimeout(() => {
-                           if (window.heroTimeline) {
-                               window.heroTimeline.play();
-                           }
-                           
-                           // Also ensure CTA visibility if not part of timeline (it is part of timeline, but just in case)
-                           // The timeline handles #hero-cta animation (step 4), so playing it covers everything.
-                           
-                           // Unpause other CSS animations if any remain
-                            const heroTitle = document.getElementById('hero-heading');
-                            if(heroTitle) {
-                               const spans = heroTitle.querySelectorAll('.anim-text');
-                               spans.forEach((span) => {
-                                 span.style.animationPlayState = 'running';
-                                 span.style.visibility = 'visible'; 
-                               });
-                            }
-                        }, 100); // Start almost immediately (100ms) after curtain starts lifting
-                    }, 200);
-                }
-            }, 50); // Slower tick speed (50ms)
-          } else {
-             // Fallback if element missing
-             document.body.classList.add('loaded');
+          if (window.heroTimeline) {
+              window.heroTimeline.play();
+          }
+          
+          const heroTitle = document.getElementById('hero-heading');
+          if (heroTitle) {
+             const spans = heroTitle.querySelectorAll('.anim-text');
+             spans.forEach((span) => {
+               span.style.animationPlayState = 'running';
+               span.style.visibility = 'visible'; 
+             });
           }
       });
 
@@ -2087,6 +2073,32 @@
               });
           });
       }
+
+      /* --- GradualBlur: Hide at page bottom, show on scroll up --- */
+      (function() {
+        var blur = document.querySelector('.site-bottom-blur');
+        if (!blur) return;
+
+        var threshold = 80; // px from bottom before hiding
+        var hidden = false;
+
+        function update() {
+          var distFromBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+          if (distFromBottom <= threshold && !hidden) {
+            hidden = true;
+            blur.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+            blur.style.opacity = '0';
+            blur.style.transform = 'translateY(100%)';
+          } else if (distFromBottom > threshold && hidden) {
+            hidden = false;
+            blur.style.opacity = '1';
+            blur.style.transform = 'translateY(0)';
+          }
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        update(); // run once on load
+      })();
     </script>
   </body>
 </html>
