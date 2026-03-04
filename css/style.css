@@ -2945,11 +2945,10 @@ span.error {
   align-items: center;
   justify-content: center;
   padding: 10px 24px;
-  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Manrope', sans-serif;
   border-radius: 9999px;
   background: transparent;
   color: #fff;
-  font-family: "Inter", sans-serif;
   font-size: 15px;
   text-decoration: none !important;
   /* overflow: hidden; Removed to allow outer glow */
