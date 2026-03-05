@@ -14,6 +14,14 @@
 .meet-desc {
   font-size: 1.1rem;
   color: #a0a0a0;
+}
+
+.meet-desc .text-white {
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.meet-desc {
   line-height: 1.6;
   margin-bottom: 40px;
   max-width: 90%;

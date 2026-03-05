@@ -102,7 +102,7 @@
 
 .process-heading {
   font-family: 'Manrope', sans-serif;
-  font-size: 3rem; /* Further reduced */
+  font-size: clamp(2rem, 3.5vw, 3rem); /* Responsive font size */
   font-weight: 400;
   margin-bottom: 10px;
   line-height: 1.1;
@@ -202,7 +202,7 @@
   }
   
   .process-heading {
-    font-size: 3rem;
+    font-size: clamp(2rem, 8vw, 3rem);
   }
 }
 

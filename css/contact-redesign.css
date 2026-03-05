@@ -703,8 +703,21 @@
   font-family: 'Manrope', sans-serif;
   font-size: 1rem;
   margin-top: 10px;
-  display: inline-block;
+  display: block;
+  text-align: center;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .section-sub-heading {
+    font-size: 0.77rem;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    max-width: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .magic-slide-text {

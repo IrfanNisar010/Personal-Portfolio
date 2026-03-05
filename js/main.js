@@ -39,6 +39,7 @@ jQuery(function($) {
 	animateBookCallCard();
 	animateContactForm();
 	typewriterEffect();
+	luxuryWordReveal();
 	customCursor();
 	backToTop();
 
@@ -959,20 +960,39 @@ var blurTextReveal = function() {
 		if ($this.data('split-init')) return;
 		$this.data('split-init', true);
 
-		var text = $this.text().trim();
+		var contents = $this.contents();
 		$this.empty();
 		
-		var words = text.split(/\s+/);
-		$.each(words, function(i, word) {
-			var $wordSpan = $('<span style="display:inline-block; white-space:nowrap;"></span>');
-			var chars = word.split('');
-			$.each(chars, function(j, char) {
-				$wordSpan.append('<span class="char" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + char + '</span>');
-			});
-			$this.append($wordSpan);
-			if (i < words.length - 1) {
-				$this.append('<span class="char space" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px);">&nbsp;</span>'); 
-			}
+		contents.each(function() {
+			var processNode = function(node, parent) {
+				if (node.nodeType === 3) { // Text node
+					var text = node.nodeValue;
+					var words = text.split(/(\s+)/);
+					$.each(words, function(i, word) {
+						if (word.trim().length === 0) {
+							parent.append(word);
+							return;
+						}
+						var $wordSpan = $('<span style="display:inline-block; white-space:nowrap;"></span>');
+						var chars = word.split('');
+						$.each(chars, function(j, char) {
+							$wordSpan.append('<span class="char" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + char + '</span>');
+						});
+						parent.append($wordSpan);
+					});
+				} else if (node.nodeType === 1) { // Element node
+					var $el = $(node);
+					var $newEl = $('<' + node.tagName + ' class="' + node.className + '"></' + node.tagName + '>');
+					var childContents = $el.contents();
+					if (childContents.length > 0) {
+						childContents.each(function() {
+							processNode(this, $newEl);
+						});
+					}
+					parent.append($newEl);
+				}
+			};
+			processNode(this, $this);
 		});
 	});
 
@@ -1261,6 +1281,26 @@ var portfolioHoverEffect = function() {
 	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
 	if (isMobile) return;
 
+	// Create global portfolio cursor follower
+	var $cursor = $('#portfolio-cursor');
+	if ($cursor.length === 0) {
+		$cursor = $('<div id="portfolio-cursor"><span>VIEW</span></div>');
+		$('body').append($cursor);
+	}
+
+	// Set initial position off-screen
+	TweenMax.set($cursor, { x: -200, y: -200 });
+
+	// Mousemove on the whole document to track cursor smoothly (TweenMax v2 compatible)
+	$(document).on('mousemove.portfolioCursor', function(e) {
+		TweenMax.to($cursor, 0.4, {
+			x: e.clientX,
+			y: e.clientY,
+			ease: Power3.easeOut,
+			force3D: true
+		});
+	});
+
 	// Select all portfolio items
 	$('.portfolio-item').each(function() {
 		var $this = $(this);
@@ -1287,11 +1327,15 @@ var portfolioHoverEffect = function() {
 		TweenMax.set($img, { transformOrigin: "center center", transformStyle: "preserve-3d" });
 
 		$this.on('mouseenter', function() {
+			// Show portfolio cursor, hide default cursor
+			$this.css('cursor', 'none');
+			TweenMax.to($cursor, 0.3, { scale: 1, opacity: 1, ease: Back.easeOut.config(1.5) });
+
 			// Colorize on hover (Smooth Luxury Fade)
-			TweenMax.to($img, 1.2, { // Slower duration for smoothness
+			TweenMax.to($img, 1.0, {
 				filter: 'grayscale(0%)',
 				webkitFilter: 'grayscale(0%)',
-				scale: 1.2, 
+				scale: 1.05, 
 				ease: Power2.easeOut
 			});
 
@@ -1301,7 +1345,7 @@ var portfolioHoverEffect = function() {
 				filter: 'blur(0px)',
 				y: 0,
 				ease: Power2.easeOut,
-				delay: 0.1 // Slight delay to wait for overlay fade
+				delay: 0.1
 			}, 0.015);
 		});
 
@@ -1316,24 +1360,20 @@ var portfolioHoverEffect = function() {
 
 			// Tilt AND Move Animation (3D Tracking) for Image Only
 			TweenMax.to($img, 0.5, {
-				rotationY: xPos * 30,  
-				rotationX: -yPos * 30, 
-				x: xPos * 50, 
-				y: yPos * 50,
+				rotationY: xPos * 8,  
+				rotationX: -yPos * 8, 
+				x: xPos * 12, 
+				y: yPos * 12,
 				ease: Power2.easeOut,
 				transformPerspective: 1000,
 				force3D: true
 			});
 
-			// Overlay stays static to prevent gradient breaking
-			/* TweenMax.to($overlay, 0.5, {
-				x: xPos * 60,
-				y: yPos * 60,
-				ease: Power2.easeOut,
-				force3D: true
-			}); */
-
 		}).on('mouseleave', function() {
+			// Hide portfolio cursor, restore default cursor
+			$this.css('cursor', '');
+			TweenMax.to($cursor, 0.25, { scale: 0.5, opacity: 0, ease: Power2.easeIn });
+
 			// Smooth Grayscale Reset
 			TweenMax.to($img, 1.0, {
 				filter: 'grayscale(100%)',
@@ -1348,7 +1388,7 @@ var portfolioHoverEffect = function() {
 				x: 0,
 				y: 0,
 				scale: 1,
-				ease: Elastic.easeOut.config(1.0, 0.8), // Softer elastic
+				ease: Elastic.easeOut.config(1.0, 0.8),
 				clearProps: "transform" 
 			});
 
@@ -1534,12 +1574,24 @@ var maskTextReveal = function() {
 		var text = $this.text();
 		$this.empty();
 
-		var chars = text.split('');
-		$.each(chars, function(i, char) {
-			var content = char === ' ' ? '&nbsp;' : char;
-			// Micro-optimization: Use larger negative margin for tighter керning if needed, or keep standard
-			var margin = char === ' ' ? '4px' : '-0.02em'; 
-			$this.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:' + margin + ';"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
+		var words = text.split(/\s+/);
+		$.each(words, function(wordIndex, word) {
+			if (word.trim().length === 0) return;
+			var $wordSpan = $('<span style="display:inline-block; white-space:nowrap;"></span>');
+			var chars = word.split('');
+			$.each(chars, function(i, char) {
+				var content = char;
+				var margin = '-0.02em';
+				$wordSpan.append('<span class="char-mask" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:' + margin + ';"><span class="char-inner" style="display:inline-block; transform:translateY(105%) skewX(10deg); will-change:transform;">' + content + '</span></span>');
+			});
+			$this.append($wordSpan);
+			
+			// Add a space after the word except for the last word
+			if (wordIndex < words.length - 1) {
+				var content = '&nbsp;';
+				var margin = '4px';
+				$this.append('<span class="char-mask space" style="display:inline-block; overflow:hidden; vertical-align:bottom; margin-right:' + margin + ';"><span class="char-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">' + content + '</span></span>');
+			}
 		});
 	});
 
@@ -1552,11 +1604,12 @@ var maskTextReveal = function() {
 					var delay = $this.data('delay') || 0;
 
 					var tl = new TimelineMax({ delay: delay });
-					tl.staggerTo($chars, 0.8, { // slightly faster duration for "snappy"
+					tl.staggerTo($chars, 0.75, {
 						y: "0%",
-						ease: Power3.easeOut, // smooth but reactive
+						skewX: 0,
+						ease: Back.easeOut.config(1.4),
 						force3D: true
-					}, 0.04); // tight stagger
+					}, 0.035);
 
 					observer.unobserve(entry.target);
 				}
@@ -2028,10 +2081,10 @@ var typewriterEffect = function() {
 					$el.css({ 'visibility': 'visible', 'opacity': 1 });
 
 					var i = 0;
-					$el.text(''); // Clear placeholder
+					$el.empty(); // Clear placeholder
 
 					var typeLoop = setInterval(function() {
-						$el.text(text.substring(0, i + 1));
+						$el.html(text.substring(0, i + 1));
 						i++;
 						if (i >= text.length) {
 							clearInterval(typeLoop);
@@ -2045,10 +2098,10 @@ var typewriterEffect = function() {
 
 		$elements.each(function() {
 			var $this = $(this);
-			// Store original text
-			$this.data('text', $this.text().trim());
+			// Store original HTML
+			$this.data('text', $this.html().trim());
 			// Clear and hide initially (to prevent flash)
-			$this.text(''); 
+			$this.empty(); 
 			$this.css('visibility', 'hidden'); 
 			observer.observe(this);
 		});
@@ -2209,3 +2262,60 @@ jQuery(document).ready(function() {
         this.style.setProperty('--mouse-y', `${y}px`);
     });
 });
+
+var luxuryWordReveal = function() {
+	var $elements = $('.luxury-word-reveal');
+	if ($elements.length === 0) return;
+
+	// Prepare: split each element's text into word spans
+	$elements.each(function() {
+		var $this = $(this);
+		if ($this.data('lwr-init')) return;
+		$this.data('lwr-init', true);
+
+		var text = $this.text().trim();
+		var words = text.split(/\s+/);
+		$this.empty();
+
+		$.each(words, function(i, word) {
+			var $word = $('<span style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(12px); will-change:transform,opacity,filter;">' + word + '</span>');
+			$this.append($word);
+			if (i < words.length - 1) {
+				$this.append(' ');
+			}
+		});
+
+		$this.css('opacity', '1'); // show container
+	});
+
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (!entry.isIntersecting) return;
+				var $el = $(entry.target);
+				if ($el.data('lwr-done')) return;
+				$el.data('lwr-done', true);
+				observer.unobserve(entry.target);
+
+				var $words = $el.find('span');
+				var delay = ($el.data('delay') || 0.5); // start shortly after title
+
+				TweenMax.staggerTo($words, 0.9, {
+					opacity: 1,
+					y: 0,
+					filter: 'blur(0px)',
+					webkitFilter: 'blur(0px)',
+					ease: Power4.easeOut,
+					force3D: true,
+					delay: delay
+				}, 0.08);
+			});
+		}, { threshold: 0.2 });
+
+		$elements.each(function() {
+			observer.observe(this);
+		});
+	} else {
+		$elements.find('span').css({ opacity: 1, filter: 'blur(0px)', transform: 'translateY(0)' });
+	}
+};

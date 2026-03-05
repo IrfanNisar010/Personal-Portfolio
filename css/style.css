@@ -2945,7 +2945,7 @@ span.error {
   align-items: center;
   justify-content: center;
   padding: 10px 24px;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', sans-serif !important;
   border-radius: 9999px;
   background: transparent;
   color: #fff;
@@ -2958,6 +2958,7 @@ span.error {
   /* Ensure it's centered if parent is text-center */
   vertical-align: middle;
 }
+
 
 /* The rotating glow (Mouse Tracking) */
 /* The rotating glow (Mouse Tracking - Outer) */
@@ -3096,6 +3097,7 @@ span.error {
 
 .hero-cta-pill .cta-text {
   font-weight: 500;
+  font-family: 'Manrope', sans-serif !important;
   color: #fafafa;
   z-index: 1;
 }
@@ -3109,6 +3111,7 @@ span.error {
 .hero-cta-pill .cta-action {
   color: #888;
   font-weight: 400;
+  font-family: 'Manrope', sans-serif !important;
   transition: color 0.2s;
   z-index: 1;
 }
@@ -3207,6 +3210,44 @@ span.error {
   filter: grayscale(100%); /* Start Black & White */
   -webkit-filter: grayscale(100%);
 }
+
+
+/* =========================================
+   PORTFOLIO CURSOR FOLLOWER
+   ========================================= */
+#portfolio-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: none;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  will-change: transform, opacity;
+}
+
+/* Hide the centered overlay btn (no longer needed) */
+.glass-view-btn {
+  display: none;
+}
+
 
 .portfolio-item {
   perspective: 1000px;
