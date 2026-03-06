@@ -1374,16 +1374,11 @@ a, a:hover {
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
-  bottom: 50px;
+  bottom: 100px;
   z-index: 9;
-  opacity: 0.4; /* More subtle */
-  transition: opacity 0.3s;
-  animation: pulse-fade 3s infinite ease-in-out;
-}
-
-@keyframes pulse-fade {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.2; }
+  opacity: 0; /* Start fully hidden until timeline reveals it */
+  pointer-events: none;
+  /* (pulse-fade animation removed so GSAP has full control of opacity) */
 }
 
 .mouse-wrap:hover {
@@ -3222,11 +3217,15 @@ span.error {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
   border: none;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 8px 32px 0 rgba(31, 38, 135, 0.2),
+    0 2px 16px 0 rgba(31, 38, 135, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1329,6 +1329,9 @@ var portfolioHoverEffect = function() {
 		$this.on('mouseenter', function() {
 			// Show portfolio cursor, hide default cursor
 			$this.css('cursor', 'none');
+			// Hide global white glass cursor and add a class preventing mousemove from showing it
+			$('body').addClass('hide-default-cursor');
+			TweenMax.to('.mouse-cursor-wrap', 0.2, { opacity: 0, overwrite: "auto" });
 			TweenMax.to($cursor, 0.3, { scale: 1, opacity: 1, ease: Back.easeOut.config(1.5) });
 
 			// Colorize on hover (Smooth Luxury Fade)
@@ -1372,6 +1375,9 @@ var portfolioHoverEffect = function() {
 		}).on('mouseleave', function() {
 			// Hide portfolio cursor, restore default cursor
 			$this.css('cursor', '');
+			// Restore the global white glass cursor
+			$('body').removeClass('hide-default-cursor');
+			TweenMax.to('.mouse-cursor-wrap', 0.25, { opacity: 1, overwrite: "auto" });
 			TweenMax.to($cursor, 0.25, { scale: 0.5, opacity: 0, ease: Power2.easeIn });
 
 			// Smooth Grayscale Reset
@@ -1604,12 +1610,12 @@ var maskTextReveal = function() {
 					var delay = $this.data('delay') || 0;
 
 					var tl = new TimelineMax({ delay: delay });
-					tl.staggerTo($chars, 0.75, {
+					tl.staggerTo($chars, 0.9, {
 						y: "0%",
 						skewX: 0,
-						ease: Back.easeOut.config(1.4),
+						ease: Power4.easeOut, // Changed from Back.easeOut to stop jittering/clipping
 						force3D: true
-					}, 0.035);
+					}, 0.025);
 
 					observer.unobserve(entry.target);
 				}
@@ -2126,8 +2132,10 @@ var customCursor = function() {
 	
 	// Track mouse movement
 	$(document).on('mousemove', function(e) {
-		// Fade in on first move
-		TweenMax.to(cursorDot, 0.3, { opacity: 1 });
+		// Fade in on first move, skip if hovering over special regions
+		if (!$('body').hasClass('hide-default-cursor')) {
+			TweenMax.to(cursorDot, 0.3, { opacity: 1, overwrite: "auto" });
+		}
 
 		// Smooth follow using GSAP
 		// 0.15s duration gives it that "attached" but smooth feel

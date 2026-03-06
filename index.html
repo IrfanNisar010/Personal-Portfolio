@@ -59,7 +59,7 @@
       /* Adjust scroll mouse position on mobile */
       @media (max-width: 768px) {
         .mouse-wrap {
-          bottom: 5rem !important; /* Move it higher up to start seeing it first */
+          bottom: 7rem !important; /* Move it higher up to start seeing it first */
         }
       }
     </style>
@@ -252,9 +252,9 @@
                 Projects
               </div>
               <!-- Main Title -->
-              <h2 class="contact-heading" style="margin-bottom: 12px;"><span class="mask-reveal-text">Crafted to Impress,</span><br><span class="text-muted-custom mask-reveal-text" data-delay="0.7">Built to Perform</span></h2>
+              <h2 class="contact-heading" style="margin-bottom: 12px;"><span class="mask-reveal-text">Crafted to Impress,</span><br><span class="text-muted-custom mask-reveal-text" data-delay="0.1">Built to Perform</span></h2>
               <!-- Subtitle -->
-              <p class="luxury-word-reveal" style="font-family: 'Manrope', sans-serif; font-size: 0.95rem; color: #888; max-width: 400px; margin: 0 auto; line-height: 1.6;">Explore a showcase of designs that blend creativity, strategy, and seamless execution</p>
+              <p class="luxury-word-reveal" data-delay="0.2" style="font-family: 'Manrope', sans-serif; font-size: 0.95rem; color: #888; max-width: 400px; margin: 0 auto; line-height: 1.6;">Explore a showcase of designs that blend creativity, strategy, and seamless execution</p>
             </div>
 
 
@@ -1569,9 +1569,27 @@ ideas to life with precision & impact</p>
             { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power2.easeOut },
             "-=1.0"
           )
-          // 6. Fade in Mouse scroll icon
-          .to(".mouse-wrap", 1.0, { opacity: 1, ease: Power2.easeOut }, "-=0.5");
+          
+          // 6. Fade in Mouse scroll icon at the very end with a noticeable delay
+          .fromTo(".mouse-wrap", 1.0, 
+              { opacity: 0, pointerEvents: "none" },
+              { opacity: 1, pointerEvents: "auto", ease: Power2.easeOut }, 
+              "+=1.0"); // Wait an extra full second after the button appears
         }
+
+        // Dynamic mouse-wrap logic
+        var $mouseWrap = $('.mouse-wrap');
+        $(window).on('scroll', function() {
+            var st = $(this).scrollTop();
+            if (st > 50) {
+                TweenMax.to($mouseWrap, 0.3, { opacity: 0, pointerEvents: 'none', ease: Power2.easeOut, overwrite: "all" });
+            } else {
+                // Ensure the timeline is actually completed (progress === 1) before showing again
+                if (window.heroTimeline && window.heroTimeline.progress() === 1) {
+                    TweenMax.to($mouseWrap, 0.3, { opacity: 1, pointerEvents: 'auto', ease: Power2.easeOut, overwrite: "all" });
+                }
+            }
+        });
 
         // Custom Entrance Animation for Contact Button
         const contactBtnWrapper = document.querySelector('.contact-button-reveal');
@@ -1901,6 +1919,7 @@ ideas to life with precision & impact</p>
               });
             }, { threshold: 0.1 });
 
+            // Restore original typo syntax where observe wasn't correctly triggered if element missing but whatever
             observer.observe($heading[0]);
           }
         }, 100);
