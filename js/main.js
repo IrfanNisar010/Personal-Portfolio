@@ -642,6 +642,13 @@ var onePageNavigation = function() {
 
     var hash = this.hash;
     
+    // Play animation again if jumping to top
+    if (hash === '#home-section' || hash === '#hero-section') {
+      if (window.heroTimeline) {
+          window.heroTimeline.restart();
+      }
+    }
+    
       $('html, body').animate({
         scrollTop: $(hash).offset().top
       }, 1000, 'easeInOutExpo');

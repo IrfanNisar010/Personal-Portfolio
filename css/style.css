@@ -3616,10 +3616,6 @@ body {
 
 /* Skills Redesign */
 /* Skills Redesign */
-.skills-grid {
-  /* gap: 30px; Removed to prevent wrapping with Bootstrap columns */
-}
-
 /* Centered Heading Style (Matching Meet Irfan/Services) */
 .expertise-heading {
   font-family: 'Manrope', sans-serif;
@@ -3851,7 +3847,7 @@ html.lenis {
   right: 25px;
   width: 46px;
   height: 46px;
-  z-index: 9999;
+  z-index: 99999;
   cursor: pointer;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05); /* Default Glassy Neutral (Mobile/Inactive) */
