@@ -2055,11 +2055,21 @@ ideas to life with precision & impact</p>
     </script>
     <script>
       /* --- Removed Cinematic Preloader Logic, Playing Animations Immediately --- */
-      window.addEventListener('load', function() {
+      function playHero() {
           document.body.classList.add('loaded');
           
           if (window.heroTimeline) {
               window.heroTimeline.play();
+          } else {
+             // In case heroTimeline is not yet initialized, poll for it briefly
+             var checkAttempts = 0;
+             var checkExist = setInterval(function() {
+                if (window.heroTimeline) {
+                    window.heroTimeline.play();
+                    clearInterval(checkExist);
+                }
+                if (++checkAttempts > 20) clearInterval(checkExist); // Stop checking after 2 seconds
+             }, 100);
           }
           
           const heroTitle = document.getElementById('hero-heading');
@@ -2069,6 +2079,21 @@ ideas to life with precision & impact</p>
                span.style.animationPlayState = 'running';
                span.style.visibility = 'visible'; 
              });
+          }
+      }
+
+      if (document.readyState === 'complete') {
+          playHero();
+      } else {
+          window.addEventListener('load', playHero);
+      }
+      
+      // Also handle back/forward cache restorations on mobile
+      window.addEventListener('pageshow', function(event) {
+          if (event.persisted) {
+              // If restoring from cache, the timeline might have already reached the end, 
+              // but if it didn't play or got reset, play it.
+              playHero();
           }
       });
 
