@@ -1519,11 +1519,16 @@ ideas to life with precision & impact</p>
               var $this = $(this);
               var text = $this.text().trim();
               var newHtml = '';
+              var isMobile = window.innerWidth < 768;
+              var initialStyles = isMobile 
+                ? 'display:inline-block; opacity:0; transform:translateY(20px); will-change:transform, opacity;'
+                : 'display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter;';
+              
               for (var i = 0; i < text.length; i++) {
                 var char = text[i] === ' ' ? '&nbsp;' : text[i];
                 var colorStyle = (char === '.') ? 'color: #D63447;' : '';
                 // Added char-anim class for targeting
-                newHtml += '<span class="char-anim" style="display:inline-block; opacity:0; filter:blur(15px); transform:translateY(20px); text-shadow: 0 0 30px rgba(255,255,255,0.8); will-change:transform, opacity, filter; ' + colorStyle + '">' + char + '</span>';
+                newHtml += '<span class="char-anim" style="' + initialStyles + ' ' + colorStyle + '">' + char + '</span>';
               }
               $this.html(newHtml);
             });
@@ -1539,11 +1544,18 @@ ideas to life with precision & impact</p>
           // Modern Navbar Initial hidden state (fade in from inside)
           TweenMax.set(".unslate_co--site-nav", { opacity: 0, scale: 0.95, filter: "blur(10px)", webkitFilter: "blur(10px)", transformOrigin: "center center" });
 
+          // Animation property variants
+          var isMobile = window.innerWidth < 768;
+          var animPropsIn = isMobile 
+            ? { opacity: 1, y: 0, ease: Power2.easeOut, clearProps: "all" } 
+            : { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut, clearProps: "all" };
+          
+          var animPropsOut = isMobile 
+            ? { opacity: 0, scale: 1.05, ease: Power2.easeInOut, delay: 0.1 } 
+            : { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", textShadow: "0 0 30px rgba(255,255,255,0.8)", scale: 1.05, ease: Power2.easeInOut, delay: 0.1 };
+
           // 1. Intro "I'm Irfan" Characters In (Slower, Luxury Feel)
-          tl.staggerTo("#hero-intro .char-anim", 1.5, 
-            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
-            0.06
-          )
+          tl.staggerTo("#hero-intro .char-anim", 1.5, animPropsIn, 0.06)
           // 2. Custom action: load gif and fade in navbar
           .add(function() {
               var homeSection = document.getElementById("home-section");
@@ -1554,19 +1566,13 @@ ideas to life with precision & impact</p>
               TweenMax.to(".unslate_co--site-nav", 1.2, { opacity: 1, scale: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut });
           }, "+=0.2")
           // 3. Intro Out (Smooth Fade & Blur)
-          .to("#hero-intro", 1.2, 
-            { opacity: 0, filter: "blur(20px)", webkitFilter: "blur(20px)", textShadow: "0 0 30px rgba(255,255,255,0.8)", scale: 1.05, ease: Power2.easeInOut, delay: 0.1 }
-          )
-          // 4. Main Heading Characters In (Deep Overlap for Flow)
-          .staggerTo("#hero-heading .char-anim", 1.5, 
-            { opacity: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", textShadow: "0 0 0px rgba(255,255,255,0)", y: 0, ease: Power2.easeOut },
-            0.02,
-            "-=1.0" // Start 1s before Intro finishes
-          )
+          .to("#hero-intro", 1.2, animPropsOut)
+          // 4. Main Heading Characters In (Play after fade out on mobile, overlap on desktop)
+          .staggerTo("#hero-heading .char-anim", 1.5, animPropsIn, 0.02, isMobile ? "+=0.0" : "-=1.0")
           // 5. CTA Pill In
           .fromTo("#hero-cta", 2.0,
-            { opacity: 0, y: 20, filter: "blur(15px)", webkitFilter: "blur(15px)" },
-            { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power2.easeOut },
+            isMobile ? { opacity: 0, y: 20 } : { opacity: 0, y: 20, filter: "blur(15px)", webkitFilter: "blur(15px)" },
+            isMobile ? { opacity: 1, y: 0, ease: Power2.easeOut, clearProps: "all" } : { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power2.easeOut, clearProps: "all" },
             "-=1.0"
           )
           
@@ -1896,9 +1902,14 @@ ideas to life with precision & impact</p>
             // Split text
             var text = $heading.text().trim();
             var newHtml = '';
+            var isMobile = window.innerWidth < 768;
+            var initialStyles = isMobile 
+              ? 'display:inline-block; opacity:0; transform:translateY(40px) scale(0.8); will-change:transform, opacity;'
+              : 'display:inline-block; opacity:0; filter:blur(20px); transform:translateY(40px) scale(0.8); will-change:transform, opacity, filter;';
+              
             for (var i = 0; i < text.length; i++) {
               var char = text[i] === ' ' ? '&nbsp;' : text[i];
-              newHtml += '<span class="proj-char" style="display:inline-block; opacity:0; filter:blur(20px); transform:translateY(40px) scale(0.8); will-change:transform, opacity, filter;">' + char + '</span>';
+              newHtml += '<span class="proj-char" style="' + initialStyles + '">' + char + '</span>';
             }
             $heading.html(newHtml);
             $heading.css("opacity", 1); 
@@ -1908,12 +1919,11 @@ ideas to life with precision & impact</p>
               entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                   var tl = new TimelineMax();
-                  tl.staggerTo("#projects-heading .proj-char", 2.0, {
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    transform: "translateY(0) scale(1)",
-                    ease: Power3.easeOut
-                  }, 0.1);
+                  var animProps = isMobile 
+                    ? { opacity: 1, transform: "translateY(0) scale(1)", ease: Power3.easeOut, clearProps: "all" }
+                    : { opacity: 1, filter: "blur(0px)", transform: "translateY(0) scale(1)", ease: Power3.easeOut, clearProps: "all" };
+                    
+                  tl.staggerTo("#projects-heading .proj-char", 2.0, animProps, 0.1);
                   observer.unobserve(entry.target);
                 }
               });
@@ -1932,9 +1942,14 @@ ideas to life with precision & impact</p>
             // Split text
             var text = $contactHeading.text().trim();
             var newHtml = '';
+            var isMobile = window.innerWidth < 768;
+            var initialStyles = isMobile 
+              ? 'display:inline-block; opacity:0; transform:translateY(40px) scale(0.8); will-change:transform, opacity;'
+              : 'display:inline-block; opacity:0; filter:blur(20px); transform:translateY(40px) scale(0.8); will-change:transform, opacity, filter;';
+              
             for (var i = 0; i < text.length; i++) {
               var char = text[i] === ' ' ? '&nbsp;' : text[i];
-              newHtml += '<span class="contact-char" style="display:inline-block; opacity:0; filter:blur(20px); transform:translateY(40px) scale(0.8); will-change:transform, opacity, filter;">' + char + '</span>';
+              newHtml += '<span class="contact-char" style="' + initialStyles + '">' + char + '</span>';
             }
             $contactHeading.html(newHtml);
             $contactHeading.css("opacity", 1); 
@@ -1944,12 +1959,11 @@ ideas to life with precision & impact</p>
               entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                   var tl = new TimelineMax();
-                  tl.staggerTo("#contact-heading .contact-char", 2.0, {
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    transform: "translateY(0) scale(1)",
-                    ease: Power3.easeOut
-                  }, 0.1);
+                  var animProps = isMobile 
+                    ? { opacity: 1, transform: "translateY(0) scale(1)", ease: Power3.easeOut, clearProps: "all" }
+                    : { opacity: 1, filter: "blur(0px)", transform: "translateY(0) scale(1)", ease: Power3.easeOut, clearProps: "all" };
+                    
+                  tl.staggerTo("#contact-heading .contact-char", 2.0, animProps, 0.1);
                   observerContact.unobserve(entry.target);
                 }
               });

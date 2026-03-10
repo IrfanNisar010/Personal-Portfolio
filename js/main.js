@@ -976,7 +976,10 @@ var blurTextReveal = function() {
 						var $wordSpan = $('<span style="display:inline-block; white-space:nowrap;"></span>');
 						var chars = word.split('');
 						$.each(chars, function(j, char) {
-							$wordSpan.append('<span class="char" style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;">' + char + '</span>');
+							var initStyle = isMobile 
+								? 'display:inline-block; opacity:0; transform:translateY(15px); will-change:transform, opacity;'
+								: 'display:inline-block; opacity:0; filter:blur(10px); transform:translateY(15px); will-change:transform, opacity, filter;';
+							$wordSpan.append('<span class="char" style="' + initStyle + '">' + char + '</span>');
 						});
 						parent.append($wordSpan);
 					});
@@ -1007,12 +1010,11 @@ var blurTextReveal = function() {
 						
 						// Play Animation Once
 						var tl = new TimelineMax();
-						tl.staggerTo($chars, 0.8, {
-							opacity: 1,
-							filter: 'blur(0px)',
-							y: 0,
-							ease: Back.easeOut.config(1.2)
-						}, 0.015);
+						var animObj = isMobile 
+							? { opacity: 1, y: 0, ease: Back.easeOut.config(1.2), clearProps: "filter,webkitFilter,transform,willChange" }
+							: { opacity: 1, filter: 'blur(0px)', y: 0, ease: Back.easeOut.config(1.2), clearProps: "filter,webkitFilter,transform,willChange" };
+						
+						tl.staggerTo($chars, 0.8, animObj, 0.015);
 						
 						observer.unobserve(entry.target);
 					}
@@ -1057,14 +1059,14 @@ var blurStaggerReveal = function() {
 	var $elements = $(selector);
 	if ($elements.length === 0) return;
 
+	var isMobile = window.innerWidth < 992;
+	
 	// Initial State Set (Target all children at once)
 	var $allChildren = $elements.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
-	TweenMax.set($allChildren, { 
-		opacity: 0, 
-		y: 30, 
-		filter: 'blur(20px)',
-		webkitFilter: 'blur(20px)'
-	});
+	var initProps = isMobile 
+		? { opacity: 0, y: 30 } 
+		: { opacity: 0, y: 30, filter: 'blur(20px)', webkitFilter: 'blur(20px)' };
+	TweenMax.set($allChildren, initProps);
 
 	if ('IntersectionObserver' in window) {
 		var observer = new IntersectionObserver(function(entries) {
@@ -1074,14 +1076,11 @@ var blurStaggerReveal = function() {
 					var $children = $this.find('.skill-pill, .experience-item, .process-card, .process-tag, .faq-item, .faq-tag');
 					
 					var tl = new TimelineMax();
-					tl.staggerTo($children, 0.8, {
-						opacity: 1,
-						y: 0,
-						filter: 'blur(0px)',
-						webkitFilter: 'blur(0px)',
-						ease: Power3.easeOut,
-						force3D: true
-					}, 0.1);
+					var animProps = isMobile 
+						? { opacity: 1, y: 0, ease: Power3.easeOut, force3D: true, clearProps: "transform,filter,webkitFilter" }
+						: { opacity: 1, y: 0, filter: 'blur(0px)', webkitFilter: 'blur(0px)', ease: Power3.easeOut, force3D: true, clearProps: "transform,filter,webkitFilter" };
+						
+					tl.staggerTo($children, 0.8, animProps, 0.1);
 					
 					observer.unobserve(entry.target);
 				}
@@ -1500,14 +1499,10 @@ var servicesCardReveal = function() {
 	
 	// Initial State
 	$('.services-grid .service-card').each(function() {
-		TweenMax.set(this, {
-			autoAlpha: 0,
-			y: 60,
-			scale: 0.9,
-			filter: "blur(20px)",
-			webkitFilter: "blur(20px)",
-			transformOrigin: "center bottom"
-		});
+		var initProps = isMobile 
+			? { autoAlpha: 0, y: 60, scale: 0.9, transformOrigin: "center bottom" }
+			: { autoAlpha: 0, y: 60, scale: 0.9, filter: "blur(20px)", webkitFilter: "blur(20px)", transformOrigin: "center bottom" };
+		TweenMax.set(this, initProps);
 	});
 
 	if (isMobile) {
@@ -1519,15 +1514,10 @@ var servicesCardReveal = function() {
 						
 						// Run Animation Once (No Reverse on Mobile)
 						var tl = new TimelineMax();
-						tl.staggerTo($cards, 1.2, {
-							autoAlpha: 1,
-							y: 0,
-							scale: 1,
-							filter: "blur(0px)",
-							webkitFilter: "blur(0px)",
-							ease: Power4.easeOut,
-							force3D: true
-						}, 0.15);
+						var animProps = isMobile 
+							? { autoAlpha: 1, y: 0, scale: 1, ease: Power4.easeOut, force3D: true, clearProps: "transform,filter,webkitFilter" }
+							: { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power4.easeOut, force3D: true, clearProps: "transform,filter,webkitFilter" };
+						tl.staggerTo($cards, 1.2, animProps, 0.15);
 						
 						observer.unobserve(entry.target);
 					}
@@ -1613,8 +1603,9 @@ var maskTextReveal = function() {
 					tl.staggerTo($chars, 0.9, {
 						y: "0%",
 						skewX: 0,
-						ease: Power4.easeOut, // Changed from Back.easeOut to stop jittering/clipping
-						force3D: true
+						ease: Power4.easeOut,
+						force3D: true,
+						clearProps: "transform,skewX,willChange"
 					}, 0.025);
 
 					observer.unobserve(entry.target);
@@ -1663,13 +1654,13 @@ var animateStats = function() {
 	var controller = new ScrollMagic.Controller();
 
 	// Initial State for Cards
-	TweenMax.set('.stat-card', { 
-		y: 40, 
-		autoAlpha: 0, 
-		filter: "blur(10px)",
-		webkitFilter: "blur(10px)",
-		transformOrigin: "center center"
-	});
+	var isMobile = window.innerWidth < 992;
+	
+	// Initial State for Cards
+	var cardInit = isMobile 
+		? { y: 40, autoAlpha: 0, transformOrigin: "center center" }
+		: { y: 40, autoAlpha: 0, filter: "blur(10px)", webkitFilter: "blur(10px)", transformOrigin: "center center" };
+	TweenMax.set('.stat-card', cardInit);
 
 	// Initial State for Texts
 	TweenMax.set('.stat-card p', { 
@@ -1686,14 +1677,11 @@ var animateStats = function() {
 	})
 	.on('enter', function() {
 		// 1. Stagger Cards In
-		TweenMax.staggerTo('.stat-card', 1.0, {
-			y: 0,
-			autoAlpha: 1,
-			filter: "blur(0px)",
-			webkitFilter: "blur(0px)",
-			ease: Power3.easeOut,
-			force3D: true
-		}, 0.15); // Stagger delay
+		var cardAnim = isMobile 
+			? { y: 0, autoAlpha: 1, ease: Power3.easeOut, force3D: true, clearProps: "filter,webkitFilter,transform" }
+			: { y: 0, autoAlpha: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut, force3D: true, clearProps: "filter,webkitFilter,transform" };
+		
+		TweenMax.staggerTo('.stat-card', 1.0, cardAnim, 0.15); // Stagger delay
 
 		// 2. Animate Numbers
 		$('.stat-number').each(function() {
@@ -1748,24 +1736,23 @@ var animatePremiumTestimonial = function() {
 	var $p = $card.find('.testimonial-text');
 
 	// split text approach
+	var isMobile = window.innerWidth < 992;
 	var text = $p.text().trim();
 	var words = text.split(' ');
 	$p.empty();
 	// Reconstruct with spans
 	$.each(words, function(i, word) {
-		$p.append('<span class="t-word" style="display:inline-block; opacity:0; transform:translateX(15px) translateZ(0); filter:blur(12px); color:#fff; text-shadow:0 0 15px rgba(255,255,255,0.6); margin-right: 4px; will-change:transform, opacity, filter, color, text-shadow;">' + word + '</span>');
+		var initStyle = isMobile 
+			? 'display:inline-block; opacity:0; transform:translateX(15px) translateZ(0); color:#fff; margin-right: 4px; will-change:transform, opacity, color;'
+			: 'display:inline-block; opacity:0; transform:translateX(15px) translateZ(0); filter:blur(12px); color:#fff; text-shadow:0 0 15px rgba(255,255,255,0.6); margin-right: 4px; will-change:transform, opacity, filter, color, text-shadow;';
+		$p.append('<span class="t-word" style="' + initStyle + '">' + word + '</span>');
 	});
 
 	// Initial States
-	TweenMax.set($card, { 
-		autoAlpha: 0, 
-		y: 50, 
-		rotationX: 5, /* Subtle 3D tilt */
-		transformPerspective: 1000,
-		transformOrigin: "center top",
-		filter: "blur(10px)",
-		webkitFilter: "blur(10px)"
-	});
+	var cardInit = isMobile 
+		? { autoAlpha: 0, y: 50, transformOrigin: "center top", rotationX: 5 }
+		: { autoAlpha: 0, y: 50, rotationX: 5, transformPerspective: 1000, transformOrigin: "center top", filter: "blur(10px)", webkitFilter: "blur(10px)" };
+	TweenMax.set($card, cardInit);
 
 	TweenMax.set($img, { 
 		scale: 0.5, 
@@ -1781,22 +1768,19 @@ var animatePremiumTestimonial = function() {
 	var tl = new TimelineMax({ paused: true });
 
 	// 1. Card Reveal (Smooth Rise)
-	tl.to($card, 1.2, { 
-		autoAlpha: 1, 
-		y: 0, 
-		rotationX: 0,
-		filter: "blur(0px)",
-		webkitFilter: "blur(0px)",
-		ease: Power3.easeOut,
-		force3D: true
-	})
+	var cardAnimProps = isMobile 
+		? { autoAlpha: 1, y: 0, rotationX: 0, ease: Power3.easeOut, force3D: true, clearProps: "transform,filter,webkitFilter" }
+		: { autoAlpha: 1, y: 0, rotationX: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut, force3D: true, clearProps: "transform,filter,webkitFilter" };
+		
+	tl.to($card, 1.2, cardAnimProps)
 	
 	// 2. Image Reveal (Pop + Focus)
 	.to($img, 1.0, {
 		scale: 1,
 		opacity: 1,
 		filter: "grayscale(0%) blur(0px)",
-		ease: Expo.easeOut
+		ease: Expo.easeOut,
+		clearProps: "transform,filter"
 	}, "-=0.8")
 
 	// 3. Info & Stars (Slide In)
@@ -1804,27 +1788,25 @@ var animatePremiumTestimonial = function() {
 		opacity: 1,
 		x: 0,
 		filter: "blur(0px)",
-		ease: Power2.easeOut
+		ease: Power2.easeOut,
+		clearProps: "transform,filter"
 	}, "-=0.6")
 	.to($stars, 0.8, {
 		opacity: 1,
 		scale: 1,
 		filter: "blur(0px)",
-		ease: Back.easeOut.config(1.7)
+		ease: Back.easeOut.config(1.7),
+		clearProps: "transform,filter"
 	}, "-=0.7")
 
 	// 4. Text Flow (New "Mist Flow" Style) with Magic Glow
 	// Concept: Words drift in from the side with deep blur, creating a liquid "filling" effect.
 	// Glow: Words start white/hot with shadow, cooling down to a premium bright grey.
-	.staggerTo($card.find('.t-word'), 1.5, {
-		opacity: 1,
-		x: 0, 
-		y: 0,
-		filter: "blur(0px)",
-		color: "#e6e6e6", // Brighter final color (Magical Silver)
-		textShadow: "0 0 0px rgba(255,255,255,0)", // Remove glow
-		ease: Power2.easeOut
-	}, 0.015, "-=0.6"); // 0.015 stagger is very fast, creating a seamless flow
+	var wordAnimProps = isMobile 
+		? { opacity: 1, x: 0, y: 0, color: "#e6e6e6", ease: Power2.easeOut, clearProps: "transform,filter,textShadow,willChange,color" }
+		: { opacity: 1, x: 0, y: 0, filter: "blur(0px)", color: "#e6e6e6", textShadow: "0 0 0px rgba(255,255,255,0)", ease: Power2.easeOut, clearProps: "transform,filter,textShadow,willChange,color" };
+		
+	tl.staggerTo($card.find('.t-word'), 1.5, wordAnimProps, 0.015, "-=0.6"); // 0.015 stagger is very fast, creating a seamless flow
 
 
 	// Trigger
@@ -2276,6 +2258,7 @@ var luxuryWordReveal = function() {
 	if ($elements.length === 0) return;
 
 	// Prepare: split each element's text into word spans
+	var isMobile = window.innerWidth < 992;
 	$elements.each(function() {
 		var $this = $(this);
 		if ($this.data('lwr-init')) return;
@@ -2286,7 +2269,10 @@ var luxuryWordReveal = function() {
 		$this.empty();
 
 		$.each(words, function(i, word) {
-			var $word = $('<span style="display:inline-block; opacity:0; filter:blur(10px); transform:translateY(12px); will-change:transform,opacity,filter;">' + word + '</span>');
+			var initStyle = isMobile 
+				? 'display:inline-block; opacity:0; transform:translateY(12px); will-change:transform,opacity;'
+				: 'display:inline-block; opacity:0; filter:blur(10px); transform:translateY(12px); will-change:transform,opacity,filter;';
+			var $word = $('<span style="' + initStyle + '">' + word + '</span>');
 			$this.append($word);
 			if (i < words.length - 1) {
 				$this.append(' ');
@@ -2308,15 +2294,11 @@ var luxuryWordReveal = function() {
 				var $words = $el.find('span');
 				var delay = ($el.data('delay') || 0.5); // start shortly after title
 
-				TweenMax.staggerTo($words, 0.9, {
-					opacity: 1,
-					y: 0,
-					filter: 'blur(0px)',
-					webkitFilter: 'blur(0px)',
-					ease: Power4.easeOut,
-					force3D: true,
-					delay: delay
-				}, 0.08);
+				var animProps = isMobile 
+					? { opacity: 1, y: 0, ease: Power4.easeOut, force3D: true, delay: delay, clearProps: "transform,filter,webkitFilter,willChange" }
+					: { opacity: 1, y: 0, filter: 'blur(0px)', webkitFilter: 'blur(0px)', ease: Power4.easeOut, force3D: true, delay: delay, clearProps: "transform,filter,webkitFilter,willChange" };
+
+				TweenMax.staggerTo($words, 0.9, animProps, 0.08);
 			});
 		}, { threshold: 0.2 });
 
