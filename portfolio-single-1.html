@@ -1,290 +1,650 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <title>Irfan &mdash; Choco Heaven E-commerce</title>
+  <title>Choco Heaven Case Study | Irfan Nisar</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-  <meta name="description" content=" ">
-  <meta name="keywords" content="html, css, javascript, jquery">
-  <meta name="author" content="">
+  <link rel="icon" type="image/png" href="images/favicon.png">
 
+  <!-- Core Theme CSS (vendor, grids) -->
   <link rel="stylesheet" href="css/vendor/icomoon/style.css">
   <link rel="stylesheet" href="css/vendor/owl.carousel.min.css">
-  <link rel="stylesheet" href="css/vendor/aos.css">
-  <link rel="stylesheet" href="css/vendor/animate.min.css">
   <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="css/vendor/jquery.fancybox.min.css">
-
-  <!-- Theme Style -->
   <link rel="stylesheet" href="css/style.css">
+  
+  <link rel="stylesheet" href="css/process-section.css">
+  <link rel="stylesheet" href="css/faq-section.css">
+  <link rel="stylesheet" href="css/about-redesign.css">
+  <!-- New Redesign CSS -->
+  <link rel="stylesheet" href="css/project-details-redesign.css">
 
+  <!-- Choco Heaven Page Accent Override: #f7bad0 -->
+  <style>
+    /* ── Global accent colour token ── */
+    body.case-study-page {
+      --choco-accent: #f7bad0;
+      --choco-accent-rgb: 247, 186, 208;
+    }
+
+    /* Tags — inject page theme into global glass tag design */
+    body.case-study-page .cs-tag {
+      --page-tag-rgb: 247, 186, 208; /* Choco Heaven rose-pink */
+    }
+
+    /* Date label */
+    body.case-study-page .cs-date-label {
+      color: var(--choco-accent);
+    }
+
+    /* ── Hero illumination glow (behind carousel) ── */
+    body.case-study-page .cs-hero-visual::before {
+      background: var(--choco-accent) !important;
+      opacity: 0.3;
+      filter: blur(90px);
+    }
+
+    /* ── Carousel / slider background tint ── */
+    body.case-study-page .cs-image-container {
+      background: rgba(var(--choco-accent-rgb), 0.04) !important;
+    }
+    body.case-study-page .owl-dots .owl-dot.active span,
+    body.case-study-page .owl-dots .owl-dot:hover span {
+      background: var(--choco-accent) !important;
+    }
+    body.case-study-page .owl-nav button.owl-prev,
+    body.case-study-page .owl-nav button.owl-next {
+      border-color: rgba(var(--choco-accent-rgb), 0.4) !important;
+      color: var(--choco-accent) !important;
+    }
+    body.case-study-page .owl-nav button.owl-prev:hover,
+    body.case-study-page .owl-nav button.owl-next:hover {
+      background: rgba(var(--choco-accent-rgb), 0.15) !important;
+      box-shadow: 0 0 20px rgba(var(--choco-accent-rgb), 0.3) !important;
+    }
+
+    /* ── Live project button ── */
+    body.case-study-page .cs-live-btn {
+      background: linear-gradient(135deg, rgba(var(--choco-accent-rgb), 0.18), rgba(var(--choco-accent-rgb), 0.06));
+      border-color: rgba(var(--choco-accent-rgb), 0.35);
+      color: var(--choco-accent);
+    }
+    body.case-study-page .cs-live-btn:hover {
+      background: rgba(var(--choco-accent-rgb), 0.28);
+      box-shadow: 0 0 20px rgba(var(--choco-accent-rgb), 0.25);
+    }
+
+    /* ── Info card accent line ── */
+    body.case-study-page .cs-info-item:not(:last-child) {
+      border-color: rgba(var(--choco-accent-rgb), 0.10);
+    }
+
+    /* ── Info labels ── */
+    body.case-study-page .cs-info-label {
+      color: rgba(var(--choco-accent-rgb), 0.55);
+    }
+
+    /* ── Results metric numbers ── */
+    body.case-study-page .cs-metric-number {
+      color: var(--choco-accent);
+    }
+
+    /* ── Quote mark ── */
+    body.case-study-page .cs-quote::before {
+      color: var(--choco-accent);
+    }
+
+    /* ── FAQ active border ── */
+    body.case-study-page .cs-faq-item.active {
+      border-color: var(--choco-accent);
+    }
+
+    /* ── "SEE ALL" button ── */
+    body.case-study-page .cs-view-all-btn {
+      color: var(--choco-accent);
+    }
+    body.case-study-page .cs-view-all-btn svg {
+      stroke: var(--choco-accent);
+    }
+    body.case-study-page .cs-view-all-btn:hover {
+      color: var(--choco-accent);
+    }
+
+    /* ── Tag pills ── */
+    body.case-study-page .process-tag,
+    body.case-study-page .contact-tag-pill {
+      color: var(--choco-accent);
+      border-color: rgba(var(--choco-accent-rgb), 0.25);
+    }
+
+    /* ── Glass buttons hover glow ── */
+    body.case-study-page .cs-header-glass:hover {
+      box-shadow: 0 15px 30px rgba(var(--choco-accent-rgb), 0.18), inset 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    /* ── Staggered menu accent ── */
+    body.case-study-page .sm-socials-title,
+    body.case-study-page .sm-panel-item:hover,
+    body.case-study-page .sm-panel-list[data-numbering] .sm-panel-item::after,
+    body.case-study-page .sm-socials-link:hover {
+      color: var(--choco-accent);
+    }
+
+    /* ── Burger active (X) ── */
+    body.case-study-page .cs-burger-icon.active {
+      background: var(--choco-accent);
+      border-color: var(--choco-accent);
+      box-shadow: 0 0 25px rgba(var(--choco-accent-rgb), 0.55);
+    }
+
+    /* ── Logo dot ── */
+    body.case-study-page .cs-site-logo span {
+      color: var(--choco-accent);
+    }
+
+    /* ── Text links & list markers ── */
+    body.case-study-page .cs-text a,
+    body.case-study-page .cs-results-list li::marker {
+      color: var(--choco-accent);
+    }
+  </style>
 </head>
+<body class="case-study-page">
 
-<body data-spy="scroll" data-target=".site-nav-target" data-offset="200">
+      <!-- Back to portfolio nav -->
+  <nav class="cs-nav">
+    <div class="cs-site-logo">
+      <a href="index.html" class="cs-site-logo">Irfan<span>.</span></a>
+    </div>
+    <div class="cs-nav-right">
+      <a href="index.html#contact-section" class="cs-header-glass cs-lets-talk-btn"><span class="shiny-label">LET'S TALK</span></a>
+      <a href="#" class="cs-header-glass cs-burger-icon" title="Menu" style="cursor: pointer;">
+        <span class="cs-burger-line top"></span>
+        <span class="cs-burger-line mid"></span>
+        <span class="cs-burger-line bot"></span>
+      </a>
+    </div>
+  </nav>
 
-  <nav class="unslate_co--site-mobile-menu">
-    <div class="close-wrap d-flex">
-      <a href="#" class="d-flex ml-auto js-menu-toggle">
-        <span class="close-label">Close</span>
-        <div class="close-times">
-          <span class="bar1"></span>
-          <span class="bar2"></span>
+  <!-- Hero Section -->
+  <section class="cs-hero">
+    <div class="cs-hero-left">
+      <div class="cs-date-pill-wrapper">
+         <div class="cs-date-pill">
+            <span class="cs-date-label">DATE</span>
+            <span class="cs-date-value">July 2024</span>
+         </div>
+      </div>
+      <h1 class="cs-title">Choco Heaven</h1>
+      <p class="cs-description">A luxury e-commerce experience for premium chocolates across India, designed with modern web technologies for seamless navigation, high performance, and refined usability.</p>
+      <div class="cs-tags">
+
+        <span class="cs-tag">E-Commerce</span>
+        <span class="cs-tag">Website</span>
+      
+      </div>
+    </div>
+    
+    <div class="cs-hero-right">
+      <div class="cs-info-card">
+        <div class="cs-info-item">
+          <span class="cs-info-label">Services</span>
+          <span class="cs-info-value">Full-Stack Development & UI Design</span>
+        </div>
+        <div class="cs-info-item">
+          <span class="cs-info-label">Category</span>
+          <span class="cs-info-value">E-Commerce</span>
+        </div>
+        <div class="cs-info-item">
+          <span class="cs-info-label">Stack &amp; Tools</span>
+          <span class="cs-info-value">Node.js, Express.js, MongoDB, EJS</span>
+        </div>
+        <button id="cs-view-more-btn" class="cs-live-btn" onclick="csOpenProjectPopup()">View More Details</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero Visual -->
+  <section class="cs-hero-visual">
+    <div class="cs-image-carousel owl-carousel single-slider">
+<figure class="mb-0">
+                    <img src="images/work_1_full.png" alt="Image" class="img-fluid">
+                  </figure>
+                  <figure class="mb-0">
+                    <img src="images/work_2_2.png" alt="Image" class="img-fluid">
+                  </figure>
+                  <figure class="mb-0">
+                    <img src="images/work_2_3.png" alt="Image" class="img-fluid">
+                  </figure>
+                  <figure class="mb-0">
+                    <img src="images/work_2_4.png" alt="Image" class="img-fluid">
+                  </figure>
+                  <figure class="mb-0">
+                    <img src="images/work_2_5.png" alt="Image" class="img-fluid">
+                  </figure>
+                  <figure class="mb-0">
+                    <img src="images/work_2_6.png" alt="Image" class="img-fluid">
+                  </figure>
+    </div>
+  </section>
+
+  <!-- Content Blocks -->
+  <section class="cs-content-section border-top">
+    <!-- Challenge -->
+    <div class="cs-content-block">
+      <h2 class="cs-section-title">Challenge<span>.</span></h2>
+      <p class="cs-text">
+        Choco Heaven is a growing luxury chocolate brand that needed an elevated digital presence. Their previous platform lacked a cohesive visual system, struggled with slow load times, and offered a clunky shopping experience that didn't reflect the premium nature of their products. They required a fast, highly-performant e-commerce platform that balanced an engaging editorial style with seamless shopping functionality.
+      </p>
+    </div>
+
+    <!-- Solution -->
+    <div class="cs-content-block">
+      <h2 class="cs-section-title">Solution<span>.</span></h2>
+      <p class="cs-text">
+        I designed and developed a full-stack e-commerce platform focused on premium UI, smooth flows, and rapid performance. Using Node.js, Express.js, and MongoDB, I built a scalable backend system integrated with a polished frontend. I introduced OTP-based sign-up, optimized product pages, and a streamlined checkout flow. Every micro-interaction and layout choice was carefully crafted to ensure the brand felt luxurious, responsive, and consistent.
+      </p>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section class="cs-results-section border-top">
+    <!-- Left label -->
+    <h2 class="cs-section-title">Results<span>.</span></h2>
+
+    <!-- Right: summary text + metrics -->
+    <div class="cs-results-metrics">
+      <p class="cs-text">The new platform significantly elevated the brand's perception while driving measurable business impact through improved user flows, optimized page delivery, and seamless checkout mechanics.</p>
+
+      <!-- Horizontal metric row -->
+      <div class="cs-metric-row">
+        <div class="cs-metric-block">
+          <span class="cs-metric-number">43%</span>
+          <span class="cs-metric-label">Lower bounce rate</span>
+        </div>
+        <div class="cs-metric-block">
+          <span class="cs-metric-number">2x</span>
+          <span class="cs-metric-label">Longer session time</span>
+        </div>
+        <div class="cs-metric-block">
+          <span class="cs-metric-number">1.8x</span>
+          <span class="cs-metric-label">Add-to-cart increase</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial Section -->
+  <section class="cs-testimonial-section border-top">
+    <h2 class="cs-quote">From the sleek design to the flawless performance—everything was cohesive, strategic, and executed with serious care. Our online sales have never looked or performed better.</h2>
+    <div class="cs-author">
+      <img src="images/cover_bg_2.png" alt="Evelyn Widjaja" class="cs-author-img">
+      <div class="cs-author-info">
+        <span class="cs-author-name">Evelyn Widjaja</span>
+        <span class="cs-author-role">Marketing Lead at Choco Heaven</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- More Projects -->
+  <section class="cs-more-projects border-top">
+    <div class="cs-more-header">
+      <h2 class="cs-more-title">MORE<br>WORKS</h2>
+      <a href="index.html#portfolio-section" class="cs-view-all-btn">
+        SEE ALL
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+      </a>
+    </div>
+    <div class="cs-more-grid">
+      <a href="portfolio-single-revoult-health.html" class="cs-project-card">
+        <div class="cs-card-img-wrap">
+          <span class="cs-card-tag">UI/UX Design</span>
+          <img src="images/revoult_health_1.png" alt="Re.voult Health">
+        </div>
+        <div class="cs-card-info">
+          <h3 class="cs-card-title">Re.voult Health</h3>
+          <span class="cs-card-year">2024</span>
+        </div>
+      </a>
+      <a href="portfolio-single-guided-pro.html" class="cs-project-card">
+        <div class="cs-card-img-wrap">
+          <span class="cs-card-tag">Fintech</span>
+          <img src="images/guided_pro_dashboard.png" alt="Guided Pro Wallet">
+        </div>
+        <div class="cs-card-info">
+          <h3 class="cs-card-title">Guided Pro Wallet</h3>
+          <span class="cs-card-year">2023</span>
         </div>
       </a>
     </div>
-    <div class="site-mobile-inner"></div>
-  </nav>
+  </section>
 
-  <div class="unslate_co--site-wrap">
-
-    <div class="unslate_co--site-inner">
-
-      <nav class="unslate_co--site-nav site-nav-target">
-
+  <!-- FAQ Section -->
+      <div class="unslate_co--section" id="faq-section" style="padding-top: 120px;">
         <div class="container">
+          <div class="row">
+            
+            <!-- Left Column: Title & Image -->
+            <div class="col-lg-5 mb-5 mb-lg-0">
+               <div class="process-tag">
+                  <span>FAQ</span>
+               </div>
+               <h2 class="process-heading mask-reveal-text">Find Answers Here</h2>
+               <p class="process-desc blur-reveal-text">
+                  Whether you're curious about the design process, need guidance on project timelines, or want.
+               </p>
+               
+               <div class="faq-image-wrap gsap-reveal-img">
+                   <img src="images/faq-answers.jpg" alt="Answers" class="img-fluid">
+               </div>
 
-          <div class="row align-items-center justify-content-between text-left">
-            <div class="col-md-5 text-right">
-              <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
-                <li class="has-children">
-                  <a href="index.html#home-section" class="nav-link">Home</a>
-                  <ul class="dropdown">
-                    <li>
-                      <a href="index.html">Hero Image BG</a>
-                    </li>
-                    <li>
-                      <a href="index-video.html">Video BG</a>
-                    </li>
-                    <li>
-                      <a href="index-hero-slider.html">Hero Slider</a>
-                    </li>
-                    <li>
-                      <a href="index-sidebar-menu.html">Sidebar Menu</a>
-                    </li>
-                    <li>
-                      <a href="index-right-menu.html">Right Menu</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="index.html#portfolio-section" class="nav-link">Portfolio</a></li>
-                <li><a href="index.html#about-section" class="nav-link">About</a></li>
-                <li><a href="index.html#services-section" class="nav-link">Services</a></li>
-              </ul>
-            </div>
-            <div class="site-logo pos-absolute">
-              <a href="index.html" class="unslate_co--site-logo">Irfan<span>.</span></a>
-            </div>
-            <div class="col-md-5 text-right text-lg-left">
-              <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
-                <li><a href="index.html#skills-section" class="nav-link">Skills</a></li>
-                <li><a href="index.html#journal-section" class="nav-link">Journal</a></li>
-                <li><a href="index.html#contact-section" class="nav-link">Contact</a></li>
-                <!-- <li><a href="index.html#testimonial-section" class="nav-link">Testimonial</a></li> -->
-              </ul>
+                <!-- Contact Prompt & Button (Hidden on Mobile, Bottom order) -->
+                <div class="d-none d-lg-block">
+                   <div class="faq-contact-prompt mt-4 mb-4">
+                       <h3 style="font-family: 'Manrope', sans-serif; font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 8px;">Can’t find your answer?</h3>
+                   </div>
 
-              <ul class="site-nav-ul-none-onepage text-right d-inline-block d-lg-none">
-                <li><a href="#" class="js-menu-toggle">Menu</a></li>
-              </ul>
+                   <!-- Send Message Button -->
+                   <div class="luxury-button-wrapper">
+                       <a href="index.html#contact-section" class="resume-btn smoothscroll">
+                          <span class="resume-btn-text">Send Message</span>
+                          <div class="resume-btn-hover-content">
+                            <span>Send Message</span>
+                            <span class="resume-btn-arrow">
+                               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                            </span>
+                          </div>
+                          <span class="resume-btn-dot"></span>
+                       </a>
+                   </div>
+                </div>
+             </div>
 
+            <!-- Right Column: Accordion -->
+            <div class="col-lg-7 pl-lg-5">
+              <div class="faq-accordion blur-stagger-reveal">
+                 
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>How do I start working with you?</h3>
+                       <span class="icon-toggle"></span>
+                    </div>
+                    <div class="faq-body">
+                       <p>Super simple just reach out through my contact form or DM me.
+                       We’ll hop on a quick call, figure out what you’re trying to build, and I’ll guide you through the best direction. If everything feels right, we move forward with timelines and deliverables.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>What design tools do you use?</h3>
+                       <span class="icon-toggle"></span>
+                    </div>
+                    <div class="faq-body">
+                       <p>For design, I primarily work with Figma.<br>
+                       For development, I use the MERN stack, various modern UI libraries, and whatever tech fits the project best.<br>
+                       My workflow is clean and optimized — no messy files, no confusing layers.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>How long does a project take?</h3>
+                       <span class="icon-toggle"></span>
+                     </div>
+                    <div class="faq-body">
+                       <p>It depends on the size of the project, but here’s a general idea:<br><br>
+                       Small UI work: 2–4 days<br>
+                       Medium website design: 1–2 weeks<br>
+                       Full-stack projects: 3–6 weeks<br>
+                       I always give a clear timeline before starting, so you’ll never be left guessing.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>Do you provide revisions?</h3>
+                       <span class="icon-toggle"></span>
+                    </div>
+                    <div class="faq-body">
+                       <p>Yes. I want the final output to feel perfect to you.<br>
+                       Each project comes with revision rounds to polish the visuals, flow, and interactions until it hits the vibe you want.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>What industries do you work with?</h3>
+                       <span class="icon-toggle"></span>
+                     </div>
+                    <div class="faq-body">
+                       <p>I’m industry-agnostic — if your project needs clean design and thoughtful experiences, I’m in.<br>
+                       So far, I’ve worked on tech platforms, e-commerce, personal brands, and experimental UI projects.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>Do you offer development services?</h3>
+                       <span class="icon-toggle"></span>
+                     </div>
+                    <div class="faq-body">
+                       <p>Yes.<br>
+                       I don’t just design — I also build.<br>
+                       If you need a live, responsive, fully functional website, I can take your design all the way to deployment using Node.js, MongoDB, Express, and modern front-end tools.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>What is your pricing structure?</h3>
+                       <span class="icon-toggle"></span>
+                     </div>
+                    <div class="faq-body">
+                       <p>My pricing is flexible and based on the project scope.<br>
+                       Once I understand what you need — design, development, or both — I’ll give you a clear quote with no hidden add-ons.</p>
+                    </div>
+                 </div>
+
+                 <div class="faq-item">
+                    <div class="faq-header">
+                       <h3>Can you redesign my existing website?</h3>
+                       <span class="icon-toggle"></span>
+                     </div>
+                    <div class="faq-body">
+                       <p>Definitely.<br>
+                       If your current site feels outdated, slow, or just doesn’t match the level you want, I can redesign it from the ground up — modern UI, cleaner UX, better structure, and performance that actually feels fast.</p>
+                    </div>
+                 </div>
+
+              </div>
+
+              <!-- Mobile Contact Prompt & Button (Visible Only on Mobile) -->
+              <div class="d-block d-lg-none mt-5 text-center">
+                 <div class="faq-contact-prompt mb-4">
+                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 1.25rem; font-weight: 500; color: #fff; margin-bottom: 20px;">Can’t find your answer?</h3>
+                 </div>
+                 
+                 <div class="luxury-button-wrapper" style="display: flex; justify-content: center;">
+                    <a href="index.html#contact-section" class="resume-btn smoothscroll">
+                       <span class="resume-btn-text">Send Message</span>
+                       <div class="resume-btn-hover-content">
+                         <span>Send Message</span>
+                         <span class="resume-btn-arrow">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                         </span>
+                       </div>
+                       <span class="resume-btn-dot"></span>
+                    </a>
+                 </div>
+              </div>
             </div>
+
           </div>
         </div>
+      </div>
 
-      </nav>
-      <!-- END nav -->
-
-      <div class="cover-v1 gradient-bottom-black jarallax">
+      <footer class="unslate_co--footer unslate_co--section glass-footer">
         <div class="container">
-          <div class="row align-items-center">
-
-            <div class="col-md-10 mx-auto text-center">
-              <h1 class="heading" data-aos="fade-up">Choco Heaven E-commerce</h1>
-              <h2 class="subheading" data-aos="fade-up" data-aos-delay="100">Designed and developed a full-stack luxury chocolate e-commerce platform focused on premium UI, smooth flows, and fast performance. Built the entire experience using Node.js, Express.js, MongoDB, and EJS, recreating a modern, high-end storefront feel. Implemented features like OTP-based sign-up, optimized product pages, and a clean shopping flow that mirrors real-world e-commerce standards. Spent significant time refining micro-interactions and layout styling to ensure the brand feels rich, polished, and consistent across the site.</h2>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- dov -->
-        <a href="#portfolio-single-section" class="mouse-wrap smoothscroll">
-          <span class="mouse">
-            <span class="scroll"></span>
-          </span>
-          <span class="mouse-label">Scroll</span>
-        </a>
-
-      </div>
-      <!-- END .cover-v1 -->
-
-      <div class="container">
-        <div class="portfolio-single-wrap unslate_co--section" id="portfolio-single-section">
-
-          <div class="portfolio-single-inner">
-            <h2 class="heading-portfolio-single-h2">Choco Heaven E-Commerce</h2>
-
-            <div class="row justify-content-between mb-5">
-              <div class="col-12 mb-4">
-                <div class="owl-carousel single-slider">
-                  <figure class="mb-4">
-                    <img src="images/work_1_full.png" alt="Image" class="img-fluid">
-                  </figure>
-                  <figure class="mb-4">
-                    <img src="images/work_2_2.png" alt="Image" class="img-fluid">
-                  </figure>
-                  <figure class="mb-4">
-                    <img src="images/work_2_3.png" alt="Image" class="img-fluid">
-                  </figure>
-                  <figure class="mb-4">
-                    <img src="images/work_2_4.png" alt="Image" class="img-fluid">
-                  </figure>
-                  <figure class="mb-4">
-                    <img src="images/work_2_5.png" alt="Image" class="img-fluid">
-                  </figure>
-                  <figure class="mb-4">
-                    <img src="images/work_2_6.png" alt="Image" class="img-fluid">
-                  </figure>
-                </div>
+          <div class="row">
+            
+            <!-- Brand Column -->
+            <div class="col-md-4 mb-5 mb-md-0 footer-brand-col">
+              <div class="footer-logo-wrap mb-4">
+                  <img src="images/favicon.png" alt="Irfan Logo" class="footer-logo-img">
+                  <span class="footer-logo-text">Irfan<span>.</span></span>
               </div>
-              <div class="col-12 mb-5">
-                <div class="row">
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="detail-v1">
-                      <span class="detail-label">Project Date</span>
-                      <span class="detail-val">July 29th, 2024</span>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="detail-v1">
-                      <span class="detail-label">Project Type</span>
-                      <span class="detail-val"><a href="#">Full-Stack E-Commerce Build</a></span>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="detail-v1">
-                      <span class="detail-label">Stack & Tools</span>
-                      <span class="detail-val">Node.js, Express.js, MongoDB, EJS</span>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="detail-v1">
-                      <span class="detail-label">More Details</span>
-                      <span class="detail-val"><a href="https://www.linkedin.com/posts/irfan-nisar_mernstack-webdevelopment-ecommerce-activity-7219028525666725889-S0VQ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEgw8lMBBKLAjOJXRO5YF7rQibrKm93Ea1k">View Post</a></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 pr-md-5">
-                <p>Designed and developed a full-stack luxury chocolate e-commerce platform focused on premium UI, smooth flows, and fast performance. Built the entire experience using Node.js, Express.js, MongoDB, and EJS, recreating a modern, high-end storefront feel. Implemented features like OTP-based sign-up, optimized product pages, and a clean shopping flow that mirrors real-world e-commerce standards. Spent significant time refining micro-interactions and layout styling to ensure the brand feels rich, polished, and consistent across the site.</p>
-              </div>
-              <div class="col-md-6 pl-md-5">
-                <p>Choco Heaven is my take on a luxury-first e-commerce experience for premium chocolates across India. I designed the information architecture, product hierarchy, and checkout flow from scratch to keep the journey from browse to purchase as frictionless as possible. On the engineering side, I structured reusable EJS components, RESTful routes, and MongoDB schemas for users, products, and orders, making the platform ready for features like wishlists, offers, and multi-city delivery in the future.</p>
+              <p class="footer-desc mb-4">
+                  Crafting digital experiences that merge functionality with futuristic aesthetics. Building the web of tomorrow, today.
+              </p>
+              <div class="footer-social-icons">
+                  <a href="https://www.linkedin.com/in/irfan-nisar-01774b299/" target="_blank" class="social-glass-btn" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                  </a>
+                  <a href="https://x.com/IrfanNisar_" target="_blank" class="social-glass-btn" aria-label="X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+                  </a>
+                  <a href="https://www.instagram.com/irfan__nisar_/" target="_blank" class="social-glass-btn" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                  </a>
+                  <a href="https://github.com/IrfanNisar010" target="_blank" class="social-glass-btn" aria-label="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                  </a>
               </div>
             </div>
 
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="unslate_co--footer unslate_co--section">
-      <div class="container">
-        <div class="row">
-          
-          <!-- Brand Column -->
-          <div class="col-md-4 mb-5 mb-md-0 footer-brand-col">
-            <div class="footer-logo-wrap mb-4">
-                <img src="images/favicon.png" alt="Irfan Logo" class="footer-logo-img">
-                <span class="footer-logo-text">Irfan<span>.</span></span>
+            <!-- Links Column 1 -->
+            <div class="col-6 col-md-2 mb-5 mb-md-0 footer-links-col">
+              <h3 class="footer-heading mb-4">Explore</h3>
+              <ul class="footer-links list-unstyled">
+                  <li><a href="index.html#home-section" class="smoothscroll">Home</a></li>
+                  <li><a href="index.html#about-section" class="smoothscroll">About</a></li>
+                  <li><a href="index.html#services-section" class="smoothscroll">Services</a></li>
+                  <li><a href="index.html#process-section" class="smoothscroll">Process</a></li>
+                  <li><a href="index.html#portfolio-section" class="smoothscroll">Portfolio</a></li>
+              </ul>
             </div>
-            <p class="footer-desc mb-4">
-                Crafting digital experiences that merge functionality with futuristic aesthetics. Building the web of tomorrow, today.
-            </p>
-            <div class="footer-social-icons">
-                <a href="https://www.linkedin.com/in/irfan-nisar-01774b299/" target="_blank" class="social-glass-btn" aria-label="LinkedIn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                </a>
-                <a href="https://x.com/IrfanNisar_" target="_blank" class="social-glass-btn" aria-label="X (Twitter)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
-                </a>
-                <a href="https://www.instagram.com/irfan__nisar_/" target="_blank" class="social-glass-btn" aria-label="Instagram">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                </a>
-                <a href="https://github.com/IrfanNisar010" target="_blank" class="social-glass-btn" aria-label="GitHub">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
+
+            <!-- Links Column 2 -->
+            <div class="col-6 col-md-2 mb-5 mb-md-0 footer-links-col">
+              <h3 class="footer-heading mb-4">Connect</h3>
+              <ul class="footer-links list-unstyled">
+                  <li><a href="https://linkedin.com/in/irfan-nisar-01774b299/" target="_blank">LinkedIn</a></li>
+                  <li><a href="https://x.com/IrfanNisar_" target="_blank">Twitter / X</a></li>
+                  <li><a href="https://www.instagram.com/irfan__nisar_/" target="_blank">Instagram</a></li>
+                  <li><a href="mailto:inzrwork020@gmail.com">Email Me</a></li>
+              </ul>
             </div>
+
+            <!-- Status Column -->
+            <div class="col-md-4 footer-newsletter-col">
+              <h3 class="footer-heading mb-4">Status</h3>
+              
+              <div class="footer-status-pill">
+                  <div class="status-dot-pulse"></div>
+                  <span class="status-text">Available for new projects</span>
+              </div>
+              
+              <p class="footer-location-text mt-3">
+                  Based in India, working worldwide.
+              </p>
+            </div>
+
           </div>
 
-          <!-- Links Column 1 -->
-          <div class="col-6 col-md-2 mb-5 mb-md-0 footer-links-col">
-            <h3 class="footer-heading mb-4">Explore</h3>
-            <ul class="footer-links list-unstyled">
-                <li><a href="index.html#hero-section">Home</a></li>
-                <li><a href="index.html#about-section">About</a></li>
-                <li><a href="index.html#services-section">Services</a></li>
-                <li><a href="index.html#process-section">Process</a></li>
-                <li><a href="index.html#portfolio-section">Portfolio</a></li>
-            </ul>
-          </div>
+          <div class="footer-divider"></div>
 
-          <!-- Links Column 2 -->
-          <div class="col-6 col-md-2 mb-5 mb-md-0 footer-links-col">
-            <h3 class="footer-heading mb-4">Connect</h3>
-            <ul class="footer-links list-unstyled">
-                <li><a href="https://linkedin.com/in/irfan-nisar-01774b299/" target="_blank">LinkedIn</a></li>
-                <li><a href="https://x.com/IrfanNisar_" target="_blank">Twitter / X</a></li>
-                <li><a href="https://www.instagram.com/irfan__nisar_/" target="_blank">Instagram</a></li>
-                <li><a href="mailto:inzrwork020@gmail.com">Email Me</a></li>
-            </ul>
-          </div>
-
-          <!-- Newsletter Column -->
-          <div class="col-md-4 footer-newsletter-col">
-            <h3 class="footer-heading mb-4">Stay Future Ready</h3>
-            <p class="footer-newsletter-text mb-4">Get the latest insights on design, tech, and AI directly to your inbox.</p>
-            <form action="#" class="footer-newsletter-box">
-                <div class="glass-input-group">
-                  <input type="email" placeholder="Enter your email" class="glass-input">
-                  <button type="submit" class="glass-submit-btn">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                  </button>
-                </div>
-            </form>
-          </div>
-
-        </div>
-
-        <div class="footer-divider"></div>
-
-        <div class="row align-items-center footer-bottom">
-          <div class="col-md-6 text-center text-md-left">
-            <p class="copyright mb-0">© 2025 Irfan Nisar. All rights reserved.</p>
-          </div>
-          <div class="col-md-6 text-center text-md-right">
-            <div class="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <span class="mx-2">·</span>
-                <a href="#">Terms of Service</a>
+          <div class="row align-items-center footer-bottom">
+            <div class="col-md-6 text-center text-md-left">
+              <p class="copyright mb-0">© 2025 Irfan Nisar. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-right">
+              <div class="footer-legal">
+                  <a href="#">Privacy Policy</a>
+                  <span class="mx-2">·</span>
+                  <a href="#">Terms of Service</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </footer>
-
-  </div>
-
-  <!-- Loader -->
-  <div id="unslate_co--overlayer"></div>
-  <div class="site-loader-wrap">
-    <div class="site-loader"></div>
-  </div>
+      </footer>
 
   <script src="js/scripts-dist.js"></script>
+  <script>
+    // Mouse-tracking for glass shine border effects (date pill + back button)
+    document.querySelectorAll('.cs-date-pill, .cs-header-glass').forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+        el.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+      });
+    });
+  </script>
   <script src="js/main.js"></script>
 
+  <!-- ── Project Info Popup ── -->
+  <div id="cs-project-popup-overlay" style="--cs-popup-accent: #f7bad0;">
+    <div id="cs-project-popup-card">
+      <button class="cs-popup-close" onclick="csCloseProjectPopup()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
 
+      <span class="cs-popup-eyebrow">Case Study</span>
+      <h3 class="cs-popup-title">Choco Heaven</h3>
+      <p class="cs-popup-subtitle">E-Commerce · Full-Stack · UI Design · July 2024</p>
+
+      <div class="cs-popup-divider"></div>
+
+      <span class="cs-popup-section-label">About the Project</span>
+      <p class="cs-popup-summary">
+        Choco Heaven is a luxury e-commerce platform built for premium chocolate retail across India. The entire experience was crafted to make the brand feel high-end — from the typography and interactions down to the checkout flow and performance optimisation.
+      </p>
+
+      <span class="cs-popup-section-label">Highlights</span>
+      <ul class="cs-popup-highlights">
+        <li>Full-stack build — Node.js, Express.js, MongoDB, EJS templating</li>
+        <li>OTP-based authentication for secure, frictionless sign-up</li>
+        <li>Optimised product pages with rich imagery and micro-interactions</li>
+        <li>Streamlined checkout with 43% lower bounce rate post-launch</li>
+        <li>2× longer average session time and 1.8× add-to-cart increase</li>
+      </ul>
+
+      <div class="cs-popup-footer">
+        <a href="#" target="_blank" class="cs-popup-cta cs-popup-cta-primary">View Live Website ↗</a>
+        <button class="cs-popup-cta cs-popup-cta-secondary" onclick="csCloseProjectPopup()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function csOpenProjectPopup() {
+      var overlay = document.getElementById('cs-project-popup-overlay');
+      overlay.style.display = 'flex';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          overlay.classList.add('open');
+        });
+      });
+      document.body.style.overflow = 'hidden';
+    }
+
+    function csCloseProjectPopup() {
+      var overlay = document.getElementById('cs-project-popup-overlay');
+      overlay.classList.remove('open');
+      setTimeout(function() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 380);
+    }
+
+    // Close on overlay click
+    document.getElementById('cs-project-popup-overlay').addEventListener('click', function(e) {
+      if (e.target === this) csCloseProjectPopup();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') csCloseProjectPopup();
+    });
+  </script>
 </body>
-
 </html>

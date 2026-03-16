@@ -1,0 +1,1621 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+body.case-study-page {
+  background-color: #050505;
+  color: #f1f1f1;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base structural spacings */
+
+.cs-nav {
+  padding: 40px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cs-site-logo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+  letter-spacing: -0.02em;
+}
+.cs-site-logo:hover {
+  text-decoration: none;
+  color: #fff;
+}
+.cs-site-logo span {
+  color: #D63447;
+}
+
+.cs-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Glass styling shared by both */
+.cs-header-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.12),
+    0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* Specular highlight at top */
+.cs-header-glass::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.13) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s;
+}
+
+/* Dark black liquid glass on hover */
+.cs-header-glass:hover {
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.25),
+    0 16px 40px rgba(0,0,0,0.55);
+  transform: scale(1.05);
+  color: #fff;
+}
+
+.cs-header-glass:hover::before {
+  opacity: 0.5;
+}
+
+.cs-header-glass:active {
+  transform: scale(0.96);
+}
+
+/* Mouse-tracking border glow */
+.cs-header-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    60px circle at var(--mouse-x, -100px) var(--mouse-y, -100px), 
+    rgba(255, 255, 255, 0.7),
+    transparent 40%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.cs-header-glass:hover::after {
+  opacity: 1;
+}
+
+.cs-lets-talk-btn {
+  height: 45px;
+  padding: 0 24px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+/* ── ShinyText: sweep through the letter forms only ── */
+@keyframes cs-shine-sweep {
+  0%   { background-position: 200% center; }
+  35%  { background-position: 0% center; }
+  100% { background-position: 0% center; } /* long hold before next sweep */
+}
+
+@keyframes cs-label-hover-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cs-lets-talk-btn .shiny-label {
+  display: inline-block;
+  /* Gradient: muted white base with a brighter peak at 50% of 500% canvas */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.50) 0%,
+    rgba(255, 255, 255, 0.50) 38%,
+    rgba(255, 255, 255, 1.00) 50%,
+    rgba(255, 255, 255, 0.50) 62%,
+    rgba(255, 255, 255, 0.50) 100%
+  );
+  background-size: 500% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: cs-shine-sweep 4.5s infinite ease-in-out;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* On hover: stop sweep, brighten fully, lift text slightly */
+.cs-lets-talk-btn:hover .shiny-label {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 1.00) 40%,
+    rgba(255, 255, 255, 1.00) 60%,
+    rgba(255, 255, 255, 0.75) 100%
+  );
+  background-size: 100% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  animation: none;
+  transform: translateY(-2px);
+  letter-spacing: 0.08em; /* slight expand on hover */
+}
+
+.cs-burger-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 5px;
+  padding-right: 12px;
+}
+
+.cs-burger-line {
+  display: block;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 2;
+}
+
+.cs-burger-line.top {
+  width: 20px;
+}
+.cs-burger-line.mid {
+  width: 14px;
+}
+.cs-burger-line.bot {
+  width: 20px;
+}
+
+.cs-burger-icon:hover .cs-burger-line.mid {
+  width: 20px;
+  box-shadow: 0 0 8px rgba(214, 52, 71, 0.6);
+}
+
+/* Hero Section */
+.cs-hero {
+  padding: 60px 6% 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.cs-hero-left {
+  flex: 1 1 55%;
+}
+
+.cs-title {
+  font-size: clamp(3.2rem, 6.5vw, 5.5rem); /* Larger, impactful */
+  font-weight: 400;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+  line-height: 1.05;
+  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+  color: #fff;
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+.cs-description {
+  font-size: 0.95rem; /* Reduced */
+  line-height: 1.65;
+  color: #a0a0a0;
+  margin-bottom: 36px;
+  max-width: 520px;
+  font-weight: 400;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+}
+
+.cs-date-pill-wrapper {
+  margin-bottom: 28px;
+}
+
+/* Outer glass pill container */
+.cs-date-pill {
+  display: inline-flex;
+  align-items: center;
+  /* Clean glassmorphism - no gradient */
+  background: rgba(14, 14, 16, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 8px 32px rgba(0,0,0,0.45);
+  padding: 5px 20px 5px 5px;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Shining border effect on hover using a rotating gradient mask */
+.cs-date-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  padding: 1px;
+  background: radial-gradient(
+    80px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
+    rgba(255, 255, 255, 0.75),
+    transparent 50%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cs-date-pill:hover::after {
+  opacity: 1;
+}
+
+.cs-date-pill:hover {
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 12px 40px rgba(0,0,0,0.5);
+}
+
+/* Left solid badge - gradient red capsule matching reference */
+.cs-date-label {
+  background: linear-gradient(
+    180deg,
+    #e8485e 0%,   /* Lighter, brighter red at top */
+    #D63447 40%,  /* Theme red in middle */
+    #a82035 100%  /* Deep darker red at bottom */
+  );
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Manrope', sans-serif;
+  line-height: 1;
+  /* Subtle inner highlight at top to emphasize the gradient depth */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    0 2px 8px rgba(168, 32, 53, 0.4);
+}
+
+/* Right date text */
+.cs-date-value {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.cs-tags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cs-tag {
+  /* Each project page sets --page-tag-rgb, e.g. 247, 186, 208 for Choco Heaven */
+  --page-tag-rgb: 255, 255, 255; /* neutral fallback if page doesn't set one */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 22px;
+  border-radius: 100px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  position: relative;
+  /* Glass background: dark base + subtle theme tint */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  /* Glass border: thin frosted white line */
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.10),
+    0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+/* Inner theme-tinted glow layer (separate from text-clip) */
+.cs-tag::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(var(--page-tag-rgb), 0.15) 100%
+  );
+  pointer-events: none;
+}
+
+/* Text: top white → bottom theme-colour gradient */
+.cs-tag::after {
+  display: none; /* no pseudo for text — handled on element itself */
+}
+
+.cs-tag {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* Two-stop gradient: white at top, page theme at bottom */
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(var(--page-tag-rgb), 0.95) 100%
+  );
+  /* Must re-set background: for the pseudo approach to work we use a wrapper trick */
+  background: rgba(255, 255, 255, 0.05); /* pill background */
+}
+
+/* Correct: use a wrapping span for text gradient — but since tags are plain spans,
+   we compromise: text is a solid soft-white on glass dark pill */
+.cs-tag {
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.10),
+    0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Top specular shine line */
+.cs-tag::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  pointer-events: none;
+}
+
+/* Bottom theme colour tint */
+.cs-tag::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  border-radius: 0 0 100px 100px;
+  background: linear-gradient(180deg, transparent, rgba(var(--page-tag-rgb), 0.18));
+  pointer-events: none;
+}
+
+.cs-tag:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.cs-hero-right {
+  flex: 1 1 35%;
+  max-width: 450px;
+}
+
+.cs-info-card {
+  background: rgba(15, 15, 15, 0.3) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  border-radius: 20px !important;
+  padding: 40px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5) !important;
+}
+
+.cs-hero-right::after {
+  display: none;
+}
+
+.cs-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 20px !important;
+}
+.cs-info-item:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0 !important;
+}
+
+.cs-info-label {
+  font-size: 12px !important;
+  color: #888 !important;
+  text-transform: capitalize !important;
+  letter-spacing: 0em !important;
+  font-weight: 500 !important;
+}
+
+.cs-info-value {
+  font-size: 16px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  margin-top: 4px;
+}
+
+.cs-live-btn {
+  background-color: transparent !important;
+  color: #fff !important;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px !important; /* Smaller button */
+  border-radius: 14px !important; /* More rounded corners */
+  font-weight: 500 !important;
+  font-size: 13px !important; /* Reduced font size */
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  background: #D63447 !important;
+  box-shadow: 0 10px 20px rgba(214, 52, 71, 0.2) !important;
+  align-self: flex-start;
+}
+
+.cs-live-btn:hover {
+  background-color: #b32939 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(214, 52, 71, 0.4) !important;
+}
+
+/* Hero Visual Drop */
+.cs-hero-visual {
+  padding: 0 6% 120px;
+  display: block;
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.cs-hero-visual::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  bottom: 0px;
+  left: 18%;
+  right: 18%;
+  background: #D63447;
+  filter: blur(90px);
+  opacity: 0.35;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 100px;
+}
+
+.cs-image-container, .cs-image-carousel {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #000; /* Black background */
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+.cs-image-carousel .owl-stage-outer {
+  /* Don't override any positioning here - let owl-carousel handle it */
+  overflow: hidden;
+}
+
+/* Override style.css single-slider margin */
+.case-study-page .single-slider {
+  margin-bottom: 0 !important;
+}
+
+.cs-image-carousel figure {
+  margin: 0 !important;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #000; /* Black inner background */
+}
+
+.cs-image-carousel img, .cs-slider-img, .cs-img {
+  width: 100% !important;
+  height: auto !important; /* Let original image dictate proportion! */
+  display: block;
+}
+
+/* ─── iOS 26 Liquid Glass Nav Buttons ─── */
+.cs-image-carousel .owl-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex !important;
+  justify-content: space-between;
+  padding: 0 20px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.cs-image-carousel .owl-nav button {
+  pointer-events: auto;
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+
+  /* Liquid glass base */
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+
+  /* Clean thin rim — no chunky dark ring */
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15) !important;
+
+  border: none !important;
+  color: #fff !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+
+/* Specular highlight overlay — top-left glass lens flare */
+.cs-image-carousel .owl-nav button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 60% 40% at 35% 25%,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Arrow icon — hide default owl text, use SVG instead */
+.cs-image-carousel .owl-nav span {
+  font-size: 0 !important;       /* Hide ‹ › characters */
+  line-height: 0 !important;
+  display: none !important;      /* Fully remove from flow */
+}
+
+/* Inject iOS-style rounded chevron via pseudo */
+.cs-image-carousel .owl-nav .owl-prev::after,
+.cs-image-carousel .owl-nav .owl-next::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.25s ease;
+  /* Override any inherited transparent text-fill */
+  -webkit-text-fill-color: initial;
+}
+
+/* Left chevron — iOS rounded stroke style */
+.cs-image-carousel .owl-nav .owl-prev::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
+  transform: translateX(0);
+}
+
+/* Right chevron */
+.cs-image-carousel .owl-nav .owl-next::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+  transform: translateX(0);
+}
+
+/* Hover: arrow slides in direction of navigation */
+.cs-image-carousel .owl-nav .owl-prev:hover::after {
+  transform: translateX(-3px);
+}
+.cs-image-carousel .owl-nav .owl-next:hover::after {
+  transform: translateX(3px);
+}
+
+/* Hover: scale up + shift to red-tinted glass + arrow slides */
+.cs-image-carousel .owl-nav button:hover {
+  transform: scale(1.12) !important;
+  background: rgba(214, 52, 71, 0.22) !important;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(214, 52, 71, 0.3),
+    0 0 20px rgba(214, 52, 71, 0.2) !important;
+}
+
+
+
+
+.cs-image-carousel .owl-dots {
+  position: absolute;
+  bottom: 24px;
+  width: 100%;
+  text-align: center;
+  z-index: 20;
+}
+
+.cs-image-carousel .owl-dots .owl-dot {
+  display: inline-block;
+  zoom: 1;
+}
+
+.cs-image-carousel .owl-dots .owl-dot span {
+  width: 8px;
+  height: 8px;
+  margin: 5px 6px;
+  background: rgba(255,255,255,0.2) !important;
+  display: block;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 30px;
+}
+.cs-image-carousel .owl-dots .owl-dot.active span, 
+.cs-image-carousel .owl-dots .owl-dot:hover span {
+  background: #D63447 !important; /* Red dot sync */
+  width: 28px;
+  box-shadow: 0 0 15px rgba(214, 52, 71, 0.6);
+}
+
+.cs-image-container::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 100%;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+  pointer-events: none;
+  border-radius: 40px;
+}
+
+.cs-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Universal Section Divider */
+.border-top {
+  border-top: none !important;
+}
+
+/* Content Blocks (Challenge / Solution) - Reference: label-left, text-right layout */
+.cs-content-section {
+  padding: 100px 6% 120px;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* rows handle their own spacing */
+}
+
+.cs-content-block {
+  display: grid;
+  grid-template-columns: 220px 1fr; /* label left, text right */
+  gap: 40px 80px;
+  align-items: start;
+  padding: 80px 0;
+  border-bottom: none;
+}
+
+.cs-content-block:last-child {
+  border-bottom: none;
+}
+
+.cs-section-title {
+  font-size: clamp(1.8rem, 3vw, 2.4rem); /* Bigger */
+  font-weight: 600; /* Slightly bolder */
+  letter-spacing: -0.02em;
+  margin-bottom: 0;
+  color: #666;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+  padding-top: 4px;
+}
+
+/* The period after the label in theme color */
+.cs-section-title span {
+  color: #D63447;
+}
+
+.cs-text {
+  font-size: clamp(1rem, 1.6vw, 1.25rem); /* Reduced size */
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 780px;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+  letter-spacing: -0.01em;
+  text-align: right; /* Align right like reference */
+  /* Gradient text */
+  color: #e8e8e8;
+}
+
+/* Results Section - label left, summary + metrics right */
+.cs-results-section {
+  padding: 60px 6% 80px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 40px 80px;
+  max-width: 1300px;
+  margin: 0 auto;
+  border-bottom: none;
+  align-items: start;
+}
+
+/* Right column container */
+.cs-results-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Horizontal metric numbers row */
+.cs-metric-row {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  text-align: left; /* Override any inherited right-align */
+}
+
+.cs-metric-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.cs-metric-number {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff; /* Override gradient text-fill from parent */
+  -webkit-text-fill-color: #fff;
+  letter-spacing: -0.04em;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+}
+
+.cs-metric-label {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #666;
+  -webkit-text-fill-color: #666;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+  letter-spacing: 0;
+}
+
+/* Testimonial Section */
+.cs-testimonial-section {
+  padding: 120px 6%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.cs-quote {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.15;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.03em;
+  position: relative;
+}
+
+.cs-quote::before {
+  content: '“';
+  color: #FF5A36;
+  position: absolute;
+  left: -60px;
+  top: -20px;
+  font-size: 5rem;
+  font-family: serif;
+}
+
+.cs-author {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cs-author-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  object-fit: cover;
+  background-color: #222;
+}
+
+.cs-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-author-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cs-author-role {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* More Projects */
+.cs-more-projects {
+  padding: 120px 6%;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+.cs-more-header {
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.cs-more-title {
+  font-size: clamp(4.5rem, 12vw, 8.5rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  color: #CACACA;
+  margin: 0;
+  text-transform: uppercase;
+  font-family: 'DM Sans', 'Manrope', sans-serif;
+}
+
+.cs-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 260px;
+  background: transparent;
+  border: 2px solid #0A0A0A;
+  border-radius: 100px;
+  padding: 16px 28px;
+  color: #D63447;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.cs-view-all-btn svg {
+  stroke: #D63447;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.cs-view-all-btn:hover {
+  background: #0A0A0A;
+  color: #D63447;
+  text-decoration: none;
+}
+
+.cs-view-all-btn:hover svg {
+  transform: translate(3px, -3px);
+}
+
+.cs-more-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.cs-project-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  background: #0d0b14;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 40px rgba(107, 70, 193, 0.05); /* very soft purple glow */
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.cs-project-card:hover {
+  text-decoration: none;
+  transform: translateY(-5px);
+  border-color: rgba(107, 70, 193, 0.3);
+}
+
+.cs-card-img-wrap {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #111;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cs-card-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(15, 12, 29, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  color: #a09eb5;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.cs-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cs-project-card:hover .cs-card-img-wrap img {
+  transform: scale(1.05);
+}
+
+.cs-card-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.cs-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+}
+
+.cs-card-year {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 400;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* FAQ Layout tweaks matching image design */
+.cs-faq-section {
+  padding: 0 6% 100px;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.cs-faq-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 40px;
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 0.875rem;
+  margin-bottom: 20px;
+}
+
+.cs-faq-tag svg {
+  width: 16px; height: 16px;
+  color: #D63447;
+}
+
+.cs-faq-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 40px;
+}
+.cs-faq-title span {
+  color: #a0a0a0;
+  display: block;
+}
+
+.cs-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cs-faq-item {
+  background: rgba(20,20,20,0.8);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cs-faq-item.active {
+  border: 1px solid #D63447; /* Blueish border from ref */
+}
+
+.cs-faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.cs-faq-icon {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 300;
+  transition: transform 0.3s ease;
+}
+
+.cs-faq-item.active .cs-faq-icon {
+  transform: rotate(45deg);
+}
+
+.cs-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  color: #a0a0a0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 991px) {
+  .cs-hero {
+    flex-direction: column;
+    padding-top: 20px;
+    gap: 40px;
+  }
+  
+  .cs-hero-left, .cs-hero-right {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cs-content-block {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 60px 0;
+  }
+
+  .cs-text {
+    text-align: left;
+  }
+
+  .cs-results-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 60px 6%;
+  }
+
+  .cs-metric-row {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .cs-more-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-quote::before {
+    left: -20px;
+    top: -30px;
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .cs-nav {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .cs-title {
+    font-size: 3.5rem;
+    line-height: 1.05;
+  }
+  
+  .cs-description {
+    font-size: 1.05rem;
+  }
+  
+  .cs-quote::before {
+    left: 0;
+    top: -40px;
+  }
+  
+  .cs-quote {
+    font-size: 1.75rem;
+  }
+  
+  .cs-metric-number {
+    font-size: 4.5rem;
+  }
+  
+  .cs-more-title {
+    font-size: 4rem;
+  }
+  
+  .cs-hero-visual {
+    padding-bottom: 60px;
+  }
+  
+  .cs-content-section {
+    padding-bottom: 60px;
+    gap: 60px;
+  }
+  
+  .cs-results-section, .cs-testimonial-section, .cs-faq-section, .cs-more-projects {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .cs-info-card {
+    padding: 30px 24px;
+  }
+  
+  .cs-faq-title {
+    font-size: 2.5rem;
+  }
+
+  .cs-results-list {
+    margin-left: 10px;
+  }
+}
+
+/* Active State (X Shape) for Burger Icon */
+.cs-burger-icon.active {
+  background: #D63447;
+  border-color: #D63447;
+  transform: rotate(180deg);
+  box-shadow: 0 0 25px rgba(214, 52, 71, 0.5);
+}
+
+.cs-burger-icon.active::before {
+  opacity: 0.1;
+}
+
+.cs-burger-icon.active .cs-burger-line.top {
+  transform: translateY(7px) rotate(45deg);
+  width: 20px;
+}
+
+.cs-burger-icon.active .cs-burger-line.mid {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.cs-burger-icon.active .cs-burger-line.bot {
+  transform: translateY(-7px) rotate(-45deg);
+  width: 20px;
+}
+
+/* ---------- Staggered Menu Styles ---------- */
+.staggered-menu-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  pointer-events: none;
+}
+.staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  overflow: hidden;
+}
+.staggered-menu-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(260px, 38vw, 420px);
+  height: 100%;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 6em 2em 2em 2em;
+  overflow-y: auto;
+  z-index: 10;
+  pointer-events: auto;
+}
+.sm-prelayers {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(260px, 38vw, 420px);
+  pointer-events: none;
+  z-index: 5;
+}
+.sm-prelayer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transform: translateX(100%);
+}
+.sm-panel-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.sm-socials {
+  margin-top: auto;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sm-socials-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #D63447;
+}
+.sm-socials-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.sm-socials-list .sm-socials-link { opacity: 1; transition: opacity 0.3s ease; }
+.sm-socials-list:hover .sm-socials-link:not(:hover) { opacity: 0.35; }
+.sm-socials-link {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  padding: 2px 0;
+  display: inline-block;
+}
+.sm-socials-link:hover { color: #D63447; text-decoration: none; }
+.sm-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.sm-panel-itemWrap {
+  position: relative;
+  overflow: hidden;
+  line-height: 1.1;
+}
+.sm-panel-item {
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  cursor: pointer;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  transition: color 0.25s;
+  display: inline-block;
+  text-decoration: none;
+  padding-right: 1.4em;
+}
+.sm-panel-itemLabel {
+  display: inline-block;
+  will-change: transform;
+  transform-origin: 50% 100%;
+}
+.sm-panel-item:hover { color: #D63447; text-decoration: none; }
+.sm-panel-list[data-numbering] { counter-reset: smItem; }
+.sm-panel-list[data-numbering] .sm-panel-item::after {
+  counter-increment: smItem;
+  content: "0" counter(smItem);
+  position: absolute;
+  top: 0.3em;
+  right: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #D63447;
+  letter-spacing: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: var(--sm-num-opacity, 0);
+}
+@media (max-width: 1024px) {
+  .staggered-menu-panel, .sm-prelayers { width: 100%; left: 0; right: 0; }
+}
+
+/* ═══════════════════════════════════════════
+   PROJECT INFO POPUP  (matches newsletter card)
+   ═══════════════════════════════════════════ */
+#cs-project-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#cs-project-popup-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+
+#cs-project-popup-card {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background: rgba(12, 10, 20, 0.92);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 36px 32px 32px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.10);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease;
+  opacity: 0;
+}
+
+#cs-project-popup-overlay.open #cs-project-popup-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Top specular shine on card */
+#cs-project-popup-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+}
+
+.cs-popup-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.2s ease;
+}
+.cs-popup-close:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+.cs-popup-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cs-popup-accent, #D63447);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.cs-popup-title {
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 6px;
+}
+
+.cs-popup-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0 0 24px;
+}
+
+.cs-popup-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  margin: 20px 0;
+}
+
+.cs-popup-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.cs-popup-summary {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 16px;
+}
+
+.cs-popup-highlights {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cs-popup-highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+
+.cs-popup-highlights li::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cs-popup-accent, #D63447);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.cs-popup-footer {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cs-popup-cta {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.cs-popup-cta-primary {
+  background: var(--cs-popup-accent, #D63447);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(214, 52, 71, 0.35);
+}
+.cs-popup-cta-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  color: #fff;
+  text-decoration: none;
+}
+
+.cs-popup-cta-secondary {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.75);
+}
+.cs-popup-cta-secondary:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  text-decoration: none;
+}

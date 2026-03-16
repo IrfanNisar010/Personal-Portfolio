@@ -42,6 +42,8 @@ jQuery(function($) {
 	luxuryWordReveal();
 	customCursor();
 	backToTop();
+	caseStudyAnimations();
+	initStaggeredMenu();
 
 	smoothScrollEngine();
 
@@ -91,6 +93,101 @@ var smoothScrollEngine = function() {
 		}
 	});
 };
+
+var caseStudyAnimations = function() {
+    if ($('.case-study-page').length === 0) return;
+
+    // Helper: split text into individually animated word spans
+    var splitTextToWords = function(selector) {
+        $(selector).each(function() {
+            var $this = $(this);
+            var text = $this.text().trim();
+            var words = text.split(/\s+/);
+            $this.empty();
+            $.each(words, function(i, word) {
+                $this.append(
+                    '<span class="cs-word" style="display:inline-block; opacity:0;' +
+                    ' transform:translateY(22px) translateZ(0); filter:blur(8px);' +
+                    ' will-change:transform,opacity,filter;">' +
+                    word + '&nbsp;</span>'
+                );
+            });
+        });
+    };
+
+    splitTextToWords('.cs-title');
+    splitTextToWords('.cs-description');
+
+    // Ensure flex layout so word spans wrap correctly
+    $('.cs-title, .cs-description').css({ 'display': 'flex', 'flex-wrap': 'wrap' });
+
+    // Initial GSAP hidden states
+    TweenMax.set('.cs-site-logo, .cs-header-glass', { autoAlpha: 0, scale: 0.85, y: -20, filter: 'blur(10px)' });
+    TweenMax.set('.cs-date-pill-wrapper', { autoAlpha: 0, rotationX: -90, y: 30, transformOrigin: '50% 100%', filter: 'blur(10px)' });
+    TweenMax.set('.cs-info-card', { autoAlpha: 0, x: 50, filter: 'blur(15px)' });
+    TweenMax.set('.cs-image-container, .cs-image-carousel', { autoAlpha: 0, y: 80, scale: 0.96, filter: 'blur(20px)' });
+    // opacity-only for tags (NOT autoAlpha) — preserves glass ::before/::after pseudo-elements
+    TweenMax.set('.cs-tag', { opacity: 0, y: 16, scale: 0.92 });
+    TweenMax.set('.cs-live-btn, #cs-view-more-btn', { autoAlpha: 0, y: 15 });
+    TweenMax.set('.cs-info-item', { autoAlpha: 0, x: 20 });
+
+    var tl = new TimelineMax({ delay: 0.1 });
+
+    // 1. Navbar: Logo + Glass buttons drop in
+    tl.staggerTo('.cs-site-logo, .cs-header-glass', 1.2, {
+        autoAlpha: 1, scale: 1, y: 0, filter: 'blur(0px)',
+        ease: Elastic.easeOut.config(1, 0.5), clearProps: 'all'
+    }, 0.1, 0);
+
+    // 2. Date pill unique flip-in
+    tl.to('.cs-date-pill-wrapper', 1.4, {
+        autoAlpha: 1, rotationX: 0, y: 0, filter: 'blur(0px)',
+        ease: Expo.easeOut, clearProps: 'all'
+    }, 0.2);
+
+    // 3. Title — word by word, smooth blur-rise
+    tl.staggerTo('.cs-title .cs-word', 0.9, {
+        opacity: 1, y: 0, filter: 'blur(0px)',
+        ease: Expo.easeOut, clearProps: 'filter,transform'
+    }, 0.06, 0.4);
+
+    // 4. Subtitle — word by word, gentler stagger
+    tl.staggerTo('.cs-description .cs-word', 0.8, {
+        opacity: 1, y: 0, filter: 'blur(0px)',
+        ease: Power3.easeOut, clearProps: 'filter,transform'
+    }, 0.03, 0.55);
+
+    // 5. Tags — opacity + scale only (preserves glass pseudo-elements)
+    tl.staggerTo('.cs-tag', 0.7, {
+        opacity: 1, scale: 1, y: 0,
+        ease: Back.easeOut.config(1.4), clearProps: 'transform'
+    }, 0.1, 0.72);
+
+    // 6. Right info card slide in
+    tl.to('.cs-info-card', 1.4, {
+        autoAlpha: 1, x: 0, filter: 'blur(0px)',
+        ease: Expo.easeOut, clearProps: 'all'
+    }, 0.6);
+
+    // 7. Info items stagger
+    tl.staggerTo('.cs-info-item', 0.8, {
+        autoAlpha: 1, x: 0,
+        ease: Power3.easeOut, clearProps: 'all'
+    }, 0.1, 0.8);
+
+    // 8. More Details button
+    tl.to('.cs-live-btn, #cs-view-more-btn', 0.8, {
+        autoAlpha: 1, y: 0,
+        ease: Back.easeOut.config(1.5), clearProps: 'all'
+    }, 1.0);
+
+    // 9. Hero carousel swoop up
+    tl.to('.cs-image-container, .cs-image-carousel', 1.8, {
+        autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)',
+        ease: Power4.easeOut, clearProps: 'all'
+    }, 0.8);
+};
+
 
 var siteIstotope = function() {
 	var $container = $('#posts').isotope({
@@ -2315,4 +2412,142 @@ var luxuryWordReveal = function() {
 	} else {
 		$elements.find('span').css({ opacity: 1, filter: 'blur(0px)', transform: 'translateY(0)' });
 	}
+};
+
+var initStaggeredMenu = function() {
+    if ($('.case-study-page').length === 0) return;
+
+    var menuHTML = `
+    <div class="staggered-menu-wrapper fixed-wrapper" data-position="right">
+      <div class="sm-prelayers" aria-hidden="true">
+        <div class="sm-prelayer" style="background: #1a1a1a;"></div>
+        <div class="sm-prelayer" style="background: #D63447;"></div>
+      </div>
+      <aside id="staggered-menu-panel" class="staggered-menu-panel" aria-hidden="true">
+        <div class="sm-panel-inner">
+          <ul class="sm-panel-list" role="list" data-numbering="true">
+            <li class="sm-panel-itemWrap">
+              <a class="sm-panel-item sm-close-link" href="index.html#home-section"><span class="sm-panel-itemLabel">Home</span></a>
+            </li>
+            <li class="sm-panel-itemWrap">
+              <a class="sm-panel-item sm-close-link" href="index.html#portfolio-section"><span class="sm-panel-itemLabel">Projects</span></a>
+            </li>
+            <li class="sm-panel-itemWrap">
+              <a class="sm-panel-item sm-close-link" href="index.html#about-section"><span class="sm-panel-itemLabel">About</span></a>
+            </li>
+            <li class="sm-panel-itemWrap">
+              <a class="sm-panel-item sm-close-link" href="index.html#services-section"><span class="sm-panel-itemLabel">Works</span></a>
+            </li>
+            <li class="sm-panel-itemWrap">
+              <a class="sm-panel-item sm-close-link" href="index.html#skills-section"><span class="sm-panel-itemLabel">Skills</span></a>
+            </li>
+            <li class="sm-panel-itemWrap">
+              <a class="sm-panel-item sm-close-link" href="index.html#contact-section"><span class="sm-panel-itemLabel">Contact</span></a>
+            </li>
+          </ul>
+          <div class="sm-socials" aria-label="Social links">
+            <h3 class="sm-socials-title">Socials</h3>
+            <ul class="sm-socials-list" role="list">
+              <li class="sm-socials-item"><a href="https://twitter.com" target="_blank" class="sm-socials-link">Twitter</a></li>
+              <li class="sm-socials-item"><a href="https://github.com" target="_blank" class="sm-socials-link">GitHub</a></li>
+              <li class="sm-socials-item"><a href="https://linkedin.com" target="_blank" class="sm-socials-link">LinkedIn</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+    `;
+    
+    $('body').append(menuHTML);
+
+    TweenMax.set('.sm-prelayer', { xPercent: 100 });
+    TweenMax.set('.staggered-menu-panel', { xPercent: 100 });
+    
+    var menuOpen = false;
+    var isBusy = false;
+
+    function openMenu() {
+        if (isBusy) return;
+        isBusy = true;
+        menuOpen = true;
+        
+        TweenMax.set('.staggered-menu-wrapper', { 'pointer-events': 'auto' });
+        $('.cs-burger-icon').addClass('active');
+
+        var panel = $('.staggered-menu-panel');
+        var itemEls = $('.sm-panel-itemLabel');
+        var numberEls = $('.sm-panel-list .sm-panel-item');
+        var socialTitle = $('.sm-socials-title');
+        var socialLinks = $('.sm-socials-link');
+
+        TweenMax.set(itemEls, { yPercent: 140, rotation: 10 });
+        TweenMax.set(numberEls, { '--sm-num-opacity': 0 });
+        TweenMax.set(socialTitle, { opacity: 0 });
+        TweenMax.set(socialLinks, { y: 25, opacity: 0 });
+
+        var tl = new TimelineMax({ onComplete: function() { isBusy = false; }});
+
+        var preLayers = $('.sm-prelayer');
+        preLayers.each(function(i, el) {
+            tl.to(el, 0.5, { xPercent: 0, ease: Power4.easeOut }, i * 0.07);
+        });
+
+        var panelInsertTime = (preLayers.length ? (preLayers.length - 1) * 0.07 + 0.08 : 0);
+        tl.to(panel, 0.65, { xPercent: 0, ease: Power4.easeOut }, panelInsertTime);
+
+        tl.staggerTo(itemEls, 1, { yPercent: 0, rotation: 0, ease: Power4.easeOut }, 0.1, panelInsertTime + 0.65 * 0.15);
+        tl.staggerTo(numberEls, 0.6, { '--sm-num-opacity': 1, ease: Power2.easeOut }, 0.08, panelInsertTime + 0.65 * 0.15 + 0.1);
+        
+        var socialsStart = panelInsertTime + 0.65 * 0.4;
+        tl.to(socialTitle, 0.5, { opacity: 1, ease: Power2.easeOut }, socialsStart);
+        tl.staggerTo(socialLinks, 0.55, { y: 0, opacity: 1, ease: Power3.easeOut, clearProps: 'opacity' }, 0.08, socialsStart + 0.04);
+    }
+
+    function closeMenu() {
+        if (isBusy) return;
+        isBusy = true;
+        menuOpen = false;
+
+        $('.cs-burger-icon').removeClass('active');
+
+        var all = $('.sm-prelayer').toArray().concat($('.staggered-menu-panel').toArray());
+        
+        TweenMax.to(all, 0.32, { 
+            xPercent: 100, 
+            ease: Power3.easeIn, 
+            onComplete: function() {
+                TweenMax.set('.staggered-menu-wrapper', { 'pointer-events': 'none' });
+                var itemEls = $('.sm-panel-itemLabel');
+                var numberEls = $('.sm-panel-list .sm-panel-item');
+                var socialTitle = $('.sm-socials-title');
+                var socialLinks = $('.sm-socials-link');
+
+                TweenMax.set(itemEls, { yPercent: 140, rotation: 10 });
+                TweenMax.set(numberEls, { '--sm-num-opacity': 0 });
+                TweenMax.set(socialTitle, { opacity: 0 });
+                TweenMax.set(socialLinks, { y: 25, opacity: 0 });
+                isBusy = false;
+            }
+        });
+    }
+
+    $('body').on('click', '.cs-burger-icon', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (menuOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    $(document).on('mousedown', function(e) {
+        if (menuOpen && !$(e.target).closest('.staggered-menu-panel, .cs-burger-icon').length) {
+            closeMenu();
+        }
+    });
+
+    $('body').on('click', '.sm-close-link', function() {
+        closeMenu();
+    });
 };
