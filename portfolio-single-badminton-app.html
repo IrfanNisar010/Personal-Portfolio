@@ -17,6 +17,51 @@
   <link rel="stylesheet" href="css/about-redesign.css">
   <!-- New Redesign CSS -->
   <link rel="stylesheet" href="css/project-details-redesign.css">
+
+  <style>
+    body.case-study-page {
+      --project-accent: #22c55e;
+      --project-accent-rgb: 34, 197, 94;
+    }
+
+    body.case-study-page .cs-metric-number,
+    body.case-study-page .cs-quote::before,
+    body.case-study-page .cs-site-logo span,
+    body.case-study-page .cs-results-list li::marker,
+    body.case-study-page .cs-text a,
+    body.case-study-page .sm-panel-list[data-numbering] .sm-panel-item::after,
+    body.case-study-page .sm-socials-link:hover {
+      color: var(--project-accent) !important;
+    }
+
+    body.case-study-page .cs-date-pill,
+    body.case-study-page .cs-live-btn,
+    body.case-study-page .cs-popup-cta-primary {
+      background: var(--project-accent) !important;
+      color: #fff !important;
+      box-shadow: 0 10px 25px rgba(var(--project-accent-rgb), 0.3);
+    }
+
+    body.case-study-page .cs-date-label,
+    body.case-study-page .cs-date-value {
+      color: #fff !important;
+    }
+
+    body.case-study-page .cs-tag {
+      border-color: rgba(var(--project-accent-rgb), 0.35);
+      background: rgba(var(--project-accent-rgb), 0.1);
+      color: var(--project-accent);
+    }
+
+    body.case-study-page .cs-info-card::before {
+      background: linear-gradient(135deg, var(--project-accent), transparent);
+    }
+
+    .cs-project-card:hover {
+      border-color: rgba(var(--project-accent-rgb), 0.4) !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--project-accent-rgb), 0.15) !important;
+    }
+  </style>
 </head>
 <body class="case-study-page">
 
@@ -88,7 +133,7 @@
     <div class="cs-content-block">
       <h2 class="cs-section-title">Challenge<span>.</span></h2>
       <p class="cs-text">
-        Booking a badminton court often involves navigating disjointed menus, dealing with schedule conflicts, and unclear pricing setups. The challenge was to design a comprehensive booking solution addressing these pain points, creating a frictionless user interface that athletes could use on the go without frustration.
+        Booking a badminton court is often frustrating due to fragmented menus, scheduling conflicts, and unclear pricing structures. The challenge was to design a unified booking experience that eliminates these friction points and enables athletes to quickly reserve courts through a clear, mobile-friendly interface without confusion or delays.
       </p>
     </div>
 
@@ -96,7 +141,7 @@
     <div class="cs-content-block">
       <h2 class="cs-section-title">Solution<span>.</span></h2>
       <p class="cs-text">
-        I structured a clean, modern interface focusing on a visualized court selection system and clear pricing breakdowns. A dedicated user profile section was added to manage past and upcoming games seamlessly. The visual language leveraged vibrant, sport-centric colors dynamically contrasted against dark elements to maintain excellent readability and accessibility standards.
+        The interface was designed with a clean, modern layout centered around a visual court-selection system and a transparent pricing breakdown. A dedicated profile section allows users to easily manage upcoming bookings and review past games. The visual language combines vibrant, sport-inspired colors with dark UI elements to enhance contrast, readability, and accessibility across mobile devices.
       </p>
     </div>
   </section>
@@ -105,11 +150,11 @@
   <section class="cs-results-section border-top">
     <div class="cs-results-left">
       <h2 class="cs-section-title" style="margin-bottom: 20px;">Results<span>.</span></h2>
-      <p class="cs-text" style="color: #fff; line-height: 1.5;">The final prototype delivered a streamlined UX flow that theoretically reduces booking times and eliminates calendar conflicts for court managers.</p>
+      <p class="cs-text" style="color: #fff; line-height: 1.5;">The final prototype introduces a simplified booking experience that helps players reserve badminton courts faster and with greater clarity. By restructuring the booking flow and presenting court availability visually, the interface reduces confusion and makes the process smoother for users.</p>
       <ul class="cs-results-list">
-        <li>Visual representation of active slots</li>
-        <li>Intuitive onboarding and profile management</li>
-        <li>Accessible high-contrast UI tailored for active users</li>
+        <li>Visual availability indicators for quick court selection</li>
+        <li>Simple onboarding and profile management for regular players</li>
+        <li>High-contrast mobile interface designed for quick interactions</li>
       </ul>
     </div>
     
@@ -120,11 +165,11 @@
       </div>
       <div class="cs-metric-block">
         <span class="cs-metric-number">70%</span>
-        <span class="cs-metric-label">Reduced Steps</span>
+        <span class="cs-metric-label">Fewer Steps</span>
       </div>
       <div class="cs-metric-block">
-        <span class="cs-metric-number">UI</span>
-        <span class="cs-metric-label">Prototype completion</span>
+        <span class="cs-metric-number">Booking</span>
+        <span class="cs-metric-label">Clear Flow</span>
       </div>
     </div>
   </section>

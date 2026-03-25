@@ -24,6 +24,8 @@
     body.case-study-page {
       --choco-accent: #f7bad0;
       --choco-accent-rgb: 247, 186, 208;
+      --project-accent: #f7bad0;
+      --project-accent-rgb: 247, 186, 208;
     }
 
     /* Tags — inject page theme into global glass tag design */
@@ -31,9 +33,11 @@
       --page-tag-rgb: 247, 186, 208; /* Choco Heaven rose-pink */
     }
 
-    /* Date label */
+    /* Date label background to theme color, text to white */
     body.case-study-page .cs-date-label {
-      color: var(--choco-accent);
+      background: var(--choco-accent) !important;
+      color: #fff !important;
+      box-shadow: 0 4px 15px rgba(var(--choco-accent-rgb), 0.3) !important;
     }
 
     /* ── Hero illumination glow (behind carousel) ── */
@@ -56,21 +60,22 @@
       border-color: rgba(var(--choco-accent-rgb), 0.4) !important;
       color: var(--choco-accent) !important;
     }
-    body.case-study-page .owl-nav button.owl-prev:hover,
-    body.case-study-page .owl-nav button.owl-next:hover {
-      background: rgba(var(--choco-accent-rgb), 0.15) !important;
-      box-shadow: 0 0 20px rgba(var(--choco-accent-rgb), 0.3) !important;
+    body.case-study-page .owl-nav button.owl-prev,
+    body.case-study-page .owl-nav button.owl-next {
+      color: var(--choco-accent) !important;
     }
 
     /* ── Live project button ── */
     body.case-study-page .cs-live-btn {
-      background: linear-gradient(135deg, rgba(var(--choco-accent-rgb), 0.18), rgba(var(--choco-accent-rgb), 0.06));
-      border-color: rgba(var(--choco-accent-rgb), 0.35);
-      color: var(--choco-accent);
+      background: var(--choco-accent) !important;
+      border-color: var(--choco-accent) !important;
+      color: #fff !important;
+      box-shadow: 0 8px 25px rgba(var(--choco-accent-rgb), 0.35) !important;
     }
     body.case-study-page .cs-live-btn:hover {
-      background: rgba(var(--choco-accent-rgb), 0.28);
-      box-shadow: 0 0 20px rgba(var(--choco-accent-rgb), 0.25);
+      background: var(--choco-accent) !important;
+      opacity: 0.9;
+      box-shadow: 0 8px 30px rgba(var(--choco-accent-rgb), 0.45) !important;
     }
 
     /* ── Info card accent line ── */
@@ -136,15 +141,20 @@
       box-shadow: 0 0 25px rgba(var(--choco-accent-rgb), 0.55);
     }
 
-    /* ── Logo dot ── */
+    body.case-study-page .cs-text a,
+    body.case-study-page .cs-results-list li::marker,
+    body.case-study-page .cs-metric-number,
+    body.case-study-page .cs-quote::before,
+    body.case-study-page .sm-panel-list[data-numbering] .sm-panel-item::after,
+    body.case-study-page .sm-socials-link:hover,
     body.case-study-page .cs-site-logo span {
-      color: var(--choco-accent);
+      color: var(--project-accent) !important;
     }
 
-    /* ── Text links & list markers ── */
-    body.case-study-page .cs-text a,
-    body.case-study-page .cs-results-list li::marker {
-      color: var(--choco-accent);
+    /* Override the project card hover to use current page theme */
+    .cs-project-card:hover {
+      border-color: rgba(var(--project-accent-rgb), 0.4) !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(var(--project-accent-rgb), 0.15) !important;
     }
   </style>
 </head>
@@ -248,39 +258,37 @@
 
   <!-- Results Section -->
   <section class="cs-results-section border-top">
-    <!-- Left label -->
-    <h2 class="cs-section-title">Results<span>.</span></h2>
-
-    <!-- Right: summary text + metrics -->
-    <div class="cs-results-metrics">
+    <!-- Left column: Title + Description -->
+    <div class="cs-results-left">
+      <h2 class="cs-section-title">Results<span>.</span></h2>
       <p class="cs-text">The new platform significantly elevated the brand's perception while driving measurable business impact through improved user flows, optimized page delivery, and seamless checkout mechanics.</p>
+    </div>
 
-      <!-- Horizontal metric row -->
-      <div class="cs-metric-row">
-        <div class="cs-metric-block">
-          <span class="cs-metric-number">43%</span>
-          <span class="cs-metric-label">Lower bounce rate</span>
-        </div>
-        <div class="cs-metric-block">
-          <span class="cs-metric-number">2x</span>
-          <span class="cs-metric-label">Longer session time</span>
-        </div>
-        <div class="cs-metric-block">
-          <span class="cs-metric-number">1.8x</span>
-          <span class="cs-metric-label">Add-to-cart increase</span>
-        </div>
+    <!-- Right column: Metrics (Vertical stack) -->
+    <div class="cs-results-metrics">
+      <div class="cs-metric-block">
+        <span class="cs-metric-number">43%</span>
+        <span class="cs-metric-label">Lower bounce rate</span>
+      </div>
+      <div class="cs-metric-block">
+        <span class="cs-metric-number">2x</span>
+        <span class="cs-metric-label">Longer session time</span>
+      </div>
+      <div class="cs-metric-block">
+        <span class="cs-metric-number">1.8x</span>
+        <span class="cs-metric-label">Add-to-cart increase</span>
       </div>
     </div>
   </section>
 
   <!-- Testimonial Section -->
   <section class="cs-testimonial-section border-top">
-    <h2 class="cs-quote">From the sleek design to the flawless performance—everything was cohesive, strategic, and executed with serious care. Our online sales have never looked or performed better.</h2>
+    <h2 class="cs-quote">From the sleek design to the flawless performance, every detail felt cohesive, strategic, and carefully executed. Our online sales have never looked or performed better.</h2>
     <div class="cs-author">
-      <img src="images/cover_bg_2.png" alt="Evelyn Widjaja" class="cs-author-img">
+      <img src="images/Profiles Reviewer.jpg" alt="Evelyn Widjaja" class="cs-author-img">
       <div class="cs-author-info">
-        <span class="cs-author-name">Evelyn Widjaja</span>
-        <span class="cs-author-role">Marketing Lead at Choco Heaven</span>
+        <span class="cs-author-name">Renjith</span>
+        <span class="cs-author-role">Reviewer</span>
       </div>
     </div>
   </section>

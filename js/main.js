@@ -43,6 +43,8 @@ jQuery(function($) {
 	customCursor();
 	backToTop();
 	caseStudyAnimations();
+	animateResultsStats();
+	animateQuoteReveal();
 	initStaggeredMenu();
 
 	smoothScrollEngine();
@@ -2549,5 +2551,109 @@ var initStaggeredMenu = function() {
 
     $('body').on('click', '.sm-close-link', function() {
         closeMenu();
+    });
+};
+
+var animateResultsStats = function() {
+	if ($('.cs-results-metrics').length === 0) return;
+
+	if ('IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					var $metrics = $(entry.target).find('.cs-metric-number');
+					
+					$metrics.each(function() {
+						var $this = $(this);
+						var text = $this.text().trim();
+						var match = text.match(/(-?\d+\.?\d*)/); // Find the first number
+						
+						if (match) {
+							var target = parseFloat(match[0]);
+							var prefix = text.substring(0, text.indexOf(match[0]));
+							var suffix = text.substring(text.indexOf(match[0]) + match[0].length);
+							var isFloat = match[0].includes('.');
+							
+							var dummy = { val: 0 };
+							TweenMax.to(dummy, 2.0, {
+								val: target,
+								ease: Power4.easeOut,
+								onUpdate: function() {
+									var displayVal = isFloat ? dummy.val.toFixed(1) : Math.round(dummy.val);
+									$this.text(prefix + displayVal + suffix);
+								}
+							});
+						}
+					});
+					
+					observer.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.1 });
+
+		$('.cs-results-metrics').each(function() {
+			observer.observe(this);
+		});
+	}
+};
+
+var animateQuoteReveal = function() {
+    var $quoteSections = $('.cs-testimonial-section');
+    if ($quoteSections.length === 0) return;
+
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
+
+    $quoteSections.each(function() {
+        var $section = $(this);
+        var $quote = $section.find('.cs-quote');
+        var $author = $section.find('.cs-author');
+
+        if ($quote.data('quote-init')) return;
+        $quote.data('quote-init', true);
+
+        // Split Quote into words
+        var text = $quote.text().trim();
+        var words = text.split(/\s+/);
+        $quote.empty();
+
+        $.each(words, function(i, word) {
+            // Initial state: grey, low opacity, blurry
+            var initStyle = isMobile 
+                ? 'display:inline-block; opacity:0.3; color:#555; transform:translateY(15px); will-change:transform, opacity, color;'
+                : 'display:inline-block; opacity:0; filter:blur(15px); color:#444; transform:translateY(25px); will-change:transform, opacity, filter, color;';
+            $quote.append('<span class="q-word" style="' + initStyle + ' margin-right: 0.25em;">' + word + '</span>');
+        });
+
+        $quote.css('opacity', 1); // Reveal container now that words are prepared
+
+        // Initial State for Author
+        TweenMax.set($author, { opacity: 0, y: 20, filter: isMobile ? "none" : "blur(5px)" });
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var tl = new TimelineMax();
+                        var $words = $quote.find('.q-word');
+                        
+                        // Reveal animation: turn to white and clear blur
+                        var animProps = isMobile 
+                            ? { opacity: 1, color: '#ffffff', y: 0, ease: Power3.easeOut }
+                            : { opacity: 1, color: '#ffffff', filter: 'blur(0px)', webkitFilter: 'blur(0px)', y: 0, ease: Power3.easeOut };
+
+                        tl.staggerTo($words, 1.2, animProps, 0.03);
+                        tl.to($author, 0.8, { opacity: 1, y: 0, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power2.easeOut }, "-=0.6");
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            observer.observe($section[0]);
+        } else {
+            // Fallback for older browsers
+            $quote.find('.q-word').css({ opacity: 1, color: '#ffffff', filter: 'none', transform: 'none' });
+            $author.css({ opacity: 1, transform: 'none', filter: 'none' });
+        }
     });
 };
