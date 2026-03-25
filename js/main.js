@@ -2285,6 +2285,29 @@ var backToTop = function() {
     });
 };
 
+window.showDynamicNotification = function(title, message, isError = false) {
+    $('.dynamic-notif').remove();
+    var svgIcon = isError 
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;color:#D63447;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;color:#4CAF50;"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>';
+
+    var $notif = $('<div class="custom-notification dynamic-notif">' + 
+      '<div class="notif-icon">' + svgIcon + '</div>' + 
+      '<div class="notif-text">' + 
+        '<h4>' + title + '</h4>' + 
+        '<p style="margin:0; font-size:12.5px; color:rgba(255,255,255,0.7); line-height: 1.4;">' + message + '</p>' + 
+      '</div>' + 
+    '</div>');
+    
+    $('body').append($notif);
+    
+    setTimeout(function() { $notif.addClass('show'); }, 50);
+    setTimeout(function() {
+        $notif.removeClass('show');
+        setTimeout(function() { $notif.remove(); }, 500);
+    }, 5000);
+};
+
 var techBrewSubscription = function() {
     // --- Animation Trigger on Scroll ---
     var observer = new IntersectionObserver(function(entries) {
@@ -2313,7 +2336,8 @@ var techBrewSubscription = function() {
 
     $form.on('submit', function(e) {
         e.preventDefault();
-        var email = $form.find('input[type="email"]').val();
+        var emailInput = $form.find('input[type="email"]');
+        var email = emailInput.val();
         
         if (!email) return;
 
@@ -2323,26 +2347,57 @@ var techBrewSubscription = function() {
         $spinner.show();
         $wrapper.addClass('loading');
         
-        // Simulate API delay (1.5s)
-        setTimeout(function() {
-             // 2. Success State
-            $wrapper.removeClass('loading').addClass('success');
+        // Prepare template params for EmailJS
+        const templateParams = {
+            user_name: email, 
+            user_feedback: "Subscribed to Tech Brew Newsletter!",
+            user_rating: "Newsletter Subscriber",
+            rating_date: new Date().toLocaleString(),
+            user_device: navigator.userAgent,
+            to_name: "Irfan Nisar",
+            to_email: "inzrwork020@gmail.com"
+        };
+        
+        // 2. Call EmailJS using credentials found in codebase
+        emailjs.send("service_vlvela8", "template_1vplhws", templateParams, "0ClrYMOecNl2szYOj")
+            .then(function(response) {
+                // Success State!
+                $wrapper.removeClass('loading').addClass('success');
+                showDynamicNotification("Subscription Active", "You'll receive the next edition of Tech Brew.", false);
 
-            // 3. Trigger Confetti
-            if (typeof confetti !== 'undefined') {
-                var rect = $wrapper[0].getBoundingClientRect();
-                var x = (rect.left + rect.width / 2) / window.innerWidth;
-                var y = (rect.top + rect.height / 2) / window.innerHeight;
+                // Trigger Confetti
+                if (typeof confetti !== 'undefined') {
+                    var rect = $wrapper[0].getBoundingClientRect();
+                    var x = (rect.left + rect.width / 2) / window.innerWidth;
+                    var y = (rect.top + rect.height / 2) / window.innerHeight;
 
-                confetti({
-                    particleCount: 150,
-                    spread: 100,
-                    origin: { x: x, y: y },
-                    colors: ['#0079da', '#10b981', '#fbbf24', '#f472b6', '#ffffff'], // Matched colors
-                    zIndex: 9999
-                });
-            }
-        }, 1500);
+                    confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { x: x, y: y },
+                        colors: ['#0079da', '#10b981', '#fbbf24', '#f472b6', '#ffffff'],
+                        zIndex: 9999
+                    });
+                }
+
+                // Reset form state after success
+                setTimeout(function() {
+                    $wrapper.removeClass('success');
+                    $btn.prop('disabled', false);
+                    $btnText.show();
+                    $spinner.hide();
+                    emailInput.val('');
+                }, 4000);
+            }, function(error) {
+                console.error("Newsletter Subscribe Failed:", error);
+                showDynamicNotification("Subscription Failed", "There was an issue processing your request.", true);
+                
+                // Revert form state entirely
+                $wrapper.removeClass('loading');
+                $btn.prop('disabled', false);
+                $btnText.show();
+                $spinner.hide();
+            });
     });
 };
 // Initialize the new feature functionality

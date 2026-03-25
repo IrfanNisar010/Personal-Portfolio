@@ -37,7 +37,7 @@
     font-size: 3.5rem; /* Larger modern heading size */
     letter-spacing: -0.04em;
     margin-bottom: 24px;
-    font-weight: 600; /* Bold weight */
+    font-weight: 400; /* Reduced weight */
     line-height: 1.1;
     
     color: #ffffff; /* Use solid white color for the new animation */
