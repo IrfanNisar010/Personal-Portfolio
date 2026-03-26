@@ -11,7 +11,7 @@ const files = [
   'portfolio-single-gemini-clone.html',
   'portfolio-single-guided-pro.html',
   'portfolio-single-revoult-health.html',
-  'portfolio-single-shopify-store.html'
+  'portfolio-single-habitline.html'
 ];
 
 for(let file of files) {
