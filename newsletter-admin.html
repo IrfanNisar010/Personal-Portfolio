@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Newsletter Admin | Tech Brew</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/newsletter.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    
+    <style>
+      body { background-color: #000; color: #fff; font-family: 'Outfit', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+      .admin-container { max-width: 600px; width: 100%; padding: 40px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+      .admin-title { font-size: 2.5rem; text-align: center; margin-bottom: 20px; font-family: 'Aeonik', sans-serif; color: #fff; }
+      
+      .auth-section { text-align: center; }
+      .dashboard-section { display: none; }
+      
+      .input-group { margin-bottom: 20px; }
+      .input-group label { display: block; margin-bottom: 8px; color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+      .input-group input, .input-group textarea { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s; }
+      .input-group input:focus, .input-group textarea:focus { border-color: #D63447; }
+      
+      .btn-primary { width: 100%; padding: 14px; background: #D63447; border: none; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+      .btn-primary:hover { background: #E04556; }
+      .btn-google { background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; }
+      .btn-google:hover { background: #f1f1f1; }
+      .btn-google img { width: 20px; }
+      
+      .status-message { text-align: center; margin-top: 15px; font-size: 0.9rem; color: #10b981; display: none; }
+      .error-message { color: #D63447; }
+      
+      .logout-btn { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px; cursor: pointer; float: right; margin-top: -50px; font-size: 0.8rem; }
+    </style>
+  </head>
+  <body>
+
+    <div class="admin-container">
+        
+        <!-- Login Section -->
+        <div class="auth-section" id="authSection">
+            <h1 class="admin-title">Tech Brew Admin</h1>
+            <p style="color: rgba(255,255,255,0.6); margin-bottom: 30px;">Private access for owner only.</p>
+            <button class="btn-primary btn-google" id="googleLoginBtn">
+                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Sign in with Gmail
+            </button>
+            <p id="authError" class="status-message error-message"></p>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard-section" id="dashboardSection">
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+            <h1 class="admin-title">Upload Newsletter</h1>
+            
+            <form id="uploadForm">
+                <div class="input-group">
+                    <label for="newsTitle">Newsletter Title</label>
+                    <input type="text" id="newsTitle" placeholder="e.g., The Future of AI in 2026" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="newsKicker">Category / Kicker</label>
+                    <input type="text" id="newsKicker" placeholder="e.g., Tech Radar" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="newsSummary">Brief Summary</label>
+                    <textarea id="newsSummary" rows="4" placeholder="A short description of what this newsletter contains..." required></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="newsLink">External Link (Optional)</label>
+                    <input type="url" id="newsLink" placeholder="e.g., https://your-newsletter-link.com">
+                </div>
+
+                <button type="submit" class="btn-primary" id="uploadBtn">Publish & Notify Subscribers</button>
+                <p id="uploadStatus" class="status-message"></p>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="js/newsletter-config.js"></script>
+    <script src="js/newsletter-admin.js"></script>
+  </body>
+</html>
