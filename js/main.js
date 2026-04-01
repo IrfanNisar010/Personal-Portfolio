@@ -1,8 +1,41 @@
+var getPortfolioPerformance = function() {
+	return window.__portfolioPerformance || {};
+};
+
+var prefersReducedMotion = function() {
+	var perf = getPortfolioPerformance();
+	if (typeof perf.reduceMotion === 'boolean') return perf.reduceMotion;
+	return typeof window.matchMedia === 'function' && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+};
+
+var supportsFinePointer = function() {
+	var perf = getPortfolioPerformance();
+	if (typeof perf.canUseHover === 'boolean') return perf.canUseHover;
+	return typeof window.matchMedia !== 'function' || window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+};
+
+var isSmallScreenExperience = function() {
+	var perf = getPortfolioPerformance();
+	if (typeof perf.smallScreen === 'boolean') return perf.smallScreen;
+	return window.innerWidth < 992;
+};
+
+var isLiteExperience = function() {
+	return !!getPortfolioPerformance().liteMode;
+};
+
+var canUseHeavyPointerEffects = function() {
+	return !isLiteExperience() && !prefersReducedMotion() && supportsFinePointer() && !isSmallScreenExperience();
+};
+
 AOS.init({
- 	duration: 800,
- 	easing: 'ease',
- 	once: true,
- 	offset: -100
+	duration: isLiteExperience() ? 500 : 800,
+	easing: 'ease',
+	once: true,
+	offset: -100,
+	disable: function() {
+		return prefersReducedMotion() || isLiteExperience();
+	}
 });
 
 jQuery(function($) {
@@ -24,13 +57,11 @@ jQuery(function($) {
 	blurTextReveal();
 	blurStaggerReveal();
 	liquidRippleEffect();
-	blurStaggerReveal();
 	universalButtonReveal();
 	faqAccordion();
 	servicesCardReveal();
 	maskTextReveal();
 	servicesImageSlideshow();
-	liquidRippleEffect();
 	// portfolioHoverEffect(); // Moved to siteIstotope done callback
 	mobileImageReveal();
 	animateStats();
@@ -52,32 +83,46 @@ jQuery(function($) {
 });
 
 var smoothScrollEngine = function() {
-	// Initialize Lenis for luxury smooth scrolling
-	if (typeof Lenis === 'undefined') return; 
-	
-	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-	if (prefersReducedMotion) return;
+	if (window.lenis || window.__portfolioLenisInit || typeof Lenis === 'undefined') return;
+	if (prefersReducedMotion() || isLiteExperience() || isSmallScreenExperience() || !supportsFinePointer()) return;
 
 	const lenis = new Lenis({
-		duration: 1.2,
+		duration: 1.05,
 		easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
 		direction: 'vertical',
 		gestureDirection: 'vertical',
 		smooth: true,
 		mouseMultiplier: 1,
-		smoothTouch: true, // Enable for smooth mobile scrolling
-		touchMultiplier: 2,
+		smoothTouch: false,
+		touchMultiplier: 1,
 	});
+
+	var rafId = 0;
 
 	function raf(time) {
 		lenis.raf(time);
-		requestAnimationFrame(raf);
+		rafId = requestAnimationFrame(raf);
 	}
 
-	requestAnimationFrame(raf);
+	function startLoop() {
+		if (rafId) return;
+		lenis.start();
+		rafId = requestAnimationFrame(raf);
+	}
+
+	function stopLoop() {
+		if (rafId) {
+			cancelAnimationFrame(rafId);
+			rafId = 0;
+		}
+		lenis.stop();
+	}
+
+	startLoop();
 
 	// Expose to window
 	window.lenis = lenis;
+	window.__portfolioLenisInit = true;
 
     // Connect to Scroll Indicator (if exists in global scope)
     lenis.on('scroll', (e) => {
@@ -89,12 +134,14 @@ var smoothScrollEngine = function() {
 	// Optimization: Pause on hidden tab
 	document.addEventListener("visibilitychange", function() {
 		if (document.hidden) {
-			lenis.stop();
+			stopLoop();
 		} else {
-			lenis.start();
+			startLoop();
 		}
 	});
 };
+
+document.addEventListener('portfolio:lenis-ready', smoothScrollEngine);
 
 var caseStudyAnimations = function() {
     if ($('.case-study-page').length === 0) return;
@@ -944,7 +991,7 @@ var revealPortfolioDetails = function() {
 var jarallaxPlugin = function() {
 	// Disable Jarallax on mobile for performance
 	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	if (isMobile) return;
+	if (isMobile || isLiteExperience() || prefersReducedMotion()) return;
 
 	$('.jarallax').jarallax({
     speed: 0.2
@@ -1351,9 +1398,7 @@ var faqAccordion = function() {
 };
 
 var liquidRippleEffect = function() {
-	// Disable on mobile/touch devices for performance
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	if (isMobile) return;
+	if (!canUseHeavyPointerEffects()) return;
 
 	var lastTime = 0;
 	var throttle = 40; // Balanced for subtle glass trail
@@ -1382,9 +1427,7 @@ var liquidRippleEffect = function() {
 };
 
 var portfolioHoverEffect = function() {
-	// Disable on mobile/touch devices for performance
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	if (isMobile) return;
+	if (!canUseHeavyPointerEffects()) return;
 
 	// Create global portfolio cursor follower
 	var $cursor = $('#portfolio-cursor');
@@ -1735,10 +1778,13 @@ var servicesImageSlideshow = function() {
 	var $slides = $('.services-image-wrap .slide-item');
 	var currentIndex = 0;
 	var slideCount = $slides.length;
+	var $wrap = $('.services-image-wrap');
+	var intervalId = 0;
+	var isInView = !('IntersectionObserver' in window);
 
 	if (slideCount < 2) return;
 
-	setInterval(function() {
+	function rotateSlides() {
 		var nextIndex = (currentIndex + 1) % slideCount;
 		
 		// Fade out current
@@ -1748,7 +1794,44 @@ var servicesImageSlideshow = function() {
 		$($slides[nextIndex]).addClass('active');
 		
 		currentIndex = nextIndex;
-	}, 4000); // 4 seconds per slide
+	}
+
+	function startSlideshow() {
+		if (intervalId || document.hidden) return;
+		intervalId = window.setInterval(rotateSlides, isLiteExperience() ? 6500 : 4000);
+	}
+
+	function stopSlideshow() {
+		if (!intervalId) return;
+		window.clearInterval(intervalId);
+		intervalId = 0;
+	}
+
+	document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+			stopSlideshow();
+		} else if (isInView) {
+			startSlideshow();
+		}
+	});
+
+	if ('IntersectionObserver' in window && $wrap.length) {
+		var observer = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				isInView = entry.isIntersecting;
+				if (entry.isIntersecting) {
+					startSlideshow();
+				} else {
+					stopSlideshow();
+				}
+			});
+		}, { threshold: 0.2 });
+
+		observer.observe($wrap[0]);
+		return;
+	}
+
+	startSlideshow();
 };
 
 var animateStats = function() {
@@ -2208,9 +2291,7 @@ var typewriterEffect = function() {
 };
 // Custom Cursor Logic
 var customCursor = function() {
-	// Only for desktop
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 992;
-	if (isMobile) return;
+	if (!canUseHeavyPointerEffects()) return;
 
 	// Create Cursor Elements
 	var cursorWrap = $('<div class="mouse-cursor-wrap"><div class="mouse-cursor-dot"></div></div>');
@@ -2365,8 +2446,9 @@ var techBrewSubscription = function() {
                 $wrapper.removeClass('loading').addClass('success');
                 showDynamicNotification("Subscription Active", "You'll receive the next edition of Tech Brew.", false);
 
-                // Trigger Confetti
-                if (typeof confetti !== 'undefined') {
+                var triggerNewsletterConfetti = function() {
+                    if (typeof confetti !== 'function') return;
+
                     var rect = $wrapper[0].getBoundingClientRect();
                     var x = (rect.left + rect.width / 2) / window.innerWidth;
                     var y = (rect.top + rect.height / 2) / window.innerHeight;
@@ -2378,6 +2460,12 @@ var techBrewSubscription = function() {
                         colors: ['#0079da', '#10b981', '#fbbf24', '#f472b6', '#ffffff'],
                         zIndex: 9999
                     });
+                };
+
+                if (typeof window.loadConfetti === 'function') {
+                    window.loadConfetti().then(triggerNewsletterConfetti).catch(function() {});
+                } else {
+                    triggerNewsletterConfetti();
                 }
 
                 // Reset form state after success
@@ -2405,13 +2493,15 @@ jQuery(document).ready(function() {
     techBrewSubscription();
 
     // Mouse tracking for dynamic glass pill borders
-    $(document).on('mousemove', '.contact-tag-pill, .process-tag', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        this.style.setProperty('--mouse-x', `${x}px`);
-        this.style.setProperty('--mouse-y', `${y}px`);
-    });
+    if (supportsFinePointer() && !isLiteExperience()) {
+        $(document).on('mousemove', '.contact-tag-pill, .process-tag', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            this.style.setProperty('--mouse-x', `${x}px`);
+            this.style.setProperty('--mouse-y', `${y}px`);
+        });
+    }
 });
 
 var luxuryWordReveal = function() {

@@ -1,0 +1,50 @@
+:root {
+  --portfolio-intrinsic-section-height: 900px;
+}
+
+@supports (content-visibility: auto) {
+  #portfolio-section,
+  #about-section,
+  #services-section,
+  #process-section,
+  #faq-section,
+  #skills-section,
+  #contact-section,
+  #newsletter-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px var(--portfolio-intrinsic-section-height);
+  }
+}
+
+html.perf-lite .ambient-noise,
+html.perf-lite .liquid-ripple,
+html.perf-lite .mouse-cursor-wrap,
+html.perf-lite #portfolio-cursor {
+  display: none !important;
+}
+
+html.perf-lite .ambient-blob,
+html.perf-lite .border-rotate,
+html.perf-lite .ambient-noise,
+html.perf-lite .liquid-ripple,
+html.perf-lite .mouse-cursor-wrap,
+html.perf-lite #portfolio-cursor {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ambient-blob,
+  .ambient-noise,
+  .border-rotate,
+  .company-carousel-track,
+  .mouse-wrap .scroll {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -4,11 +4,13 @@
     <title>Irfan Nisar | Creative Web Developer & Designer</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="description" content="I'm Irfan Nisar Web Developer & Designer">
     <meta name="keywords" content="html, css, javascript, jquery">
     <meta name="author" content="Irfan">
     <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
 
     <link rel="stylesheet" href="css/vendor/icomoon/style.css">
     <link rel="stylesheet" href="css/vendor/owl.carousel.min.css">
@@ -39,8 +41,8 @@
     <link rel="stylesheet" href="css/ambient-grain.css">
     <link rel="stylesheet" href="css/hamburger-menu.css">
     <link rel="stylesheet" href="css/newsletter.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script> 
+    <link rel="stylesheet" href="css/newsletter-platform.css">
+    <link rel="stylesheet" href="css/performance-boost.css">
     
     <!-- Vercel Speed Insights -->
     <script>
@@ -1196,14 +1198,16 @@ ideas to life with precision & impact</p>
           <div class="newsletter-glow"></div>
           <div class="newsletter-container">
                <div class="process-tag premium-blur-reveal delay-100 tech-brew-glass-pill" style="justify-content: center; margin-bottom: 20px;">Tech Newsletter</div>
-               <h2 class="newsletter-title luxury-word-reveal" id="newsletter-main-title">Stay Ahead of What’s Next.</h2>
-               <div class="luxury-button-wrapper premium-blur-reveal delay-300" style="margin-bottom: 40px; display: flex; justify-content: center;">
-                    <button class="glass-shimmer-btn" id="newsletter-more-info-btn">
+               <h2 class="newsletter-title" id="newsletter-main-title" data-title="Signal Over Noise. Trends That Matter.">Signal Over Noise. Trends That Matter.</h2>
+               <p class="newsletter-desc premium-blur-reveal delay-300" id="newsletter-subtitle">Private owner-written briefings on AI, tools, product launches, and the tech shifts actually worth your attention.</p>
+               <div class="newsletter-actions-row premium-blur-reveal delay-300">
+                   <button class="glass-shimmer-btn" id="newsletter-more-info-btn">
                         <span class="shimmer-btn-text">More Info</span>
                         <span class="shimmer-btn-arrow">
                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                         </span>
                     </button>
+                    <a href="newsletter.html" class="newsletter-archive-link">Browse latest briefings</a>
                </div>
                
                <div class="newsletter-form-wrapper">
@@ -1236,6 +1240,21 @@ ideas to life with precision & impact</p>
                            <span>Subscription active!</span>
                        </div>
                    </div>
+               </div>
+
+               <div class="newsletter-spotlight-card premium-blur-reveal delay-300" id="newsletter-home-preview">
+                    <div class="newsletter-spotlight-topline">
+                        <span class="newsletter-spotlight-label">Latest Dispatch</span>
+                        <span class="newsletter-spotlight-status" id="newsletter-home-status">Loading</span>
+                    </div>
+                    <div class="newsletter-spotlight-body">
+                        <div>
+                            <p class="newsletter-spotlight-kicker" id="newsletter-home-kicker">Tech Radar</p>
+                            <h3 class="newsletter-spotlight-title" id="newsletter-home-title">Fresh trend briefings will appear here.</h3>
+                            <p class="newsletter-spotlight-summary" id="newsletter-home-summary">The new archive page and private newsroom are ready for your latest AI, apps, launch, and product trend updates.</p>
+                        </div>
+                        <a href="newsletter.html" class="newsletter-spotlight-cta" id="newsletter-home-link">Open newsletter page</a>
+                    </div>
                </div>
           </div>
       </section>
@@ -1278,6 +1297,7 @@ ideas to life with precision & impact</p>
                   <li><a href="#services-section" class="smoothscroll">Services</a></li>
                   <li><a href="#process-section" class="smoothscroll">Process</a></li>
                   <li><a href="#portfolio-section" class="smoothscroll">Portfolio</a></li>
+                  <li><a href="newsletter.html">Tech Briefings</a></li>
               </ul>
             </div>
 
@@ -1499,13 +1519,15 @@ ideas to life with precision & impact</p>
     </div>
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="js/newsletter-config.js"></script>
     
+    <script src="js/performance-boost.js"></script>
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
     <script src="js/rating-popup.js"></script>
     <script src="js/newsletter-popup.js"></script>
+    <script type="module" src="js/newsletter-home.js"></script>
     <script src="js/premium-3d-card.js"></script>
-    <script type="module" src="js/plasma-bg.js"></script>
     <script>
 
       // Custom GSAP Animation for Hero Section
@@ -1561,7 +1583,7 @@ ideas to life with precision & impact</p>
           .add(function() {
               var homeSection = document.getElementById("home-section");
               if (homeSection) {
-                  homeSection.style.backgroundImage = "url('" + homeSection.getAttribute('data-bg-gif') + "?v=" + new Date().getTime() + "')";
+                  homeSection.style.backgroundImage = "url('" + homeSection.getAttribute('data-bg-gif') + "')";
                   TweenMax.fromTo(homeSection, 1.5, { opacity: 0.8 }, { opacity: 1, ease: Power2.easeInOut });
               }
               TweenMax.to(".unslate_co--site-nav", 1.2, { opacity: 1, scale: 1, filter: "blur(0px)", webkitFilter: "blur(0px)", ease: Power3.easeOut });
@@ -1681,26 +1703,34 @@ ideas to life with precision & impact</p>
       }
 
       // Magnetic Button Effect
-      $('.resume-btn').each(function() {
-        const btn = $(this);
-        btn.on('mousemove', function(e) {
-          const rect = this.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          const deltaX = (x - centerX) * 0.3;
-          const deltaY = (y - centerY) * 0.3;
-          
-          TweenMax.to(btn, 0.3, { x: deltaX, y: deltaY, ease: Power2.easeOut });
-          TweenMax.to(btn.find('.resume-btn-text, .resume-btn-hover-content'), 0.3, { x: deltaX * 0.5, y: deltaY * 0.5, ease: Power2.easeOut });
-        });
+      const perfState = window.__portfolioPerformance || {};
+      const useMagneticButtons = !(perfState.liteMode || perfState.reduceMotion) &&
+        (typeof perfState.canUseHover === 'boolean'
+          ? perfState.canUseHover
+          : window.matchMedia('(hover: hover) and (pointer: fine)').matches);
 
-        btn.on('mouseleave', function() {
-          TweenMax.to(btn, 0.6, { x: 0, y: 0, ease: Elastic.easeOut.config(1.1, 0.4) });
-          TweenMax.to(btn.find('.resume-btn-text, .resume-btn-hover-content'), 0.6, { x: 0, y: 0, ease: Elastic.easeOut.config(1.1, 0.4) });
+      if (useMagneticButtons) {
+        $('.resume-btn').each(function() {
+          const btn = $(this);
+          btn.on('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const deltaX = (x - centerX) * 0.3;
+            const deltaY = (y - centerY) * 0.3;
+            
+            TweenMax.to(btn, 0.3, { x: deltaX, y: deltaY, ease: Power2.easeOut });
+            TweenMax.to(btn.find('.resume-btn-text, .resume-btn-hover-content'), 0.3, { x: deltaX * 0.5, y: deltaY * 0.5, ease: Power2.easeOut });
+          });
+
+          btn.on('mouseleave', function() {
+            TweenMax.to(btn, 0.6, { x: 0, y: 0, ease: Elastic.easeOut.config(1.1, 0.4) });
+            TweenMax.to(btn.find('.resume-btn-text, .resume-btn-hover-content'), 0.6, { x: 0, y: 0, ease: Elastic.easeOut.config(1.1, 0.4) });
+          });
         });
-      });
+      }
 
       // Inject Loader and Checkmark into Send Button (Ensure DOM is ready)
       $(document).ready(function() {
